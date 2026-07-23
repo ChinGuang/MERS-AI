@@ -8,8 +8,16 @@ interface SVGFallbackProps {
 }
 
 export function SVGFallback({ activeIncident, pinColor, isDark }: SVGFallbackProps) {
-    const x = 250;
-    const y = 150;
+    let x: number;
+    let y: number;
+
+    if (process.env.NEXT_PUBLIC_TOGGLE_HARDCODE === 'true') {
+        x = 250;
+        y = 150;
+    } else {
+        x = (activeIncident as any)?.x ?? activeIncident?.coordinates?.lng ?? 250;
+        y = (activeIncident as any)?.y ?? activeIncident?.coordinates?.lat ?? 150;
+    }
     const mockRoads = [
         'M 0 80 Q 120 60 250 110 T 500 130',
         'M 0 200 Q 150 240 300 200 T 500 220',
