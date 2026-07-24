@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import {
-  Search, CheckCircle2, XCircle, UserCheck, Zap,
+  Search, CheckCircle2, XCircle, UserCheck,
   AlertTriangle, ChevronRight, MapPin, Flame, Heart, Shield, Car, Droplets,
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -18,7 +18,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { HISTORICAL_REPORTS } from "@/data/historicalReports"
 import { cn } from "@/lib/utils"
-import { SeverityType as ReportSeverityType, ApprovalType, IncidentType } from "@/models/report"
+import { SeverityType as ReportSeverityType, IncidentType, OutcomeType } from "@/models/report"
+import { useAuth } from "@/context/auth/useAuth"
 
 const PAGE_SIZE = 10
 
@@ -46,19 +47,15 @@ const TYPE_ICON_STYLE: Record<string, string> = {
   [IncidentType.UNKNOWN]:  "bg-muted          text-muted-foreground",
 }
 
-function formatResponseTime(seconds?: number | null) {
-  if (!seconds) return "—"
-  return seconds < 60 ? `${seconds}s` : `${Math.floor(seconds / 60)}m ${seconds % 60}s`
-}
-
-// ── Main component ────────────────────────────────────────────────────────────
-
 export function HistoryTab() {
   const router = useRouter()
-  const [search, setSearch]           = useState("")
+  const { user } = useAuth()
+  const operatorName = user?.user_metadata?.full_name || user?.email || "OP. Khalid"
+
+  const [search, setSearch]                 = useState("")
   const [severityFilter, setSeverityFilter] = useState<string[]>([])
-  const [typeFilter, setTypeFilter]   = useState("")
-  const [page, setPage]               = useState(0)
+  const [typeFilter, setTypeFilter]         = useState("")
+  const [page, setPage]                     = useState(0)
 
   const filtered = useMemo(() => {
     return HISTORICAL_REPORTS.filter((r) => {
@@ -128,17 +125,15 @@ export function HistoryTab() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/40 hover:bg-muted/40">
-                {["ID","Incident","Severity","Caller","Duration","Response","Human?","Outcome","AI Conf.",""].map((h, i) => (
-                  <TableHead key={i} className={cn("text-[10px] uppercase tracking-wider", i === 9 && "w-10")}>{h}</TableHead>
+                {["ID", "Incident", "Severity", "Caller", "Operator", "Duration", "Outcome", ""].map((h, i) => (
+                  <TableHead key={i} className={cn("text-[10px] uppercase tracking-wider", i === 7 && "w-10")}>{h}</TableHead>
                 ))}
               </TableRow>
             </TableHeader>
             <TableBody>
               {pageData.map((report) => {
-                const isApproved   = report.approvedStatus === ApprovalType.APPROVED
-                const hasHuman     = report.humanIntervention?.required
-                const TypeIcon     = TYPE_ICON[report.incidentType] ?? AlertTriangle
-                const iconStyle    = TYPE_ICON_STYLE[report.incidentType] ?? "bg-muted text-muted-foreground"
+                const TypeIcon  = TYPE_ICON[report.incidentType] ?? AlertTriangle
+                const iconStyle = TYPE_ICON_STYLE[report.incidentType] ?? "bg-muted text-muted-foreground"
 
                 return (
                   <TableRow
@@ -172,33 +167,28 @@ export function HistoryTab() {
                     </TableCell>
 
                     <TableCell className="text-xs">{report.caller}</TableCell>
+                    <TableCell className="text-xs font-medium">{operatorName}</TableCell>
                     <TableCell className="font-mono text-xs">{report.callDuration}</TableCell>
-                    <TableCell className="font-mono text-xs">{formatResponseTime(report.responseTimeSeconds)}</TableCell>
 
                     <TableCell>
-                      {hasHuman
-                        ? <Badge className="bg-warning dark:bg-warning/50 border-2 border-black dark:border-warning text-white text-[10px]"><UserCheck className="mr-1 size-2.5" />Yes</Badge>
-                        : <Badge className="bg-secondary dark:bg-secondary/50 border-2 border-black dark:border-secondary text-white text-[10px]"><Zap className="mr-1 size-2.5" />AI Only</Badge>
-                      }
-                    </TableCell>
-
-                    <TableCell>
-                      {isApproved
-                        ? <span className="flex items-center gap-1 text-xs font-medium text-secondary"><CheckCircle2 className="size-3.5" />Dispatched</span>
-                        : <span className="flex items-center gap-1 text-xs font-medium text-destructive"><XCircle className="size-3.5" />Rejected</span>
-                      }
-                    </TableCell>
-
-                    <TableCell>
-                      <div className="flex items-center gap-1.5">
-                        <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
-                          <div
-                            className={cn("h-full rounded-full", report.dispatchConfindece >= 0.8 ? "bg-secondary" : report.dispatchConfindece >= 0.5 ? "bg-warning" : "bg-destructive")}
-                            style={{ width: `${Math.round(report.dispatchConfindece * 100)}%` }}
-                          />
-                        </div>
-                        <span className="text-[10px] font-mono">{Math.round(report.dispatchConfindece * 100)}%</span>
-                      </div>
+                      {report.outcome === OutcomeType.ACCEPT && (
+                        <Badge className="bg-emerald-600/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold">
+                          <CheckCircle2 className="mr-1 size-2.5 text-emerald-400" />
+                          Accept
+                        </Badge>
+                      )}
+                      {report.outcome === OutcomeType.OVERRIDE && (
+                        <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-bold">
+                          <UserCheck className="mr-1 size-2.5 text-amber-400" />
+                          Override
+                        </Badge>
+                      )}
+                      {report.outcome === OutcomeType.REJECT && (
+                        <Badge className="bg-rose-600/20 text-rose-400 border border-rose-500/40 text-[10px] font-bold">
+                          <XCircle className="mr-1 size-2.5 text-rose-400" />
+                          Reject
+                        </Badge>
+                      )}
                     </TableCell>
 
                     <TableCell>
@@ -209,7 +199,7 @@ export function HistoryTab() {
               })}
               {pageData.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={10} className="py-10 text-center text-sm text-muted-foreground">
+                  <TableCell colSpan={8} className="py-10 text-center text-sm text-muted-foreground">
                     No incidents match your filters.
                   </TableCell>
                 </TableRow>

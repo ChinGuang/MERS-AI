@@ -4,7 +4,7 @@ import { useMemo } from "react"
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { HISTORICAL_REPORTS } from "@/data/historicalReports"
-import { ApprovalType } from "@/models/report"
+import { OutcomeType } from "@/models/report"
 import { ChartInfoDialog } from "./chart-info-dialog"
 
 const APPROVED_COLOR = "hsl(var(--secondary))"
@@ -13,10 +13,9 @@ const OVERRIDE_COLOR = "hsl(var(--warning))"
 
 export function DispatchOutcomeChart() {
   const { outcomeSplit, overrideCount, totalCount } = useMemo(() => {
-    const overridden = HISTORICAL_REPORTS.filter((r) => r.humanIntervention?.required)
-    const aiOnly = HISTORICAL_REPORTS.filter((r) => !r.humanIntervention?.required)
-    const approvedAiOnly = aiOnly.filter((r) => r.approvedStatus === ApprovalType.APPROVED).length
-    const rejectedAiOnly = aiOnly.filter((r) => r.approvedStatus === ApprovalType.REJECTED).length
+    const overridden = HISTORICAL_REPORTS.filter((r) => r.outcome === OutcomeType.OVERRIDE)
+    const approvedAiOnly = HISTORICAL_REPORTS.filter((r) => r.outcome === OutcomeType.ACCEPT).length
+    const rejectedAiOnly = HISTORICAL_REPORTS.filter((r) => r.outcome === OutcomeType.REJECT).length
 
     return {
       outcomeSplit: [

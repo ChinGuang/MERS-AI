@@ -2,8 +2,9 @@ import z from "zod";
 
 export type ReportFilterType =
   | "ALL"
-  | ApprovalType.APPROVED
-  | ApprovalType.REJECTED;
+  | OutcomeType.ACCEPT
+  | OutcomeType.OVERRIDE
+  | OutcomeType.REJECT;
 
 export enum SeverityType {
   CRITICAL = "CRITICAL",
@@ -20,9 +21,10 @@ export enum IncidentType {
   FLOOD = "FLOOD",
 }
 
-export enum ApprovalType {
-  APPROVED = "APPROVED",
-  REJECTED = "REJECTED",
+export enum OutcomeType {
+  ACCEPT = "Accept",
+  OVERRIDE = "Override",
+  REJECT = "Reject",
 }
 
 export enum ReleaseType {
@@ -33,7 +35,7 @@ export enum ReleaseType {
 const ReportBase = z.object({
   id: z.string(),
   title: z.string(),
-  approvedStatus: z.enum(ApprovalType),
+  outcome: z.nativeEnum(OutcomeType),
   createAt: z.date(),
   location: z.string(),
   incidentType: z.enum(IncidentType),
