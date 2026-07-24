@@ -5,7 +5,7 @@ import { SVGFallback } from './SvgFallback';
 import { MapButton } from './MapButton';
 import { RouteLayer } from './RouteLayer';
 import { Crosshair, Layers, Minus, Plus, MapPin, Search, X, Radar } from 'lucide-react';
-import { EMERGENCY_CENTER } from '@/constants/dispatch';
+// import { EMERGENCY_CENTER } from '@/constants/dispatch';
 
 interface IncidentMapProps {
     activeIncident: Incident;

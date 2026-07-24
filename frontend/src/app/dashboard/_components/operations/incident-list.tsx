@@ -71,7 +71,7 @@ const SEVERITY_SELECTED_SHADOW: Record<string, string> = {
 
 /* ─── Type icon maps ────────────────────────────────────────────────────── */
 
-const TYPE_ICON: Record<Incident["type"], React.ElementType> = {
+const TYPE_ICON: Record<NonNullable<Incident["type"]>, React.ElementType> = {
   medical: Heart,
   fire: Flame,
   crime: Shield,
@@ -79,7 +79,7 @@ const TYPE_ICON: Record<Incident["type"], React.ElementType> = {
   flood: Droplets,
 }
 
-const TYPE_ICON_STYLE: Record<Incident["type"], string> = {
+const TYPE_ICON_STYLE: Record<NonNullable<Incident["type"]>, string> = {
   medical: "bg-destructive/20 text-destructive",
   fire: "bg-warning/20 text-warning",
   crime: "bg-muted text-muted-foreground",
@@ -197,7 +197,7 @@ export function IncidentList({ collapsed, onCollapsedChange }: { collapsed: bool
               <div className="space-y-2 p-2">
                 {results.map((incident) => {
                   const selected = selectedIncidentId === incident.id
-                  const TypeIcon = TYPE_ICON[incident.type] ?? Shield
+                  const TypeIcon = TYPE_ICON[incident.type ?? "crime"] ?? Shield
 
                   return (
                     <button
@@ -239,7 +239,7 @@ export function IncidentList({ collapsed, onCollapsedChange }: { collapsed: bool
                         <div
                           className={cn(
                             "flex size-8 shrink-0 items-center justify-center rounded-lg",
-                            TYPE_ICON_STYLE[incident.type]
+                            TYPE_ICON_STYLE[incident.type ?? "crime"]
                           )}
                         >
                           <TypeIcon className="size-4" />

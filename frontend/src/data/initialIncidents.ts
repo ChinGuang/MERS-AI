@@ -3,6 +3,7 @@ import { Incident, SeverityType } from "@/types";
 export const INITIAL_INCIDENTS: Incident[] = [
   {
     id: "INC-0042",
+    callId: "INC-0042",
     type: "medical",
     title: "Suspected Cardiac Arrest",
     location: "Jalan Ampang, KL (Near Mamak Pelita)",
@@ -68,6 +69,7 @@ export const INITIAL_INCIDENTS: Incident[] = [
   },
   {
     id: "INC-0045",
+    callId: "INC-0045",
     type: "fire",
     title: "Structure Fire (Residential)",
     location: "Taman Melawati, KL",
@@ -127,6 +129,7 @@ export const INITIAL_INCIDENTS: Incident[] = [
   },
   {
     id: "INC-0046",
+    callId: "INC-0046",
     type: "accident",
     title: "MVA - Multi-Vehicle Collision",
     location: "Federal Highway, KM 4.2",
