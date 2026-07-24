@@ -16,9 +16,10 @@ import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { useIncident } from "@/context/incident/useIncident"
 import { SeverityType } from "@/types"
-import { OutcomeType } from "@/models/report"
+import { OutcomeType, ArchivedReport } from "@/models/report"
 import { HISTORICAL_REPORTS } from "@/data/historicalReports"
-import { useMemo } from "react"
+import { useMemo, useState, useEffect } from "react"
+import { fetchHistoricalReports } from "@/lib/historicalReportsService"
 
 interface StatCardProps {
   label: string
@@ -138,14 +139,22 @@ function formatResponseTime(seconds?: number | null) {
 }
 
 export function AllTimeStatCards() {
+  const [reports, setReports] = useState<ArchivedReport[]>([])
+
+  useEffect(() => {
+    fetchHistoricalReports().then((data) => {
+      if (data) setReports(data)
+    })
+  }, [])
+
   const stats = useMemo(() => {
-    const total      = HISTORICAL_REPORTS.length
-    const dispatched = HISTORICAL_REPORTS.filter((r) => r.outcome !== OutcomeType.REJECT).length
-    const overridden = HISTORICAL_REPORTS.filter((r) => r.outcome === OutcomeType.OVERRIDE)
-    const aiOnly     = HISTORICAL_REPORTS.filter((r) => r.outcome !== OutcomeType.OVERRIDE)
-    const approvedAiOnly = HISTORICAL_REPORTS.filter((r) => r.outcome === OutcomeType.ACCEPT).length
-    const rejectedAiOnly = HISTORICAL_REPORTS.filter((r) => r.outcome === OutcomeType.REJECT).length
-    const withResponse = HISTORICAL_REPORTS.filter((r) => r.responseTimeSeconds)
+    const total      = reports.length
+    const dispatched = reports.filter((r) => r.outcome !== OutcomeType.REJECT).length
+    const overridden = reports.filter((r) => r.outcome === OutcomeType.OVERRIDE)
+    const aiOnly     = reports.filter((r) => r.outcome !== OutcomeType.OVERRIDE)
+    const approvedAiOnly = reports.filter((r) => r.outcome === OutcomeType.ACCEPT).length
+    const rejectedAiOnly = reports.filter((r) => r.outcome === OutcomeType.REJECT).length
+    const withResponse = reports.filter((r) => r.responseTimeSeconds)
     const avgResponse = withResponse.length
       ? Math.round(withResponse.reduce((sum, r) => sum + (r.responseTimeSeconds ?? 0), 0) / withResponse.length)
       : 0

@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import {
   ArrowLeft, ShieldAlert, Download, Printer,
@@ -7,7 +8,7 @@ import {
   User, Ambulance, FileText, Lock,
   Activity, Waves, Volume2, AlertTriangle,
   CheckCircle2, XCircle, UserCheck, Zap, MapPin,
-  Flame, Heart, Car, Droplets, CalendarClock, BadgeCheck,
+  Flame, Heart, Car, Droplets, CalendarClock, BadgeCheck, Loader2
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -20,6 +21,7 @@ import { IncidentType, OutcomeType } from "@/models/report"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/app/dashboard/_components/theme-toggle"
 import type { ArchivedReport } from "@/models/report"
+import { fetchHistoricalReportById } from "@/lib/historicalReportsService"
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -618,7 +620,26 @@ export default function IncidentDetailPage() {
   const { id }  = useParams<{ id: string }>()
   const router  = useRouter()
 
-  const report = HISTORICAL_REPORTS.find(r => r.id === id)
+  const [report, setReport] = useState<ArchivedReport | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (!id) return
+    fetchHistoricalReportById(id)
+      .then((data) => {
+        if (data) {
+          setReport(data)
+        } else {
+          const fallback = HISTORICAL_REPORTS.find((r) => r.id === id) || null
+          setReport(fallback)
+        }
+      })
+      .catch(() => {
+        const fallback = HISTORICAL_REPORTS.find((r) => r.id === id) || null
+        setReport(fallback)
+      })
+      .finally(() => setLoading(false))
+  }, [id])
 
   function handlePrint() {
     if (!report) return
@@ -628,6 +649,15 @@ export default function IncidentDetailPage() {
     w.document.close()
     w.focus()
     setTimeout(() => { w.print(); w.close() }, 400)
+  }
+
+  if (loading && !report) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background">
+        <Loader2 className="size-10 animate-spin text-primary mb-4" />
+        <p className="text-sm text-muted-foreground">Loading report from Supabase…</p>
+      </div>
+    )
   }
 
   if (!report) {

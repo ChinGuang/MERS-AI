@@ -1,21 +1,30 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { HISTORICAL_REPORTS } from "@/data/historicalReports"
-import { OutcomeType } from "@/models/report"
+import { OutcomeType, ArchivedReport } from "@/models/report"
 import { ChartInfoDialog } from "./chart-info-dialog"
+import { fetchHistoricalReports } from "@/lib/historicalReportsService"
 
 const APPROVED_COLOR = "hsl(var(--secondary))"
 const REJECTED_COLOR = "hsl(var(--destructive))"
 const OVERRIDE_COLOR = "hsl(var(--warning))"
 
 export function DispatchOutcomeChart() {
+  const [reports, setReports] = useState<ArchivedReport[]>([])
+
+  useEffect(() => {
+    fetchHistoricalReports().then((data) => {
+      if (data) setReports(data)
+    })
+  }, [])
+
   const { outcomeSplit, overrideCount, totalCount } = useMemo(() => {
-    const overridden = HISTORICAL_REPORTS.filter((r) => r.outcome === OutcomeType.OVERRIDE)
-    const approvedAiOnly = HISTORICAL_REPORTS.filter((r) => r.outcome === OutcomeType.ACCEPT).length
-    const rejectedAiOnly = HISTORICAL_REPORTS.filter((r) => r.outcome === OutcomeType.REJECT).length
+    const overridden = reports.filter((r) => r.outcome === OutcomeType.OVERRIDE)
+    const approvedAiOnly = reports.filter((r) => r.outcome === OutcomeType.ACCEPT).length
+    const rejectedAiOnly = reports.filter((r) => r.outcome === OutcomeType.REJECT).length
 
     return {
       outcomeSplit: [
@@ -24,9 +33,9 @@ export function DispatchOutcomeChart() {
         { name: "Human Override", value: overridden.length, color: OVERRIDE_COLOR },
       ],
       overrideCount: overridden.length,
-      totalCount: HISTORICAL_REPORTS.length,
+      totalCount: reports.length,
     }
-  }, [])
+  }, [reports])
 
   return (
     <Card className="transition-all duration-200 hover:border-secondary hover:shadow-secondary hover:shadow-md">

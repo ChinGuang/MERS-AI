@@ -1,14 +1,15 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import {
   Search, CheckCircle2, XCircle, UserCheck,
-  AlertTriangle, ChevronRight, MapPin, Flame, Heart, Shield, Car, Droplets,
+  AlertTriangle, ChevronRight, MapPin, Flame, Heart, Shield, Car, Droplets
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table"
@@ -16,10 +17,10 @@ import {
   DropdownMenu, DropdownMenuCheckboxItem,
   DropdownMenuContent, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { HISTORICAL_REPORTS } from "@/data/historicalReports"
 import { cn } from "@/lib/utils"
-import { SeverityType as ReportSeverityType, IncidentType, OutcomeType } from "@/models/report"
+import { SeverityType as ReportSeverityType, IncidentType, OutcomeType, ArchivedReport } from "@/models/report"
 import { useAuth } from "@/context/auth/useAuth"
+import { fetchHistoricalReports } from "@/lib/historicalReportsService"
 
 const PAGE_SIZE = 10
 
@@ -52,13 +53,23 @@ export function HistoryTab() {
   const { user } = useAuth()
   const operatorName = user?.user_metadata?.full_name || user?.email || "OP. Khalid"
 
+  const [reports, setReports]               = useState<ArchivedReport[]>([])
+  const [loading, setLoading]               = useState(true)
   const [search, setSearch]                 = useState("")
   const [severityFilter, setSeverityFilter] = useState<string[]>([])
   const [typeFilter, setTypeFilter]         = useState("")
   const [page, setPage]                     = useState(0)
 
+  useEffect(() => {
+    fetchHistoricalReports()
+      .then((data) => {
+        if (data) setReports(data)
+      })
+      .finally(() => setLoading(false))
+  }, [])
+
   const filtered = useMemo(() => {
-    return HISTORICAL_REPORTS.filter((r) => {
+    return reports.filter((r) => {
       const q = search.toLowerCase()
       const matchSearch =
         r.title.toLowerCase().includes(q) ||
@@ -69,7 +80,7 @@ export function HistoryTab() {
       const matchType     = !typeFilter || r.incidentType.toLowerCase().includes(typeFilter.toLowerCase())
       return matchSearch && matchSeverity && matchType
     })
-  }, [search, severityFilter, typeFilter])
+  }, [reports, search, severityFilter, typeFilter])
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
   const pageData   = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
@@ -131,73 +142,96 @@ export function HistoryTab() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pageData.map((report) => {
-                const TypeIcon  = TYPE_ICON[report.incidentType] ?? AlertTriangle
-                const iconStyle = TYPE_ICON_STYLE[report.incidentType] ?? "bg-muted text-muted-foreground"
-
-                return (
-                  <TableRow
-                    key={report.id}
-                    className="cursor-pointer transition-colors hover:bg-muted/30"
-                    onClick={() => router.push(`/dashboard/history/${report.id}`)}
-                  >
-                    <TableCell className="font-mono text-xs text-muted-foreground">{report.id}</TableCell>
-
+              {loading ? (
+                Array.from({ length: 5 }).map((_, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell><Skeleton className="h-4 w-16" /></TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2.5">
-                        <div className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", iconStyle)}>
-                          <TypeIcon className="size-4" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-semibold leading-tight">{report.title}</p>
-                          <p className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
-                            <MapPin className="size-2.5" />{report.location.split(",")[0]}
-                          </p>
+                        <Skeleton className="size-8 rounded-lg shrink-0" />
+                        <div className="space-y-1.5 flex-1">
+                          <Skeleton className="h-4 w-44" />
+                          <Skeleton className="h-3 w-28" />
                         </div>
                       </div>
                     </TableCell>
-
-                    <TableCell>
-                      <span className={cn(
-                        "inline-flex items-center rounded border px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest",
-                        SEVERITY_BADGE[report.severity] ?? "border-muted bg-muted text-muted-foreground"
-                      )}>
-                        {report.severity}
-                      </span>
-                    </TableCell>
-
-                    <TableCell className="text-xs">{report.caller}</TableCell>
-                    <TableCell className="text-xs font-medium">{operatorName}</TableCell>
-                    <TableCell className="font-mono text-xs">{report.callDuration}</TableCell>
-
-                    <TableCell>
-                      {report.outcome === OutcomeType.ACCEPT && (
-                        <Badge className="bg-emerald-600/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold">
-                          <CheckCircle2 className="mr-1 size-2.5 text-emerald-400" />
-                          Accept
-                        </Badge>
-                      )}
-                      {report.outcome === OutcomeType.OVERRIDE && (
-                        <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-bold">
-                          <UserCheck className="mr-1 size-2.5 text-amber-400" />
-                          Override
-                        </Badge>
-                      )}
-                      {report.outcome === OutcomeType.REJECT && (
-                        <Badge className="bg-rose-600/20 text-rose-400 border border-rose-500/40 text-[10px] font-bold">
-                          <XCircle className="mr-1 size-2.5 text-rose-400" />
-                          Reject
-                        </Badge>
-                      )}
-                    </TableCell>
-
-                    <TableCell>
-                      <ChevronRight className="size-4 text-muted-foreground" />
-                    </TableCell>
+                    <TableCell><Skeleton className="h-5 w-16 rounded" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-12" /></TableCell>
+                    <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
+                    <TableCell><Skeleton className="size-4 rounded" /></TableCell>
                   </TableRow>
-                )
-              })}
-              {pageData.length === 0 && (
+                ))
+              ) : (
+                pageData.map((report) => {
+                  const TypeIcon  = TYPE_ICON[report.incidentType] ?? AlertTriangle
+                  const iconStyle = TYPE_ICON_STYLE[report.incidentType] ?? "bg-muted text-muted-foreground"
+
+                  return (
+                    <TableRow
+                      key={report.id}
+                      className="cursor-pointer transition-colors hover:bg-muted/30"
+                      onClick={() => router.push(`/dashboard/history/${report.id}`)}
+                    >
+                      <TableCell className="font-mono text-xs text-muted-foreground">{report.id}</TableCell>
+
+                      <TableCell>
+                        <div className="flex items-center gap-2.5">
+                          <div className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", iconStyle)}>
+                            <TypeIcon className="size-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold leading-tight">{report.title}</p>
+                            <p className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+                              <MapPin className="size-2.5" />{report.location.split(",")[0]}
+                            </p>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      <TableCell>
+                        <span className={cn(
+                          "inline-flex items-center rounded border px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest",
+                          SEVERITY_BADGE[report.severity] ?? "border-muted bg-muted text-muted-foreground"
+                        )}>
+                          {report.severity}
+                        </span>
+                      </TableCell>
+
+                      <TableCell className="text-xs">{report.caller}</TableCell>
+                      <TableCell className="text-xs font-medium">{operatorName}</TableCell>
+                      <TableCell className="font-mono text-xs">{report.callDuration}</TableCell>
+
+                      <TableCell>
+                        {report.outcome === OutcomeType.ACCEPT && (
+                          <Badge className="bg-emerald-600/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold">
+                            <CheckCircle2 className="mr-1 size-2.5 text-emerald-400" />
+                            Accept
+                          </Badge>
+                        )}
+                        {report.outcome === OutcomeType.OVERRIDE && (
+                          <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-bold">
+                            <UserCheck className="mr-1 size-2.5 text-amber-400" />
+                            Override
+                          </Badge>
+                        )}
+                        {report.outcome === OutcomeType.REJECT && (
+                          <Badge className="bg-rose-600/20 text-rose-400 border border-rose-500/40 text-[10px] font-bold">
+                            <XCircle className="mr-1 size-2.5 text-rose-400" />
+                            Reject
+                          </Badge>
+                        )}
+                      </TableCell>
+
+                      <TableCell>
+                        <ChevronRight className="size-4 text-muted-foreground" />
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+              )}
+              {!loading && pageData.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={8} className="py-10 text-center text-sm text-muted-foreground">
                     No incidents match your filters.
