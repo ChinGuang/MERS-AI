@@ -1,9 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
 import { ArchivedReport, OutcomeType, SeverityType, IncidentType } from "@/models/report";
-import { HISTORICAL_REPORTS } from "@/data/historicalReports";
-import { toast } from "sonner";
-
-let cachedReportsPromise: Promise<ArchivedReport[]> | null = null;
 
 function mapRowToReport(r: any): ArchivedReport {
   return {
@@ -50,61 +46,29 @@ function mapRowToReport(r: any): ArchivedReport {
   };
 }
 
-export function fetchHistoricalReports(): Promise<ArchivedReport[]> {
-  if (cachedReportsPromise) {
-    return cachedReportsPromise;
+export async function fetchHistoricalReports(): Promise<ArchivedReport[]> {
+  const { data, error } = await supabase
+    .from("historical_reports")
+    .select("*")
+    .order("call_received_at", { ascending: false });
+
+  if (error) {
+    throw error;
   }
 
-  cachedReportsPromise = (async () => {
-    try {
-      const { data, error } = await supabase
-        .from("historical_reports")
-        .select("*")
-        .order("call_received_at", { ascending: false });
-
-      if (error || !data || data.length === 0) {
-        if (error) {
-          console.warn("Supabase fetch notice:", error.message);
-          toast.warning("Supabase unavailable — displaying offline backup records.");
-        }
-        return HISTORICAL_REPORTS;
-      }
-
-      return data.map(mapRowToReport);
-    } catch (err) {
-      console.warn("Historical reports fetch exception:", err);
-      toast.warning("Supabase connection error — displaying offline backup records.");
-      return HISTORICAL_REPORTS;
-    }
-  })();
-
-  return cachedReportsPromise;
-}
-
-export function clearHistoricalReportsCache() {
-  cachedReportsPromise = null;
+  return (data ?? []).map(mapRowToReport);
 }
 
 export async function fetchHistoricalReportById(id: string): Promise<ArchivedReport | null> {
-  try {
-    const { data, error } = await supabase
-      .from("historical_reports")
-      .select("*")
-      .eq("id", id)
-      .single();
+  const { data, error } = await supabase
+    .from("historical_reports")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
 
-    if (error || !data) {
-      if (error) console.warn(`Supabase fetch report ${id} notice:`, error.message);
-      const fallback = HISTORICAL_REPORTS.find((r) => r.id === id) || null;
-      if (fallback) {
-        toast.warning(`Supabase lookup for ${id} failed — showing offline record.`);
-      }
-      return fallback;
-    }
-
-    return mapRowToReport(data);
-  } catch (err) {
-    console.warn(`Historical report ${id} fetch exception:`, err);
-    return HISTORICAL_REPORTS.find((r) => r.id === id) || null;
+  if (error) {
+    throw error;
   }
+
+  return data ? mapRowToReport(data) : null;
 }

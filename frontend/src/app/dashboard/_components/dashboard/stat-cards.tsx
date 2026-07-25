@@ -16,10 +16,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { useIncident } from "@/context/incident/useIncident"
 import { SeverityType } from "@/types"
-import { OutcomeType, ArchivedReport } from "@/models/report"
-import { HISTORICAL_REPORTS } from "@/data/historicalReports"
-import { useMemo, useState, useEffect } from "react"
-import { fetchHistoricalReports } from "@/lib/historicalReportsService"
+import { OutcomeType } from "@/models/report"
+import { useMemo } from "react"
+import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 interface StatCardProps {
   label: string
@@ -139,13 +138,7 @@ function formatResponseTime(seconds?: number | null) {
 }
 
 export function AllTimeStatCards() {
-  const [reports, setReports] = useState<ArchivedReport[]>([])
-
-  useEffect(() => {
-    fetchHistoricalReports().then((data) => {
-      if (data) setReports(data)
-    })
-  }, [])
+  const { reports } = useHistoricalReports()
 
   const stats = useMemo(() => {
     const total      = reports.length

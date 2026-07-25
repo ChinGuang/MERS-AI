@@ -185,6 +185,22 @@ class EmergencyDispatchServiceLocation(Base):
 
 
 class HistoricalReport(BaseTable):
+    """
+    SQLAlchemy model for historical incident reports.
+
+    Note on JSONB fields:
+    To ensure consistent data structures across rows and ease debugging/frontend mapping,
+    each JSONB column corresponds to a defined Pydantic schema in backend/models/dto/historical_report.py:
+      - spoken_dialects: List[str]
+      - reasoning_report: ReasoningReportDTO {"content": str, "sopUsed": List[str]}
+      - sop_actions: List[str]
+      - emotional_analysis: EmotionalAnalysisDTO {"panicLevel": str, "distressScore": float, "speechRate": str, "tremorDetected": bool, "volumeTrend": str, "aiConfidence": float, "contradiction"?: str}
+      - human_intervention: Optional[HumanInterventionDTO] {"required": bool, "interventionBy"?: str, "role"?: str, "action"?: str, "reason"?: str, "timestampLabel"?: str}
+      - supervising_release: SupervisingReleaseDTO {"inspector": str, "status": int}
+      - closing_report: ClosingReportDTO {"closedBy": str, "closedAt": str, "outcome": str, "caseStatus": str}
+      - event_timeline: List[EventTimelineItemDTO] [{"time": str, "event": str, "type"?: str}]
+      - transcript: List[TranscriptItemDTO] [{"time": str, "speaker": str, "text": str}]
+    """
     __tablename__ = "historical_reports"
 
     id = Column(String, primary_key=True, index=True)
@@ -195,7 +211,7 @@ class HistoricalReport(BaseTable):
     location = Column(Text, nullable=False)
     caller = Column(String, nullable=False)
     caller_number = Column(String, nullable=True)
-    spoken_dialects = Column(JSONB, nullable=False, default=[])
+    spoken_dialects = Column(JSONB, nullable=False, default=[])  # List[str]
     call_duration = Column(String, nullable=False)
     dispatch_confidence = Column(Float, nullable=False)
     response_time_seconds = Column(Integer, nullable=True)
@@ -206,11 +222,11 @@ class HistoricalReport(BaseTable):
     operator_verdict = Column(Text, nullable=False)
     notes = Column(Text, nullable=True)
     incident_sha = Column(String, nullable=False)
-    reasoning_report = Column(JSONB, nullable=False)
-    sop_actions = Column(JSONB, nullable=False, default=[])
-    emotional_analysis = Column(JSONB, nullable=False)
-    human_intervention = Column(JSONB, nullable=True)
-    supervising_release = Column(JSONB, nullable=False)
-    closing_report = Column(JSONB, nullable=False)
-    event_timeline = Column(JSONB, nullable=False, default=[])
-    transcript = Column(JSONB, nullable=False, default=[])
+    reasoning_report = Column(JSONB, nullable=False)  # See ReasoningReportDTO
+    sop_actions = Column(JSONB, nullable=False, default=[])  # List[str]
+    emotional_analysis = Column(JSONB, nullable=False)  # See EmotionalAnalysisDTO
+    human_intervention = Column(JSONB, nullable=True)  # See HumanInterventionDTO
+    supervising_release = Column(JSONB, nullable=False)  # See SupervisingReleaseDTO
+    closing_report = Column(JSONB, nullable=False)  # See ClosingReportDTO
+    event_timeline = Column(JSONB, nullable=False, default=[])  # List[EventTimelineItemDTO]
+    transcript = Column(JSONB, nullable=False, default=[])  # List[TranscriptItemDTO]

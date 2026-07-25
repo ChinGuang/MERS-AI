@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import {
   Search, CheckCircle2, XCircle, UserCheck,
@@ -18,9 +18,9 @@ import {
   DropdownMenuContent, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
-import { SeverityType as ReportSeverityType, IncidentType, OutcomeType, ArchivedReport } from "@/models/report"
+import { SeverityType as ReportSeverityType, IncidentType, OutcomeType } from "@/models/report"
 import { useAuth } from "@/context/auth/useAuth"
-import { fetchHistoricalReports } from "@/lib/historicalReportsService"
+import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 const PAGE_SIZE = 10
 
@@ -53,20 +53,12 @@ export function HistoryTab() {
   const { user } = useAuth()
   const operatorName = user?.user_metadata?.full_name || user?.email || "OP. Khalid"
 
-  const [reports, setReports]               = useState<ArchivedReport[]>([])
-  const [loading, setLoading]               = useState(true)
+  const { reports, loading } = useHistoricalReports()
+
   const [search, setSearch]                 = useState("")
   const [severityFilter, setSeverityFilter] = useState<string[]>([])
   const [typeFilter, setTypeFilter]         = useState("")
   const [page, setPage]                     = useState(0)
-
-  useEffect(() => {
-    fetchHistoricalReports()
-      .then((data) => {
-        if (data) setReports(data)
-      })
-      .finally(() => setLoading(false))
-  }, [])
 
   const filtered = useMemo(() => {
     return reports.filter((r) => {

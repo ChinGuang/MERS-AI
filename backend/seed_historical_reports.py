@@ -5,12 +5,18 @@ Seeder script to populate Supabase 'historical_reports' table over Supabase HTTP
 
 import json
 import os
+from dotenv import load_dotenv
 from supabase import create_client
 
-SUPABASE_URL = "https://wxkzqctcvvenrtcbotkm.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4a3pxY3RjdnZlbnJ0Y2JvdGttIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MTgwMTk2MCwiZXhwIjoyMDk3Mzc3OTYwfQ.2F7_WNlhJOIdwz-KC6XsCma0KXzZuC-jVNkax1Xx0Ic"
+load_dotenv()
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 def main():
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        print("Error: SUPABASE_URL and SUPABASE_KEY must be set in environment or .env file.")
+        return
     json_path = os.path.join(os.path.dirname(__file__), "historical_reports_seed.json")
     if not os.path.exists(json_path):
         print(f"Error: {json_path} not found.")

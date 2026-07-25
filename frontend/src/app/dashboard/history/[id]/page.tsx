@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import {
   ArrowLeft, ShieldAlert, Download, Printer,
@@ -15,13 +14,12 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { HISTORICAL_REPORTS } from "@/data/historicalReports"
 import { getPanicBadgeClass } from "@/lib/severity"
 import { IncidentType, OutcomeType } from "@/models/report"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/app/dashboard/_components/theme-toggle"
 import type { ArchivedReport } from "@/models/report"
-import { fetchHistoricalReportById } from "@/lib/historicalReportsService"
+import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -619,27 +617,8 @@ function ClosingReport({ report }: { report: ArchivedReport }) {
 export default function IncidentDetailPage() {
   const { id }  = useParams<{ id: string }>()
   const router  = useRouter()
-
-  const [report, setReport] = useState<ArchivedReport | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
-
-  useEffect(() => {
-    if (!id) return
-    fetchHistoricalReportById(id)
-      .then((data) => {
-        if (data) {
-          setReport(data)
-        } else {
-          const fallback = HISTORICAL_REPORTS.find((r) => r.id === id) || null
-          setReport(fallback)
-        }
-      })
-      .catch(() => {
-        const fallback = HISTORICAL_REPORTS.find((r) => r.id === id) || null
-        setReport(fallback)
-      })
-      .finally(() => setLoading(false))
-  }, [id])
+  const { reports, loading } = useHistoricalReports()
+  const report = reports.find((item) => item.id === id) ?? null
 
   function handlePrint() {
     if (!report) return

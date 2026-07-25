@@ -1,12 +1,12 @@
 "use client"
 
-import { useMemo, useState, useEffect } from "react"
+import { useMemo } from "react"
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { ChartInfoDialog } from "./chart-info-dialog"
-import { fetchHistoricalReports } from "@/lib/historicalReportsService"
+import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 import { ArchivedReport } from "@/models/report"
 
 const STAGE_COLORS = {
@@ -22,13 +22,7 @@ function formatDuration(totalSeconds: number) {
 }
 
 export function ResponsePipelineChart() {
-  const [reports, setReports] = useState<ArchivedReport[]>([])
-
-  useEffect(() => {
-    fetchHistoricalReports().then((data) => {
-      if (data) setReports(data)
-    })
-  }, [])
+  const { reports } = useHistoricalReports()
 
   const { chartData, sampleSize, totalAvg } = useMemo(() => {
     const complete = reports.filter(

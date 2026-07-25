@@ -1,13 +1,13 @@
 "use client"
 
-import { useMemo, useState, useEffect } from "react"
+import { useMemo } from "react"
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { SeverityType, ArchivedReport } from "@/models/report"
 import { ChartInfoDialog } from "./chart-info-dialog"
-import { fetchHistoricalReports } from "@/lib/historicalReportsService"
+import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 const SEVERITY_COLOR: Record<string, string> = {
   Critical: "hsl(var(--destructive))",
@@ -28,13 +28,7 @@ function severityBreakdown(reports: ArchivedReport[]) {
 }
 
 export function EscalationChart() {
-  const [reports, setReports] = useState<ArchivedReport[]>([])
-
-  useEffect(() => {
-    fetchHistoricalReports().then((data) => {
-      if (data) setReports(data)
-    })
-  }, [])
+  const { reports } = useHistoricalReports()
 
   const { chartData, flaggedCount, totalCount, flaggedCriticalPct } = useMemo(() => {
     const flagged = reports.filter((r) => !!r.emotionalAnalysis.contradiction)
