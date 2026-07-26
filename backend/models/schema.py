@@ -46,7 +46,7 @@ class Incident(BaseTable):
     reason = Column(String, nullable=True)
     contradiction = Column(String, nullable=True)
     sop_citation = Column(String, nullable=True)
-    sop_procedure = Column(JSON, nullable=True)
+    sop_procedure = Column(ARRAY(String), nullable=True)
     responder = Column(JSON, nullable=True)  # Dict / Object
     timeline = Column(JSON, nullable=True)  # List[Dict]
     status = Column(JSON, nullable=True)
