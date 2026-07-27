@@ -1,0 +1,642 @@
+[
+  {
+    "id": "1",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Ibu Pejabat Polis Kontinjen Kuala Lumpur (IPK KL)",
+    "latitude": "3.142963638",
+    "longitude": "101.7074122"
+  },
+  {
+    "id": "2",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Brickfields",
+    "latitude": "3.104496554",
+    "longitude": "101.6786343"
+  },
+  {
+    "id": "3",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Petaling",
+    "latitude": "3.082183257",
+    "longitude": "101.6670987"
+  },
+  {
+    "id": "4",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Pantai",
+    "latitude": "3.117687082",
+    "longitude": "101.666016"
+  },
+  {
+    "id": "5",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Kerinci",
+    "latitude": "3.110310618",
+    "longitude": "101.6688361"
+  },
+  {
+    "id": "6",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Tmn. Tun Dr. Ismail",
+    "latitude": "3.153325086",
+    "longitude": "101.625024"
+  },
+  {
+    "id": "7",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Travers",
+    "latitude": "3.134932836",
+    "longitude": "101.6836792"
+  },
+  {
+    "id": "8",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Bangsar",
+    "latitude": "3.132760769",
+    "longitude": "101.6705382"
+  },
+  {
+    "id": "9",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Sri Hartamas",
+    "latitude": "3.161581834",
+    "longitude": "101.6502"
+  },
+  {
+    "id": "10",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Komuniti Mont Kiara",
+    "latitude": "3.166450609",
+    "longitude": "101.6534659"
+  },
+  {
+    "id": "11",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Komuniti Taman Desa",
+    "latitude": "3.0965367",
+    "longitude": "101.6850239"
+  },
+  {
+    "id": "12",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Sri Sentosa",
+    "latitude": "3.081409543",
+    "longitude": "101.6628517"
+  },
+  {
+    "id": "13",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Seri Petaling",
+    "latitude": "3.067721885",
+    "longitude": "101.6926417"
+  },
+  {
+    "id": "14",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Ibu Pejabat Polis Daerah Brickfields (IPD)",
+    "latitude": "3.1328",
+    "longitude": "101.6874"
+  },
+  {
+    "id": "15",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Ibu Pejabat Polis Daerah Cheras (IPD)",
+    "latitude": "3.1205",
+    "longitude": "101.7284"
+  },
+  {
+    "id": "16",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Salak Selatan",
+    "latitude": "3.1141",
+    "longitude": "101.7092"
+  },
+  {
+    "id": "17",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Salak Selatan Baru",
+    "latitude": "3.0954",
+    "longitude": "101.7042"
+  },
+  {
+    "id": "18",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Sg. Besi",
+    "latitude": "3.0637",
+    "longitude": "101.7081"
+  },
+  {
+    "id": "19",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Sri Permaisuri",
+    "latitude": "3.1235",
+    "longitude": "101.7335"
+  },
+  {
+    "id": "20",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Alam Damai",
+    "latitude": "3.0784",
+    "longitude": "101.7451"
+  },
+  {
+    "id": "21",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Bukit Jalil",
+    "latitude": "3.0534",
+    "longitude": "101.6669"
+  },
+  {
+    "id": "22",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Ibu Pejabat Polis Daerah Dang Wangi (IPD)",
+    "latitude": "3.1558",
+    "longitude": "101.6984"
+  },
+  {
+    "id": "23",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Tun H.S Lee",
+    "latitude": "3.1421",
+    "longitude": "101.6993"
+  },
+  {
+    "id": "24",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Jalan Dang Wangi",
+    "latitude": "3.1584",
+    "longitude": "101.7012"
+  },
+  {
+    "id": "25",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Chow Kit",
+    "latitude": "3.1648",
+    "longitude": "101.6925"
+  },
+  {
+    "id": "26",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Komuniti Kenanga",
+    "latitude": "3.1364",
+    "longitude": "101.7118"
+  },
+  {
+    "id": "27",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Komuniti Putra",
+    "latitude": "3.1705",
+    "longitude": "101.6961"
+  },
+  {
+    "id": "28",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Komuniti Masjid India",
+    "latitude": "3.1524",
+    "longitude": "101.6959"
+  },
+  {
+    "id": "29",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Ibu Pejabat Polis Daerah Putrajaya (IPD)",
+    "latitude": "2.9288",
+    "longitude": "101.6749"
+  },
+  {
+    "id": "30",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Presint 11",
+    "latitude": "2.9472",
+    "longitude": "101.6791"
+  },
+  {
+    "id": "31",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Presint 7",
+    "latitude": "2.9291",
+    "longitude": "101.6745"
+  },
+  {
+    "id": "32",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Ibu Pejabat Polis Daerah Sentul (IPD)",
+    "latitude": "3.2091",
+    "longitude": "101.6612"
+  },
+  {
+    "id": "33",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Sentul",
+    "latitude": "3.1764",
+    "longitude": "101.6919"
+  },
+  {
+    "id": "34",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Kepong",
+    "latitude": "3.2181",
+    "longitude": "101.6369"
+  },
+  {
+    "id": "35",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Jinjang",
+    "latitude": "3.2132",
+    "longitude": "101.6619"
+  },
+  {
+    "id": "36",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Bt.3 Jalan Ipoh",
+    "latitude": "3.1794",
+    "longitude": "101.6884"
+  },
+  {
+    "id": "37",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Komuniti Segambut",
+    "latitude": "3.1874",
+    "longitude": "101.6521"
+  },
+  {
+    "id": "38",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Komuniti Sri Murni",
+    "latitude": "3.2384",
+    "longitude": "101.6702"
+  },
+  {
+    "id": "39",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Batu",
+    "latitude": "3.2215",
+    "longitude": "101.6982"
+  },
+  {
+    "id": "40",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Ibu Pejabat Polis Daerah Wangsa Maju (IPD)",
+    "latitude": "3.1352",
+    "longitude": "101.7121"
+  },
+  {
+    "id": "41",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Setapak",
+    "latitude": "3.1884",
+    "longitude": "101.7118"
+  },
+  {
+    "id": "42",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Wangsa Maju",
+    "latitude": "3.2045",
+    "longitude": "101.7342"
+  },
+  {
+    "id": "43",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Taman Melati",
+    "latitude": "3.2238",
+    "longitude": "101.7229"
+  },
+  {
+    "id": "44",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Wangsa Link (KLSC)",
+    "latitude": "3.1994",
+    "longitude": "101.7428"
+  },
+  {
+    "id": "45",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Komuniti Setiawangsa",
+    "latitude": "3.1742",
+    "longitude": "101.7454"
+  },
+  {
+    "id": "46",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Pudu",
+    "latitude": "3.132247112",
+    "longitude": "101.7167643"
+  },
+  {
+    "id": "47",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Jalan Tun Razak",
+    "latitude": "3.160683734",
+    "longitude": "101.7212544"
+  },
+  {
+    "id": "48",
+    "department": "Royal Malaysia Police (RMP)",
+    "service_type": "police",
+    "station_name": "Balai Polis Kg Pandan",
+    "latitude": "3.144170687",
+    "longitude": "101.7314783"
+  },
+  {
+    "id": "49",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Hang Tuah",
+    "latitude": "3.1396",
+    "longitude": "101.7062"
+  },
+  {
+    "id": "50",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Sentul",
+    "latitude": "3.1678",
+    "longitude": "101.6908"
+  },
+  {
+    "id": "51",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Sungai Besi",
+    "latitude": "3.0645",
+    "longitude": "101.7095"
+  },
+  {
+    "id": "52",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Pantai",
+    "latitude": "3.1164",
+    "longitude": "101.6668"
+  },
+  {
+    "id": "53",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Jinjang",
+    "latitude": "3.2125",
+    "longitude": "101.6601"
+  },
+  {
+    "id": "54",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Bandar Tun Razak",
+    "latitude": "3.1023",
+    "longitude": "101.7225"
+  },
+  {
+    "id": "55",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Setapak",
+    "latitude": "3.1891",
+    "longitude": "101.7164"
+  },
+  {
+    "id": "56",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Cheras",
+    "latitude": "3.0882",
+    "longitude": "101.7428"
+  },
+  {
+    "id": "57",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Wangsa Maju",
+    "latitude": "3.2178",
+    "longitude": "101.7265"
+  },
+  {
+    "id": "58",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Sri Hartamas",
+    "latitude": "3.1625",
+    "longitude": "101.6514"
+  },
+  {
+    "id": "59",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Seputeh",
+    "latitude": "3.1022",
+    "longitude": "101.6819"
+  },
+  {
+    "id": "60",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Pudu",
+    "latitude": "3.1348",
+    "longitude": "101.7131"
+  },
+  {
+    "id": "61",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Bukit Jalil",
+    "latitude": "3.0583",
+    "longitude": "101.6744"
+  },
+  {
+    "id": "62",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Gombak Selatan",
+    "latitude": "3.2198",
+    "longitude": "101.6974"
+  },
+  {
+    "id": "63",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Titiwangsa",
+    "latitude": "3.1664",
+    "longitude": "101.6991"
+  },
+  {
+    "id": "64",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat TTDI",
+    "latitude": "3.1423",
+    "longitude": "101.6294"
+  },
+  {
+    "id": "65",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Keramat",
+    "latitude": "3.1642",
+    "longitude": "101.7336"
+  },
+  {
+    "id": "66",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Sri Petaling",
+    "latitude": "3.0734",
+    "longitude": "101.6961"
+  },
+  {
+    "id": "67",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Jalan Tun Razak ",
+    "latitude": "3.1554",
+    "longitude": "101.7214"
+  },
+  {
+    "id": "68",
+    "department": "Fire and Rescue Department of Malaysia",
+    "service_type": "bomba",
+    "station_name": "Balai Bomba dan Penyelamat Menjalara",
+    "latitude": "3.1942",
+    "longitude": "101.6325"
+  },
+  {
+    "id": "69",
+    "department": "Medical Emergency Coordination Centre (MECC)",
+    "service_type": "ambulance",
+    "station_name": "Hospital Kuala Lumpur (HKL)",
+    "latitude": "3.172794958",
+    "longitude": "101.7042246"
+  },
+  {
+    "id": "70",
+    "department": "Medical Emergency Coordination Centre (MECC)",
+    "service_type": "ambulance",
+    "station_name": "Hospital Putrajaya",
+    "latitude": "2.929267193",
+    "longitude": "101.6746784"
+  },
+  {
+    "id": "71",
+    "department": "Medical Emergency Coordination Centre (MECC)",
+    "service_type": "ambulance",
+    "station_name": "Hospital Sungai Buloh",
+    "latitude": "3.219782569",
+    "longitude": "101.5842012"
+  },
+  {
+    "id": "72",
+    "department": "Medical Emergency Coordination Centre (MECC)",
+    "service_type": "ambulance",
+    "station_name": "Hospital Tengku Ampuan Rahimah (HTAR)",
+    "latitude": "3.020935945",
+    "longitude": "101.4407296"
+  },
+  {
+    "id": "73",
+    "department": "Medical Emergency Coordination Centre (MECC)",
+    "service_type": "ambulance",
+    "station_name": "Hospital Sultan Idris Shah Serdang",
+    "latitude": "2.976664279",
+    "longitude": "101.7211044"
+  },
+  {
+    "id": "74",
+    "department": "Medical Emergency Coordination Centre (MECC)",
+    "service_type": "ambulance",
+    "station_name": "Hospital Selayang",
+    "latitude": "3.242446365",
+    "longitude": "101.6466532"
+  },
+  {
+    "id": "75",
+    "department": "Medical Emergency Coordination Centre (MECC)",
+    "service_type": "ambulance",
+    "station_name": "Hospital Ampang",
+    "latitude": "3.12816073",
+    "longitude": "101.7643664"
+  },
+  {
+    "id": "76",
+    "department": "Malaysia Civil Defence Force (MCDF)",
+    "service_type": "civil defence",
+    "station_name": "Pejabat Daerah Pertahanan Awam WP Putrajaya",
+    "latitude": "2.946302019",
+    "longitude": "101.7253376"
+  },
+  {
+    "id": "77",
+    "department": "Malaysia Civil Defence Force (MCDF)",
+    "service_type": "civil defence",
+    "station_name": "Pejabat Daerah Pertahanan Awam Cheras",
+    "latitude": "3.175342908",
+    "longitude": "101.725457"
+  },
+  {
+    "id": "78",
+    "department": "Malaysia Civil Defence Force (MCDF)",
+    "service_type": "civil defence",
+    "station_name": "Pejabat Daerah Pertahanan Awam Kuala Lumpur",
+    "latitude": "3.177886502",
+    "longitude": "101.725466"
+  },
+  {
+    "id": "79",
+    "department": "Malaysian Maritime Enforcement Agency (MMEA)",
+    "service_type": "maritime",
+    "station_name": "Ibu Pejabat APMM Malaysia (HQ)",
+    "latitude": "2.969891927",
+    "longitude": "101.7063094"
+  },
+  {
+    "id": "80",
+    "department": "Malaysian Maritime Enforcement Agency (MMEA)",
+    "service_type": "maritime",
+    "station_name": "Zon Maritim Klang",
+    "latitude": "3.012023676",
+    "longitude": "101.3609143"
+  }
+]

@@ -26,3 +26,5 @@ pgvector
 psycopg-pool
 langgraph
 pytest
+
+googlemaps
