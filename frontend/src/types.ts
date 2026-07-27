@@ -41,6 +41,8 @@ export interface Incident {
     highlight?: boolean;
   }[];
   coordinates?: { lat: number; lng: number };
+  /** Nearest emergency service location computed by the backend's location/dispatcher agent. */
+  dispatchCenter?: { lat: number; lng: number; name?: string };
   status: {
     location?: string;
     transcription?: string;

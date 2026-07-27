@@ -17,6 +17,7 @@ import { MapPanel } from "../operations/map-panel"
 import { LiveIntelligence } from "../operations/live-intelligence"
 import { TranscriptFeed } from "../operations/transcript-feed"
 import { EmotionalAnalysis } from "../operations/emotional-analysis"
+import { LiveKitFallbackCall } from "../operations/livekit-fallback-call"
 import { useIncident } from "@/context/incident/useIncident"
 import { useSimulator } from "@/context/simulator/useSimulator"
 
@@ -68,6 +69,7 @@ export function OperationsTab() {
 
           <div className="relative min-h-0 overflow-hidden border-t md:border-t-0 md:border-l lg:border-r-0">
             <MapPanel />
+            <LiveKitFallbackCall />
           </div>
 
           <LiveIntelligence />

@@ -118,6 +118,7 @@ def _convert_incident(incident: Any, db: Session):
         "timeline": incident.timeline or [],
         "transcript": transcript,
         "coordinates": {"lat": lat, "lng": lng},
+        "dispatchCenter": incident.dispatch_center,
         "status": incident.status or {}
     }
 
