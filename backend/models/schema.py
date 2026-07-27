@@ -30,6 +30,7 @@ class Incident(BaseTable):
     id = Column(UUID(as_uuid=True), primary_key=True, index=True)
     type = Column(Enum(IncidentType), nullable=True)
     coordinates = Column(ARRAY(Float), nullable=True)
+    dispatch_center = Column(JSON, nullable=True)  # {id, name, lat, lng} - nearest EmergencyDispatchServiceLocation
     title= Column(String, nullable=False)
     location = Column(String, nullable=True)
     ai_confidence = Column(Float, nullable=True)
@@ -46,7 +47,7 @@ class Incident(BaseTable):
     reason = Column(String, nullable=True)
     contradiction = Column(String, nullable=True)
     sop_citation = Column(String, nullable=True)
-    sop_procedure = Column(JSON, nullable=True)
+    sop_procedure = Column(ARRAY(String), nullable=True)
     responder = Column(JSON, nullable=True)  # Dict / Object
     timeline = Column(JSON, nullable=True)  # List[Dict]
     status = Column(JSON, nullable=True)
@@ -182,3 +183,51 @@ class EmergencyDispatchServiceLocation(Base):
     address = Column(Text, nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
+
+
+class HistoricalReport(BaseTable):
+    """
+    SQLAlchemy model for historical incident reports.
+
+    Note on JSONB fields:
+    To ensure consistent data structures across rows and ease debugging/frontend mapping,
+    each JSONB column corresponds to a defined Pydantic schema in backend/models/dto/historical_report.py:
+      - spoken_dialects: List[str]
+      - reasoning_report: ReasoningReportDTO {"content": str, "sopUsed": List[str]}
+      - sop_actions: List[str]
+      - emotional_analysis: EmotionalAnalysisDTO {"panicLevel": str, "distressScore": float, "speechRate": str, "tremorDetected": bool, "volumeTrend": str, "aiConfidence": float, "contradiction"?: str}
+      - human_intervention: Optional[HumanInterventionDTO] {"required": bool, "interventionBy"?: str, "role"?: str, "action"?: str, "reason"?: str, "timestampLabel"?: str}
+      - supervising_release: SupervisingReleaseDTO {"inspector": str, "status": int}
+      - closing_report: ClosingReportDTO {"closedBy": str, "closedAt": str, "outcome": str, "caseStatus": str}
+      - event_timeline: List[EventTimelineItemDTO] [{"time": str, "event": str, "type"?: str}]
+      - transcript: List[TranscriptItemDTO] [{"time": str, "speaker": str, "text": str}]
+    """
+    __tablename__ = "historical_reports"
+
+    id = Column(String, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    outcome = Column(String, nullable=False)
+    incident_type = Column(String, nullable=False)
+    severity = Column(String, nullable=False)
+    location = Column(Text, nullable=False)
+    caller = Column(String, nullable=False)
+    caller_number = Column(String, nullable=True)
+    spoken_dialects = Column(JSONB, nullable=False, default=[])  # List[str]
+    call_duration = Column(String, nullable=False)
+    dispatch_confidence = Column(Float, nullable=False)
+    response_time_seconds = Column(Integer, nullable=True)
+    call_received_at = Column(DateTime, nullable=False)
+    dispatched_at = Column(DateTime, nullable=True)
+    arrived_at = Column(DateTime, nullable=True)
+    resolved_at = Column(DateTime, nullable=True)
+    operator_verdict = Column(Text, nullable=False)
+    notes = Column(Text, nullable=True)
+    incident_sha = Column(String, nullable=False)
+    reasoning_report = Column(JSONB, nullable=False)  # See ReasoningReportDTO
+    sop_actions = Column(JSONB, nullable=False, default=[])  # List[str]
+    emotional_analysis = Column(JSONB, nullable=False)  # See EmotionalAnalysisDTO
+    human_intervention = Column(JSONB, nullable=True)  # See HumanInterventionDTO
+    supervising_release = Column(JSONB, nullable=False)  # See SupervisingReleaseDTO
+    closing_report = Column(JSONB, nullable=False)  # See ClosingReportDTO
+    event_timeline = Column(JSONB, nullable=False, default=[])  # List[EventTimelineItemDTO]
+    transcript = Column(JSONB, nullable=False, default=[])  # List[TranscriptItemDTO]

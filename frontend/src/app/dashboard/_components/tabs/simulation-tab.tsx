@@ -80,6 +80,7 @@ export function SimulationTab() {
       lang: "EN / BM",
       occurDateTime: new Date().toISOString(),
       caller: "SIMULATED CALLER",
+      callId: "SIM-9999",
       duration: "00:00",
       distressScore: 82,
       panicLevel: "High",
@@ -105,7 +106,7 @@ export function SimulationTab() {
         { time: "00:01", speaker: "Caller", text: "Tolong! Kecemasan simulasi!" },
         { time: "00:05", speaker: "Operator", text: "Saya faham. Sila berikan lokasi anda." },
       ],
-      coordinates: { x: 320, y: 220, lat: 3.091, lng: 101.741 },
+      coordinates: { lat: 3.091, lng: 101.741 },
       status: {},
     }
 

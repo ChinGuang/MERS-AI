@@ -11,6 +11,7 @@ Requires packages: langchain-google-genai, langchain-core, requests, rapidfuzz
 """
 
 import asyncio
+from math import atan2, cos, radians, sin, sqrt
 from uuid import UUID
 from typing import Optional, Iterable, List
 
@@ -210,15 +211,48 @@ def should_check_location(call_id: str, transcript_text: str) -> bool:
 
 def _nearest_dispatch_point(db: Session) -> Optional[dict]:
     """
-    Used only as a proximity bias for geocoding ambiguous place names.
-    Grabs the first known station for now; swap for real nearest-station
-    logic once you're matching by district/zone.
+    Used only as a proximity bias for geocoding ambiguous place names, BEFORE
+    the caller's location is known - there's nothing to compute "nearest" to
+    yet at this point in the flow, so this just grabs a station as a rough
+    Malaysia-area anchor for Mapbox. The actual nearest-station lookup that
+    matters (used for the dispatch/route origin shown on the map) happens in
+    _nearest_service_location() below, once real coordinates exist.
     """
     stmt = select(EmergencyDispatchServiceLocation).limit(1)
     station = db.scalars(stmt).first()
     if not station:
         return None
     return {"lat": station.latitude, "lng": station.longitude}
+
+
+def _haversine_km(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+    radius_km = 6371.0
+    p1, p2 = radians(lat1), radians(lat2)
+    dphi = radians(lat2 - lat1)
+    dlambda = radians(lng2 - lng1)
+    a = sin(dphi / 2) ** 2 + cos(p1) * cos(p2) * sin(dlambda / 2) ** 2
+    return 2 * radius_km * atan2(sqrt(a), sqrt(1 - a))
+
+
+def _nearest_service_location(lat: float, lng: float, db: Session) -> Optional[dict]:
+    """
+    Real nearest-neighbor over every known EmergencyDispatchServiceLocation,
+    computed once the caller's coordinates are actually resolved. This is
+    what gets saved onto incident.dispatch_center - the map's route origin -
+    as opposed to _nearest_dispatch_point() above, which only has a rough
+    anchor available before the caller's location is known.
+    """
+    stations = db.scalars(select(EmergencyDispatchServiceLocation)).all()
+    if not stations:
+        return None
+
+    nearest = min(stations, key=lambda s: _haversine_km(lat, lng, s.latitude, s.longitude))
+    return {
+        "id": str(nearest.id),
+        "name": nearest.station_name,
+        "lat": nearest.latitude,
+        "lng": nearest.longitude,
+    }
 
 
 def _geocode(query_text: str, proximity: Optional[dict]) -> Optional[dict]:
@@ -368,6 +402,12 @@ async def extract_and_update_incident_location_from_text(
     incident.coordinates = [coords["lat"], coords["lng"]]
     incident.location = location_text
     incident.ai_confidence = round(final_score, 2)
+
+    dispatch_center = _nearest_service_location(coords["lat"], coords["lng"], db)
+    if dispatch_center:
+        incident.dispatch_center = dispatch_center
+        print(f"[location_agent] 🚑 nearest service location: {dispatch_center['name']}")
+
     db.commit()
 
     status = "APPROXIMATE — needs confirmation" if is_approximate else "confident"

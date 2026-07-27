@@ -5,9 +5,9 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { HISTORICAL_REPORTS } from "@/data/historicalReports"
-import { SeverityType } from "@/models/report"
+import { SeverityType, ArchivedReport } from "@/models/report"
 import { ChartInfoDialog } from "./chart-info-dialog"
+import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 const SEVERITY_COLOR: Record<string, string> = {
   Critical: "hsl(var(--destructive))",
@@ -15,7 +15,7 @@ const SEVERITY_COLOR: Record<string, string> = {
   Moderate: "hsl(var(--primary))",
 }
 
-function severityBreakdown(reports: typeof HISTORICAL_REPORTS) {
+function severityBreakdown(reports: ArchivedReport[]) {
   const total = reports.length || 1
   const critical = reports.filter((r) => r.severity === SeverityType.CRITICAL).length
   const urgent = reports.filter((r) => r.severity === SeverityType.URGENT).length
@@ -28,9 +28,11 @@ function severityBreakdown(reports: typeof HISTORICAL_REPORTS) {
 }
 
 export function EscalationChart() {
+  const { reports } = useHistoricalReports()
+
   const { chartData, flaggedCount, totalCount, flaggedCriticalPct } = useMemo(() => {
-    const flagged = HISTORICAL_REPORTS.filter((r) => !!r.emotionalAnalysis.contradiction)
-    const standard = HISTORICAL_REPORTS.filter((r) => !r.emotionalAnalysis.contradiction)
+    const flagged = reports.filter((r) => !!r.emotionalAnalysis.contradiction)
+    const standard = reports.filter((r) => !r.emotionalAnalysis.contradiction)
 
     return {
       chartData: [
@@ -38,10 +40,10 @@ export function EscalationChart() {
         { name: "Standard Call", ...severityBreakdown(standard) },
       ],
       flaggedCount: flagged.length,
-      totalCount: HISTORICAL_REPORTS.length,
+      totalCount: reports.length,
       flaggedCriticalPct: severityBreakdown(flagged).Critical,
     }
-  }, [])
+  }, [reports])
 
   return (
     <Card className="transition-all duration-200 hover:border-secondary hover:shadow-secondary hover:shadow-md">
