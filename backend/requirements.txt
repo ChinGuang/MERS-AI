@@ -20,9 +20,17 @@ langchain
 langchain_core
 langchain-google-genai
 redis[hiredis]
+rapidfuzz
 
 psycopg[binary,pool]
 pgvector
 psycopg-pool
 langgraph
 pytest
+
+livekit-agents
+livekit-api
+livekit-plugins-deepgram
+livekit-plugins-cartesia
+livekit-plugins-silero
+livekit-plugins-google
