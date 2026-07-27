@@ -5,8 +5,9 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { HISTORICAL_REPORTS } from "@/data/historicalReports"
 import { ChartInfoDialog } from "./chart-info-dialog"
+import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
+import { ArchivedReport } from "@/models/report"
 
 const STAGE_COLORS = {
   dispatch: "hsl(var(--primary))",
@@ -21,8 +22,10 @@ function formatDuration(totalSeconds: number) {
 }
 
 export function ResponsePipelineChart() {
+  const { reports } = useHistoricalReports()
+
   const { chartData, sampleSize, totalAvg } = useMemo(() => {
-    const complete = HISTORICAL_REPORTS.filter(
+    const complete = reports.filter(
       (r) => r.dispatchedAt && r.arrivedAt && r.resolvedAt
     )
 

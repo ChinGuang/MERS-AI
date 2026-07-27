@@ -1,11 +1,11 @@
-import { ApprovalType, IncidentType, SeverityType } from "@/models/report";
+import { IncidentType, OutcomeType, SeverityType } from "@/models/report";
 import { ArchivedReport } from "../types";
 
 export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0046",
     title: "Lorong Haji Taib Building Inferno",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-06-02T09:30:15Z"),
     location: "Lorong Haji Taib 2, Chow Kit, Kuala Lumpur",
     incidentType: IncidentType.FIRE,
@@ -92,7 +92,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0047",
     title: "Feline Roof Distress Alarm Vetting",
-    approvedStatus: ApprovalType.REJECTED,
+    outcome: OutcomeType.REJECT,
     createAt: new Date("2026-06-02T08:45:00Z"),
     location: "Jalan SS5/12, Sec 5, Petaling Jaya, Selangor",
     incidentType: IncidentType.MEDICAL,
@@ -161,7 +161,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0048",
     title: "Acute Cerebrovascular Stroke Emergency",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-06-02T07:11:32Z"),
     location: "Jalan Keramat, Kampung Datuk Keramat, Kuala Lumpur",
     incidentType: IncidentType.MEDICAL,
@@ -243,7 +243,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0049",
     title: "Bukit Bintang Robbery Alarm Hoax",
-    approvedStatus: ApprovalType.REJECTED,
+    outcome: OutcomeType.REJECT,
     createAt: new Date("2026-06-02T06:12:10Z"),
     location: "Bukit Bintang Plaza Intersection, Kuala Lumpur",
     incidentType: IncidentType.CRIME,
@@ -313,7 +313,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0050",
     title: "Federal Highway Tractor-Trailer Fuel Spill",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-06-01T23:40:15Z"),
     location: "Federal Highway, KM 12.4 (Westbound, Near MidValley)",
     incidentType: IncidentType.ACCIDENT,
@@ -395,7 +395,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0051",
     title: "Sungai Pinang Flash Flood Rescue",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-05-28T04:10:00Z"),
     location: "Sungai Pinang, Klang, Selangor",
     incidentType: IncidentType.FLOOD,
@@ -446,7 +446,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0052",
     title: "Jalan Tun Razak Anaphylactic Shock",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-05-28T11:05:00Z"),
     location: "Jalan Tun Razak, Kuala Lumpur",
     incidentType: IncidentType.MEDICAL,
@@ -497,7 +497,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0053",
     title: "Bukit Bintang Shoplifting Altercation",
-    approvedStatus: ApprovalType.REJECTED,
+    outcome: OutcomeType.REJECT,
     createAt: new Date("2026-05-29T14:20:00Z"),
     location: "Jalan Bukit Bintang, Kuala Lumpur",
     incidentType: IncidentType.CRIME,
@@ -536,7 +536,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0054",
     title: "NKVE Multi-Vehicle Collision",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-05-29T18:45:00Z"),
     location: "NKVE Highway, Shah Alam",
     incidentType: IncidentType.ACCIDENT,
@@ -582,7 +582,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0055",
     title: "Pasar Borong Selayang Warehouse Fire",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-05-30T02:15:00Z"),
     location: "Pasar Borong Selayang, Selangor",
     incidentType: IncidentType.FIRE,
@@ -628,7 +628,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0056",
     title: "Bangsar South Residential Fall Injury",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.ACCEPT,
     createAt: new Date("2026-05-30T09:00:00Z"),
     location: "Bangsar South, Kuala Lumpur",
     incidentType: IncidentType.MEDICAL,
@@ -666,7 +666,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0057",
     title: "Chow Kit Alley Break-In In Progress",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-05-31T00:30:00Z"),
     location: "Chow Kit, Kuala Lumpur",
     incidentType: IncidentType.CRIME,
@@ -705,7 +705,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0058",
     title: "Jalan Ipoh Minor Rear-End Collision",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.ACCEPT,
     createAt: new Date("2026-05-31T13:10:00Z"),
     location: "Jalan Ipoh, Kuala Lumpur",
     incidentType: IncidentType.ACCIDENT,
@@ -743,7 +743,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0059",
     title: "Taman Sri Muda Rapid Rising Floodwaters",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-06-01T05:00:00Z"),
     location: "Taman Sri Muda, Shah Alam",
     incidentType: IncidentType.FLOOD,
@@ -786,7 +786,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0060",
     title: "Petaling Jaya Diabetic Emergency",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.ACCEPT,
     createAt: new Date("2026-06-01T16:20:00Z"),
     location: "Section 17, Petaling Jaya",
     incidentType: IncidentType.MEDICAL,
@@ -824,7 +824,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0061",
     title: "Setapak Apartment Kitchen Fire",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.ACCEPT,
     createAt: new Date("2026-06-03T07:00:00Z"),
     location: "Setapak, Kuala Lumpur",
     incidentType: IncidentType.FIRE,
@@ -862,7 +862,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0062",
     title: "KLCC Anonymous Bomb Threat Hoax",
-    approvedStatus: ApprovalType.REJECTED,
+    outcome: OutcomeType.REJECT,
     createAt: new Date("2026-06-03T10:00:00Z"),
     location: "KLCC, Kuala Lumpur",
     incidentType: IncidentType.CRIME,
@@ -897,7 +897,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0063",
     title: "Federal Highway Motorcycle Collision",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-06-03T19:30:00Z"),
     location: "Federal Highway, Petaling Jaya",
     incidentType: IncidentType.ACCIDENT,
@@ -935,7 +935,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0064",
     title: "Cheras Elderly Fall With Head Injury",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-06-03T22:00:00Z"),
     location: "Cheras, Kuala Lumpur",
     incidentType: IncidentType.MEDICAL,
@@ -974,7 +974,7 @@ export const HISTORICAL_REPORTS: ArchivedReport[] = [
   {
     id: "INC-0065",
     title: "Kepong Domestic Disturbance Call",
-    approvedStatus: ApprovalType.APPROVED,
+    outcome: OutcomeType.OVERRIDE,
     createAt: new Date("2026-05-27T21:00:00Z"),
     location: "Kepong, Kuala Lumpur",
     incidentType: IncidentType.CRIME,

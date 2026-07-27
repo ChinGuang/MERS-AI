@@ -7,19 +7,19 @@ import {
   User, Ambulance, FileText, Lock,
   Activity, Waves, Volume2, AlertTriangle,
   CheckCircle2, XCircle, UserCheck, Zap, MapPin,
-  Flame, Heart, Car, Droplets, CalendarClock, BadgeCheck,
+  Flame, Heart, Car, Droplets, CalendarClock, BadgeCheck, Loader2
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { HISTORICAL_REPORTS } from "@/data/historicalReports"
 import { getPanicBadgeClass } from "@/lib/severity"
-import { ApprovalType, IncidentType } from "@/models/report"
+import { IncidentType, OutcomeType } from "@/models/report"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/app/dashboard/_components/theme-toggle"
 import type { ArchivedReport } from "@/models/report"
+import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -116,7 +116,7 @@ function PanelCard({ icon: Icon, iconBg, title, children }: { icon: React.Elemen
 
 function buildPrintHTML(r: ArchivedReport): string {
   const sevColor  = SEVERITY_COLOR[r.severity] ?? "#2563eb"
-  const approved  = r.approvedStatus === ApprovalType.APPROVED
+  const approved  = r.outcome !== OutcomeType.REJECT
   const verdColor = approved ? "#16a34a" : "#dc2626"
   const hasHuman  = r.humanIntervention?.required
 
@@ -222,7 +222,7 @@ function buildPrintHTML(r: ArchivedReport): string {
       ["Incident Title", r.title],
       ["Type", r.incidentType],
       ["Severity", r.severity],
-      ["Dispatch Decision", r.approvedStatus],
+      ["Dispatch Decision", r.outcome],
     ]) +
     `<div style="height:8px;"></div>` +
     grid4([
@@ -393,7 +393,7 @@ function buildPrintHTML(r: ArchivedReport): string {
 // ─── on-screen closing report ─────────────────────────────────────────────────
 
 function ClosingReport({ report }: { report: ArchivedReport }) {
-  const isApproved = report.approvedStatus === ApprovalType.APPROVED
+  const isApproved = report.outcome !== OutcomeType.REJECT
   const today = new Date().toLocaleDateString("en-MY", { day: "2-digit", month: "long", year: "numeric" })
 
   return (
@@ -437,7 +437,7 @@ function ClosingReport({ report }: { report: ArchivedReport }) {
               ["Incident Title",    report.title],
               ["Incident Type",     report.incidentType],
               ["Severity",          report.severity],
-              ["Dispatch Decision", report.approvedStatus],
+              ["Dispatch Decision", report.outcome],
               ["Location",          report.location],
               ["Caller",            report.caller],
               ["Caller Number",     report.callerNumber ?? "—"],
@@ -617,8 +617,8 @@ function ClosingReport({ report }: { report: ArchivedReport }) {
 export default function IncidentDetailPage() {
   const { id }  = useParams<{ id: string }>()
   const router  = useRouter()
-
-  const report = HISTORICAL_REPORTS.find(r => r.id === id)
+  const { reports, loading } = useHistoricalReports()
+  const report = reports.find((item) => item.id === id) ?? null
 
   function handlePrint() {
     if (!report) return
@@ -628,6 +628,15 @@ export default function IncidentDetailPage() {
     w.document.close()
     w.focus()
     setTimeout(() => { w.print(); w.close() }, 400)
+  }
+
+  if (loading && !report) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background">
+        <Loader2 className="size-10 animate-spin text-primary mb-4" />
+        <p className="text-sm text-muted-foreground">Loading report from Supabase…</p>
+      </div>
+    )
   }
 
   if (!report) {
@@ -641,7 +650,7 @@ export default function IncidentDetailPage() {
     )
   }
 
-  const isApproved = report.approvedStatus === ApprovalType.APPROVED
+  const isApproved = report.outcome !== OutcomeType.REJECT
   const ea         = report.emotionalAnalysis
   const TypeIcon   = TYPE_ICON[report.incidentType] ?? AlertTriangle
   const typeStyle  = TYPE_ICON_STYLE[report.incidentType] ?? "bg-muted text-muted-foreground"
@@ -702,7 +711,7 @@ export default function IncidentDetailPage() {
                 <Badge variant="outline" className="font-mono text-[10px]">{report.id}</Badge>
                 <Badge className={cn("text-[10px] font-bold", isApproved ? "bg-secondary/20 text-secondary" : "bg-destructive/20 text-destructive")}>
                   {isApproved ? <CheckCircle2 className="mr-1 size-2.5" /> : <XCircle className="mr-1 size-2.5" />}
-                  {report.approvedStatus}
+                  {report.outcome}
                 </Badge>
                 {report.humanIntervention?.required && (
                   <Badge className="bg-warning/20 text-warning text-[10px] font-bold">
