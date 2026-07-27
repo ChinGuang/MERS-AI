@@ -10,6 +10,7 @@ from models.schema import Call
 from fastapi import WebSocketDisconnect
 
 from agents.voice_agent import prompting_to_voice_agent
+from modules import location_agent_module
 from constants.redis_key import PENDING_CALL_TRANSCRIPT_MAP_KEY, TRANSCRIPT_CONSUME_QUEUE_KEY, INCIDENT_EXTRACT_QUEUE_KEY, ACTIVE_CALLS_SET_KEY
 from main import app
 from database import db_dependency
@@ -149,7 +150,13 @@ async def llm_websocket_for_retell(websocket: WebSocket, db: db_dependency, call
                         }
                     )
                 case RetellInteractionType.UPDATE_ONLY:
-                    print("Updating transcript for call", event.transcript)
+                    transcript_text = location_agent_module.flatten_utterances(event.transcript)
+                    if location_agent_module.should_check_location(str(internal_call_id), transcript_text):
+                        asyncio.create_task(
+                            location_agent_module.extract_and_update_incident_location_from_text(
+                                internal_call_id, transcript_text, db
+                            )
+                        )
                 case RetellInteractionType.RESPONSE_REQUIRED | RetellInteractionType.REMINDER_REQUIRED:
                     response_id = event.response_id
                     transcript = event.transcript

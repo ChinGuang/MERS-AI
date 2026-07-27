@@ -51,6 +51,13 @@ export const CoordinatesSchema = z.object({
   lng: z.number(),
 });
 
+export const DispatchCenterSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().nullish(),
+  lat: z.number(),
+  lng: z.number(),
+});
+
 export const StatusSchema = z.object({
   location: z.string().optional(),
   transcription: z.string().optional(),
@@ -87,6 +94,7 @@ export const IncidentDtoSchema = z.object({
   timeline: z.array(TimelineItemSchema),
   transcript: z.array(TranscriptItemSchema),
   coordinates: CoordinatesSchema,
+  dispatchCenter: DispatchCenterSchema.nullish(),
   status: StatusSchema,
 });
 

@@ -31,6 +31,7 @@ class Incident(BaseTable):
     id = Column(UUID(as_uuid=True), primary_key=True, index=True)
     type = Column(Enum(IncidentType), nullable=True)
     coordinates = Column(ARRAY(Float), nullable=True)
+    dispatch_center = Column(JSON, nullable=True)  # {id, name, lat, lng} - nearest EmergencyDispatchServiceLocation
     title= Column(String, nullable=False)
     location = Column(String, nullable=True)
     ai_confidence = Column(Float, nullable=True)
@@ -47,7 +48,7 @@ class Incident(BaseTable):
     reason = Column(String, nullable=True)
     contradiction = Column(String, nullable=True)
     sop_citation = Column(String, nullable=True)
-    sop_procedure = Column(JSON, nullable=True)
+    sop_procedure = Column(ARRAY(String), nullable=True)
     responder = Column(JSON, nullable=True)  # Dict / Object
     timeline = Column(JSON, nullable=True)  # List[Dict]
     status = Column(JSON, nullable=True)

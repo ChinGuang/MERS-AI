@@ -11,7 +11,15 @@ async function readIncidents(payload: {
   const response = await axios.get(url, {
     params: removeUndefinedFields(payload),
   });
-  return response.data.map((res: unknown) => IncidentDtoSchema.parse(res));
+  return response.data.map((res: unknown) => {
+    const result = IncidentDtoSchema.safeParse(res);
+    if (result.success) return result.data;
+    else {
+      console.log("invalid data: ", (res as any).id);
+      console.log(result.error);
+      return res;
+    }
+  });
 }
 
 function connectIncidentEvenSource({

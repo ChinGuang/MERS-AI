@@ -1,0 +1,13 @@
+# Incremental dependencies for the LiveKit fallback voice channel only.
+# fastapi, uvicorn (via fastapi[standard]), python-dotenv, and redis are already
+# satisfied by backend/requirements.txt - not repeated here to avoid version drift.
+#
+# Install with (from inside backend/):
+#   pip install -r livekit_agent/requirements.txt
+
+livekit-agents
+livekit-api
+livekit-plugins-deepgram
+livekit-plugins-cartesia
+livekit-plugins-silero
+livekit-plugins-google
