@@ -1,0 +1,2116 @@
+[
+  {
+    "id": "INC-0046",
+    "title": "Lorong Haji Taib Building Inferno",
+    "outcome": "Override",
+    "location": "Lorong Haji Taib 2, Chow Kit, Kuala Lumpur",
+    "incident_type": "FIRE",
+    "severity": "CRITICAL",
+    "caller": "MR. ANWAR SHAH",
+    "caller_number": "+601X-XXX-4821",
+    "spoken_dialects": [
+      "BM",
+      "EN"
+    ],
+    "dispatch_confidence": 0.96,
+    "call_duration": "06:14",
+    "call_received_at": "2026-06-02T09:30:15.000Z",
+    "dispatched_at": "2026-06-02T09:32:47.000Z",
+    "arrived_at": "2026-06-02T09:38:22.000Z",
+    "resolved_at": "2026-06-02T10:04:15.000Z",
+    "response_time_seconds": 152,
+    "reasoning_report": {
+      "content": "Multiple industrial fuel canisters ruptured in commercial kitchen. Severe risk of radiant heat propagating across adjacent high-density wooden buildings. Emergency evacuation prioritized immediately to prevent regional cascade.",
+      "sopUsed": [
+        "Bomba Malaysia Code 4.2 (High-Rise Containment)"
+      ]
+    },
+    "sop_actions": [
+      "Command immediate deployment of high-pressure fog nozzle monitors to form water containment curtains.",
+      "Alert Kuala Lumpur water systems command to override local hydrant pressure caps for auxiliary flow.",
+      "Coordinate with municipal civil defense to open community relief facility for displaced residents."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — 3 heavy engines and HAZMAT suppression units deployed.",
+    "notes": "Initial panicked reports suggested 4 employees were trapped inside storage. Firefighters conducted physical search and verified 100% escape. Fire successfully subdued within 34 minutes.",
+    "supervising_release": {
+      "inspector": "INSPECTOR AHMED",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-001",
+    "emotional_analysis": {
+      "panicLevel": "Extreme",
+      "distressScore": 91,
+      "speechRate": "238 wpm",
+      "tremorDetected": true,
+      "volumeTrend": "Escalating",
+      "aiConfidence": 96,
+      "contradiction": "Caller initially stated 'no one inside' then corrected to '4 staff in storage room' at 02:14 — severity auto-escalated."
+    },
+    "transcript": [
+      {
+        "time": "00:05",
+        "speaker": "Caller",
+        "text": "Tolong! Api besar! Bangunan saya terbakar!"
+      },
+      {
+        "time": "00:12",
+        "speaker": "Operator",
+        "text": "Bertenang encik. Nama dan lokasi anda?"
+      },
+      {
+        "time": "00:20",
+        "speaker": "Caller",
+        "text": "Anwar Shah! Lorong Haji Taib 2 — dapur commercial, gas cylinder MELETUP!"
+      },
+      {
+        "time": "00:38",
+        "speaker": "Operator",
+        "text": "Adakah semua orang sudah keluar dari bangunan?"
+      },
+      {
+        "time": "00:45",
+        "speaker": "Caller",
+        "text": "Ya... tunggu — ada 4 pekerja dalam bilik stor di belakang! Mereka belum keluar!"
+      },
+      {
+        "time": "01:02",
+        "speaker": "Operator",
+        "text": "Faham. Jangan masuk balik. Bomba sedang dalam perjalanan. ETA 6 minit."
+      },
+      {
+        "time": "01:15",
+        "speaker": "Caller",
+        "text": "Cepat! Api dah merebak ke dinding kayu sebelah!"
+      },
+      {
+        "time": "02:14",
+        "speaker": "Operator",
+        "text": "Unit Bomba telah dihantar. Sila pastikan semua orang menjauh dari bangunan."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. KHALID HASSAN",
+      "role": "Senior Dispatcher",
+      "action": "Manually escalated unit count from 1 engine to 3 heavy engines + HAZMAT upon receiving satellite thermal image confirmation of multi-storey spread.",
+      "reason": "AI initially recommended single-engine response. Dispatcher observed adjacent wooden shophouses and overrode to multi-unit deployment.",
+      "timestampLabel": "09:31:55"
+    },
+    "closing_report": {
+      "closedBy": "INSPECTOR AHMED",
+      "closedAt": "2026-06-02T10:04:15.000Z",
+      "outcome": "All 4 employees rescued safely. Fire fully extinguished in 34 minutes. No fatalities. 2 employees treated for smoke inhalation and released.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "09:30:15",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "09:30:18",
+        "event": "Speech-to-text transcription initiated",
+        "type": "ai"
+      },
+      {
+        "time": "09:30:29",
+        "event": "Incident classified: FIRE / CRITICAL",
+        "type": "ai"
+      },
+      {
+        "time": "09:30:44",
+        "event": "GPS triangulation complete — Lorong Haji Taib 2",
+        "type": "ai"
+      },
+      {
+        "time": "09:31:02",
+        "event": "SOP matched: Bomba Code 4.2 (Confidence 96%)",
+        "type": "ai"
+      },
+      {
+        "time": "09:31:55",
+        "event": "HUMAN OVERRIDE — Op. Khalid escalated to 3-unit + HAZMAT",
+        "type": "human"
+      },
+      {
+        "time": "09:32:47",
+        "event": "Dispatch approved — Bomba Chow Kit Engine 1, 2, 3 + HAZMAT",
+        "type": "dispatch"
+      },
+      {
+        "time": "09:38:22",
+        "event": "Units arrived on scene",
+        "type": "dispatch"
+      },
+      {
+        "time": "09:41:00",
+        "event": "4 employees confirmed rescued from storage",
+        "type": "system"
+      },
+      {
+        "time": "10:04:15",
+        "event": "Fire extinguished — case sealed by Inspector Ahmed",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0047",
+    "title": "Feline Roof Distress Alarm Vetting",
+    "outcome": "Reject",
+    "location": "Jalan SS5/12, Sec 5, Petaling Jaya, Selangor",
+    "incident_type": "MEDICAL",
+    "severity": "MODERATE",
+    "caller": "MISS LINDA OOI",
+    "caller_number": "+601X-XXX-2290",
+    "spoken_dialects": [
+      "EN Standard"
+    ],
+    "dispatch_confidence": 0.38,
+    "call_duration": "02:51",
+    "call_received_at": "2026-06-02T08:45:00.000Z",
+    "dispatched_at": null,
+    "arrived_at": null,
+    "resolved_at": "2026-06-02T08:47:51.000Z",
+    "response_time_seconds": null,
+    "reasoning_report": {
+      "content": "Caller heard audible shouting/screaming on her rooftop. AI speech telemetry and ambient sensor spectral analyses cross-referenced with feline vocalization templates with 94.2% matching confidence.",
+      "sopUsed": [
+        "MERS Low-Priority Service Vetting Protocols"
+      ]
+    },
+    "sop_actions": [
+      "Instructed caller to investigate safely via flashlight from ground level.",
+      "Refused Fire & Paramedic deployment — conservation of tactical resources.",
+      "De-escalated caller anxiety and logged as false alarm."
+    ],
+    "operator_verdict": "REJECTED — Decisive feline false alarm mitigation applied.",
+    "notes": "Miss Linda confirmed on follow-up that she found her neighbour's tabby cat on the roof gutter. No emergency response needed.",
+    "supervising_release": {
+      "inspector": "SYSTEM AUTOMATION",
+      "status": 1
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-002",
+    "emotional_analysis": {
+      "panicLevel": "Moderate",
+      "distressScore": 42,
+      "speechRate": "148 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 94
+    },
+    "transcript": [
+      {
+        "time": "00:05",
+        "speaker": "Caller",
+        "text": "Hello? I can hear screaming on my roof. I think someone is up there!"
+      },
+      {
+        "time": "00:14",
+        "speaker": "Operator",
+        "text": "Please stay calm Miss. Can you describe the sound in more detail?"
+      },
+      {
+        "time": "00:28",
+        "speaker": "Caller",
+        "text": "It's like... a high-pitched wailing. Going on and off. Very distressing."
+      },
+      {
+        "time": "00:52",
+        "speaker": "Operator",
+        "text": "Our AI is cross-referencing the ambient audio. Could it be an animal — a cat perhaps?"
+      },
+      {
+        "time": "01:10",
+        "speaker": "Caller",
+        "text": "Oh... oh goodness. Let me check with my flashlight."
+      },
+      {
+        "time": "01:48",
+        "speaker": "Caller",
+        "text": "Oh my. It IS a cat. My neighbour's tabby. I'm so sorry to waste your time!"
+      },
+      {
+        "time": "02:00",
+        "speaker": "Operator",
+        "text": "No trouble at all Miss Linda. I'm logging this as resolved. Have a safe evening."
+      }
+    ],
+    "human_intervention": {
+      "required": false
+    },
+    "closing_report": {
+      "closedBy": "SYSTEM AUTOMATION",
+      "closedAt": "2026-06-02T08:47:51.000Z",
+      "outcome": "False alarm confirmed — feline vocalization misidentified as human distress. No emergency resources deployed. Caller educated on reporting process.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "08:45:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "08:45:04",
+        "event": "Ambient audio fingerprinting initiated",
+        "type": "ai"
+      },
+      {
+        "time": "08:45:22",
+        "event": "Feline vocalization match — 94.2% confidence",
+        "type": "ai"
+      },
+      {
+        "time": "08:45:30",
+        "event": "Dispatch recommendation: REJECT (low confidence)",
+        "type": "ai"
+      },
+      {
+        "time": "08:47:51",
+        "event": "Caller confirmed false alarm — case auto-closed",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0048",
+    "title": "Acute Cerebrovascular Stroke Emergency",
+    "outcome": "Override",
+    "location": "Jalan Keramat, Kampung Datuk Keramat, Kuala Lumpur",
+    "incident_type": "MEDICAL",
+    "severity": "URGENT",
+    "caller": "DR. FADZIL",
+    "caller_number": "+601X-XXX-7703",
+    "spoken_dialects": [
+      "BM Pure"
+    ],
+    "dispatch_confidence": 0.94,
+    "call_duration": "04:58",
+    "call_received_at": "2026-06-02T07:11:32.000Z",
+    "dispatched_at": "2026-06-02T07:13:10.000Z",
+    "arrived_at": "2026-06-02T07:19:45.000Z",
+    "resolved_at": "2026-06-02T08:40:00.000Z",
+    "response_time_seconds": 98,
+    "reasoning_report": {
+      "content": "Adult female patient (78yo) presenting with sudden facial paralysis, severe unilateral flaccid extremity weakness, and slurred speech. Onset time confirmed under 50 minutes.",
+      "sopUsed": [
+        "Pre-Hospital Stroke Guideline 2024 — Sec B"
+      ]
+    },
+    "sop_actions": [
+      "Instructed relative to maintain patient flat on left side to prevent aspiration.",
+      "Dispatched Advanced Cardiac ambulance with continuous monitoring array.",
+      "Issued pre-hospital strike team alert to HKL General stroke unit to bypass triage."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Highly critical neurological stroke window active.",
+    "notes": "EMS team successfully executed pre-activation of thrombolytic pathway. Target door-to-needle time clocked at record 28 minutes.",
+    "supervising_release": {
+      "inspector": "DR. FADZIL (Self-Signed)",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-003",
+    "emotional_analysis": {
+      "panicLevel": "High",
+      "distressScore": 78,
+      "speechRate": "192 wpm",
+      "tremorDetected": true,
+      "volumeTrend": "Escalating",
+      "aiConfidence": 94
+    },
+    "transcript": [
+      {
+        "time": "00:08",
+        "speaker": "Caller",
+        "text": "Cepat! Mak saya ada stroke! Muka dia jatuh sebelah, tangan tak boleh gerak!"
+      },
+      {
+        "time": "00:18",
+        "speaker": "Operator",
+        "text": "Faham doktor. Onset bilakah gejala bermula?"
+      },
+      {
+        "time": "00:25",
+        "speaker": "Caller",
+        "text": "Lebih kurang 40 minit lalu. Dia masih sedar tapi slurred speech teruk."
+      },
+      {
+        "time": "00:42",
+        "speaker": "Operator",
+        "text": "Ambulans dalam perjalanan. Pastikan beliau dalam posisi recovery — miring ke kiri."
+      },
+      {
+        "time": "01:10",
+        "speaker": "Caller",
+        "text": "Saya doktor, saya dah stabilkan. Tolong pre-alert HKL stroke unit!"
+      },
+      {
+        "time": "01:22",
+        "speaker": "Operator",
+        "text": "Sudah dihantar — HKL Neurology telah di-alert. ETA 6 minit."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. SITI HAJAR",
+      "role": "Medical Dispatcher",
+      "action": "Manually activated HKL Stroke Unit pre-alert protocol and fast-tracked thrombolytic pathway authorisation ahead of EMS arrival.",
+      "reason": "Caller identified himself as a medical doctor — elevated credibility score triggered specialist pathway activation which required human confirmation.",
+      "timestampLabel": "07:12:44"
+    },
+    "closing_report": {
+      "closedBy": "DR. FADZIL (Self-Signed)",
+      "closedAt": "2026-06-02T08:40:00.000Z",
+      "outcome": "Patient transported to HKL Neurology. tPA administered within 28-minute door-to-needle window. Patient neurologically stable post-treatment.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "07:11:32",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "07:11:38",
+        "event": "Stroke symptom keywords flagged (FAST protocol)",
+        "type": "ai"
+      },
+      {
+        "time": "07:11:52",
+        "event": "Incident classified: MEDICAL / URGENT — Stroke",
+        "type": "ai"
+      },
+      {
+        "time": "07:12:10",
+        "event": "SOP matched: Pre-Hospital Stroke Guideline 2024",
+        "type": "ai"
+      },
+      {
+        "time": "07:12:44",
+        "event": "HUMAN ACTION — Op. Siti pre-alerted HKL Neurology",
+        "type": "human"
+      },
+      {
+        "time": "07:13:10",
+        "event": "Advanced Cardiac Ambulance dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "07:19:45",
+        "event": "EMS arrived on scene",
+        "type": "dispatch"
+      },
+      {
+        "time": "07:21:00",
+        "event": "Patient loaded and en route to HKL",
+        "type": "dispatch"
+      },
+      {
+        "time": "07:41:00",
+        "event": "tPA administered — door-to-needle: 28 min",
+        "type": "system"
+      },
+      {
+        "time": "08:40:00",
+        "event": "Case sealed — patient neurologically stable",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0049",
+    "title": "Bukit Bintang Robbery Alarm Hoax",
+    "outcome": "Reject",
+    "location": "Bukit Bintang Plaza Intersection, Kuala Lumpur",
+    "incident_type": "CRIME",
+    "severity": "CRITICAL",
+    "caller": "UNKNOWN CELLULAR TERMINAL",
+    "caller_number": "+601X-XXX-0000 (FLAGGED)",
+    "spoken_dialects": [
+      "EN",
+      "Manglish"
+    ],
+    "dispatch_confidence": 0.15,
+    "call_duration": "01:22",
+    "call_received_at": "2026-06-02T06:12:10.000Z",
+    "dispatched_at": null,
+    "arrived_at": null,
+    "resolved_at": "2026-06-02T06:13:32.000Z",
+    "response_time_seconds": null,
+    "reasoning_report": {
+      "content": "A group of laughing younger males screaming robbery triggers followed by ambient mall chatter. Caller ID trace matches multiple previous prank attempts from the same cellular base station.",
+      "sopUsed": [
+        "MERS Anti-Harassment & Prank Assessment Framework"
+      ]
+    },
+    "sop_actions": [
+      "Execute background carrier database lookup for persistent harassing caller patterns.",
+      "Reject police patrol unit deployment.",
+      "Log MSISDN to regional warning list for legal compliance escalation."
+    ],
+    "operator_verdict": "REJECTED — Clear malicious prank attempting resource diversion.",
+    "notes": "Operator completed warning response before disconnecting. MSISDN registered to regional blacklist for legal action referral.",
+    "supervising_release": {
+      "inspector": "CYBER AUDIT DESK",
+      "status": 1
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-004",
+    "emotional_analysis": {
+      "panicLevel": "Low",
+      "distressScore": 12,
+      "speechRate": "165 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 97,
+      "contradiction": "Background laughter detected simultaneously with distress claims — authenticity score 0.08."
+    },
+    "transcript": [
+      {
+        "time": "00:05",
+        "speaker": "Caller",
+        "text": "Eh bro bro! ROBBERY lah! Help help! [background laughter]"
+      },
+      {
+        "time": "00:14",
+        "speaker": "Operator",
+        "text": "Please state your location and describe the incident clearly."
+      },
+      {
+        "time": "00:22",
+        "speaker": "Caller",
+        "text": "Bukit Bintang lah! Got robber! Very scary! [more laughter]"
+      },
+      {
+        "time": "00:40",
+        "speaker": "Operator",
+        "text": "Our systems have flagged this number for prior misuse. This call is being recorded for legal review."
+      },
+      {
+        "time": "01:00",
+        "speaker": "Caller",
+        "text": "[call disconnects]"
+      }
+    ],
+    "human_intervention": {
+      "required": false
+    },
+    "closing_report": {
+      "closedBy": "CYBER AUDIT DESK",
+      "closedAt": "2026-06-02T06:13:32.000Z",
+      "outcome": "Confirmed prank call — MSISDN logged to blacklist database. Legal referral initiated under Communications & Multimedia Act 1998 Section 233.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "06:12:10",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "06:12:14",
+        "event": "Voice stress analysis: laughter overtones detected",
+        "type": "ai"
+      },
+      {
+        "time": "06:12:18",
+        "event": "MSISDN cross-referenced — 3 prior prank flags found",
+        "type": "ai"
+      },
+      {
+        "time": "06:12:25",
+        "event": "Dispatch recommendation: REJECT (confidence 97%)",
+        "type": "ai"
+      },
+      {
+        "time": "06:13:00",
+        "event": "Legal warning issued to caller",
+        "type": "system"
+      },
+      {
+        "time": "06:13:32",
+        "event": "MSISDN blacklisted — case auto-closed",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0050",
+    "title": "Federal Highway Tractor-Trailer Fuel Spill",
+    "outcome": "Override",
+    "location": "Federal Highway, KM 12.4 (Westbound, Near MidValley)",
+    "incident_type": "ACCIDENT",
+    "severity": "URGENT",
+    "caller": "SARJIL SINGH",
+    "caller_number": "+601X-XXX-6614",
+    "spoken_dialects": [
+      "English Standard"
+    ],
+    "dispatch_confidence": 0.91,
+    "call_duration": "05:33",
+    "call_received_at": "2026-06-01T23:40:15.000Z",
+    "dispatched_at": "2026-06-01T23:42:05.000Z",
+    "arrived_at": "2026-06-01T23:49:30.000Z",
+    "resolved_at": "2026-06-02T01:00:00.000Z",
+    "response_time_seconds": 110,
+    "reasoning_report": {
+      "content": "Ruptured saddle tank of heavy logistics truck spilling ~180 litres of diesel across two lanes of arterial expressway. Severe skid hazard with rain forecast imminent.",
+      "sopUsed": [
+        "Bomba Environmental Hazardous Containment 1.5.1"
+      ]
+    },
+    "sop_actions": [
+      "Dispatch heavy engine with chemical absorbent sand matrices.",
+      "Alert traffic police to initiate active lane closures on MidValley approach.",
+      "Command street sweeping vehicles to spray high-pressure surfactant."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Multi-agency hazard mitigation successfully executed.",
+    "notes": "Pantai Bomba unit fully contained spill. Left and center lanes reopened within 80 minutes. No vehicular collisions resulted.",
+    "supervising_release": {
+      "inspector": "OFFICER SARJIL",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-005",
+    "emotional_analysis": {
+      "panicLevel": "Moderate",
+      "distressScore": 55,
+      "speechRate": "174 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 91
+    },
+    "transcript": [
+      {
+        "time": "00:08",
+        "speaker": "Caller",
+        "text": "Yes, hello — there's a massive diesel spill on Federal Highway westbound KM 12. Lorry tank burst."
+      },
+      {
+        "time": "00:19",
+        "speaker": "Operator",
+        "text": "Understood. Are you and other drivers safe and off the road?"
+      },
+      {
+        "time": "00:28",
+        "speaker": "Caller",
+        "text": "Yes we pulled over. But it's spreading fast — two full lanes covered. Rain coming soon, it's going to be deadly."
+      },
+      {
+        "time": "00:45",
+        "speaker": "Operator",
+        "text": "Bomba HAZMAT and traffic police are being dispatched. Please keep your hazards on and stay behind the guardrail."
+      },
+      {
+        "time": "01:10",
+        "speaker": "Caller",
+        "text": "There's already cars slipping and braking hard. Please be fast."
+      },
+      {
+        "time": "01:30",
+        "speaker": "Operator",
+        "text": "Units are 8 minutes out. PLUS expressway operator has been notified for emergency signage."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. REZA MALIK",
+      "role": "Traffic Emergency Dispatcher",
+      "action": "Manually coordinated PLUS highway operator notification and activated dynamic message signs upstream to warn oncoming traffic — a step outside standard AI dispatch flow.",
+      "reason": "Rain forecast and high-speed highway context required real-time coordination with PLUS Malaysia that is not yet in the AI automated workflow.",
+      "timestampLabel": "23:41:40"
+    },
+    "closing_report": {
+      "closedBy": "OFFICER SARJIL",
+      "closedAt": "2026-06-02T01:00:00.000Z",
+      "outcome": "Diesel fully neutralised with absorbent compounds. Two lanes reopened 80 minutes post-incident. Zero casualties. PLUS Malaysia filed incident report independently.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "23:40:15",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "23:40:20",
+        "event": "Incident classified: ACCIDENT / URGENT — Fuel Spill",
+        "type": "ai"
+      },
+      {
+        "time": "23:40:35",
+        "event": "GPS pinned: Federal Highway KM 12.4 Westbound",
+        "type": "ai"
+      },
+      {
+        "time": "23:40:52",
+        "event": "SOP matched: Bomba Hazardous Containment 1.5.1",
+        "type": "ai"
+      },
+      {
+        "time": "23:41:40",
+        "event": "HUMAN ACTION — Op. Reza activated PLUS DMS signage",
+        "type": "human"
+      },
+      {
+        "time": "23:42:05",
+        "event": "HAZMAT unit + Traffic Police dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "23:49:30",
+        "event": "Units arrived on scene",
+        "type": "dispatch"
+      },
+      {
+        "time": "00:10:00",
+        "event": "Chemical absorbent application complete",
+        "type": "system"
+      },
+      {
+        "time": "01:00:00",
+        "event": "Lanes reopened — case sealed by Officer Sarjil",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0051",
+    "title": "Sungai Pinang Flash Flood Rescue",
+    "outcome": "Override",
+    "location": "Sungai Pinang, Klang, Selangor",
+    "incident_type": "FLOOD",
+    "severity": "URGENT",
+    "caller": "MDM. ROSNAH",
+    "caller_number": "+601X-XXX-3312",
+    "spoken_dialects": [
+      "BM"
+    ],
+    "dispatch_confidence": 0.52,
+    "call_duration": "03:20",
+    "call_received_at": "2026-05-28T04:10:00.000Z",
+    "dispatched_at": "2026-05-28T04:13:10.000Z",
+    "arrived_at": "2026-05-28T04:22:10.000Z",
+    "resolved_at": "2026-05-28T05:32:10.000Z",
+    "response_time_seconds": 190,
+    "reasoning_report": {
+      "content": "Initial call described 'a bit of water outside' but AI flagged rapid rise in ambient background sound consistent with fast-moving water. Confidence low due to caller's calm tone contradicting sensor read.",
+      "sopUsed": [
+        "JPS Flash Flood Response Protocol 2.1"
+      ]
+    },
+    "sop_actions": [
+      "Instructed family to move to upper floor immediately.",
+      "Dispatched boat rescue unit on precautionary basis despite low initial confidence."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Escalated past AI's low-confidence read after caller's tone shifted mid-call.",
+    "notes": "Water level rose 1.2m within 15 minutes of the call. Family of 4 rescued via boat, no injuries.",
+    "supervising_release": {
+      "inspector": "INSPECTOR ZALEHA",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-006",
+    "emotional_analysis": {
+      "panicLevel": "Moderate → Extreme",
+      "distressScore": 88,
+      "speechRate": "205 wpm",
+      "tremorDetected": true,
+      "volumeTrend": "Escalating",
+      "aiConfidence": 52,
+      "contradiction": "Caller said 'sikit sahaja air' (just a bit of water) then screamed 'air dah sampai lutut!' (water at knee level) 90 seconds later — severity manually escalated."
+    },
+    "transcript": [
+      {
+        "time": "00:04",
+        "speaker": "Caller",
+        "text": "Ada air masuk sikit je kat luar rumah, tak teruk pun."
+      },
+      {
+        "time": "01:30",
+        "speaker": "Caller",
+        "text": "Tunggu — air dah sampai lutut! Cepat, tolong kami!"
+      },
+      {
+        "time": "01:45",
+        "speaker": "Operator",
+        "text": "Naik ke tingkat atas sekarang. Bot penyelamat dalam perjalanan."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. HALIM RAZAK",
+      "role": "Flood Response Dispatcher",
+      "action": "Manually escalated a low-AI-confidence report to full boat rescue dispatch after caller's contradictory tone shift.",
+      "reason": "AI confidence was too low (52%) to auto-dispatch; dispatcher used judgment based on live audio cues.",
+      "timestampLabel": "04:11:20"
+    },
+    "closing_report": {
+      "closedBy": "INSPECTOR ZALEHA",
+      "closedAt": "2026-05-28T05:32:10.000Z",
+      "outcome": "Family of 4 rescued safely by boat. No injuries.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "04:10:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "04:10:30",
+        "event": "Incident classified: FLOOD / URGENT (low confidence 52%)",
+        "type": "ai"
+      },
+      {
+        "time": "04:11:20",
+        "event": "HUMAN OVERRIDE — Op. Halim escalated to boat rescue",
+        "type": "human"
+      },
+      {
+        "time": "04:13:10",
+        "event": "Boat rescue unit dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "05:32:10",
+        "event": "Case sealed — family rescued",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0052",
+    "title": "Jalan Tun Razak Anaphylactic Shock",
+    "outcome": "Override",
+    "location": "Jalan Tun Razak, Kuala Lumpur",
+    "incident_type": "MEDICAL",
+    "severity": "CRITICAL",
+    "caller": "MR. VIGNESH",
+    "caller_number": "+601X-XXX-9081",
+    "spoken_dialects": [
+      "EN",
+      "Tamil"
+    ],
+    "dispatch_confidence": 0.47,
+    "call_duration": "04:02",
+    "call_received_at": "2026-05-28T11:05:00.000Z",
+    "dispatched_at": "2026-05-28T11:07:40.000Z",
+    "arrived_at": "2026-05-28T11:13:40.000Z",
+    "resolved_at": "2026-05-28T11:58:40.000Z",
+    "response_time_seconds": 160,
+    "reasoning_report": {
+      "content": "Caller initially reported mild rash, downplaying severity. AI confidence low due to vague symptom description before caller revealed swelling of the throat.",
+      "sopUsed": [
+        "Anaphylaxis Rapid Response Guideline"
+      ]
+    },
+    "sop_actions": [
+      "Instructed immediate EpiPen use if available.",
+      "Dispatched ambulance with anaphylaxis kit."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Human-confirmed escalation after contradiction detected.",
+    "notes": "Patient stabilised on-scene with epinephrine, transported for observation.",
+    "supervising_release": {
+      "inspector": "DR. LATIFAH",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-007",
+    "emotional_analysis": {
+      "panicLevel": "Extreme",
+      "distressScore": 93,
+      "speechRate": "220 wpm",
+      "tremorDetected": true,
+      "volumeTrend": "Escalating",
+      "aiConfidence": 47,
+      "contradiction": "Caller said 'just a small rash' then 'his throat is closing up, he can't breathe!' 40 seconds later."
+    },
+    "transcript": [
+      {
+        "time": "00:06",
+        "speaker": "Caller",
+        "text": "My friend has a small rash after eating peanuts, nothing serious I think."
+      },
+      {
+        "time": "00:46",
+        "speaker": "Caller",
+        "text": "Wait — his throat is closing up, he can't breathe properly!"
+      },
+      {
+        "time": "01:00",
+        "speaker": "Operator",
+        "text": "EpiPen now if you have one. Ambulance is on the way."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. PRIYA NATHAN",
+      "role": "Medical Dispatcher",
+      "action": "Overrode AI's initial low-priority classification after live contradiction detected mid-call.",
+      "reason": "AI confidence (47%) too low to auto-escalate to CRITICAL; dispatcher made the call manually.",
+      "timestampLabel": "11:06:10"
+    },
+    "closing_report": {
+      "closedBy": "DR. LATIFAH",
+      "closedAt": "2026-05-28T11:58:40.000Z",
+      "outcome": "Patient stabilised with epinephrine, transported for observation. Full recovery expected.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "11:05:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "11:05:20",
+        "event": "Incident classified: MEDICAL / MODERATE (low confidence 47%)",
+        "type": "ai"
+      },
+      {
+        "time": "11:06:10",
+        "event": "HUMAN OVERRIDE — Op. Priya escalated to CRITICAL",
+        "type": "human"
+      },
+      {
+        "time": "11:07:40",
+        "event": "Ambulance dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "11:58:40",
+        "event": "Case sealed — patient stabilised",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0053",
+    "title": "Bukit Bintang Shoplifting Altercation",
+    "outcome": "Reject",
+    "location": "Jalan Bukit Bintang, Kuala Lumpur",
+    "incident_type": "CRIME",
+    "severity": "MODERATE",
+    "caller": "STORE SECURITY — MR. WONG",
+    "caller_number": "+601X-XXX-1145",
+    "spoken_dialects": [
+      "EN",
+      "Cantonese"
+    ],
+    "dispatch_confidence": 0.74,
+    "call_duration": "02:10",
+    "call_received_at": "2026-05-29T14:20:00.000Z",
+    "dispatched_at": null,
+    "arrived_at": null,
+    "resolved_at": "2026-05-29T14:24:00.000Z",
+    "response_time_seconds": null,
+    "reasoning_report": {
+      "content": "Store security reported a minor altercation over a disputed item already resolved by in-house staff before police response would arrive.",
+      "sopUsed": [
+        "MERS Low-Priority Service Vetting Protocols"
+      ]
+    },
+    "sop_actions": [
+      "Confirmed situation already de-escalated by store staff.",
+      "Logged for records, no unit dispatched."
+    ],
+    "operator_verdict": "REJECTED — Resolved on-site before dispatch required.",
+    "notes": "Store manager confirmed customer paid disputed item and left peacefully.",
+    "supervising_release": {
+      "inspector": "SYSTEM AUTOMATION",
+      "status": 1
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-008",
+    "emotional_analysis": {
+      "panicLevel": "Low",
+      "distressScore": 48,
+      "speechRate": "160 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 74
+    },
+    "transcript": [
+      {
+        "time": "00:05",
+        "speaker": "Caller",
+        "text": "We had a bit of a scuffle over an item but it's settled now, just logging it."
+      },
+      {
+        "time": "00:40",
+        "speaker": "Operator",
+        "text": "Understood, no unit needed then. I'll log this for records."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. DANIEL LIM",
+      "role": "Duty Dispatcher",
+      "action": "Manually confirmed with caller that no dispatch was needed before closing.",
+      "reason": "AI confidence (74%) wasn't high enough to auto-close without verification.",
+      "timestampLabel": "14:21:00"
+    },
+    "closing_report": {
+      "closedBy": "SYSTEM AUTOMATION",
+      "closedAt": "2026-05-29T14:24:00.000Z",
+      "outcome": "Situation resolved on-site by store staff, no dispatch required.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "14:20:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "14:20:20",
+        "event": "Incident classified: CRIME / MODERATE (confidence 74%)",
+        "type": "ai"
+      },
+      {
+        "time": "14:21:00",
+        "event": "HUMAN VERIFICATION — Op. Daniel confirmed no dispatch needed",
+        "type": "human"
+      },
+      {
+        "time": "14:24:00",
+        "event": "Case auto-closed",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0054",
+    "title": "NKVE Multi-Vehicle Collision",
+    "outcome": "Override",
+    "location": "NKVE Highway, Shah Alam",
+    "incident_type": "ACCIDENT",
+    "severity": "URGENT",
+    "caller": "MR. AZLAN",
+    "caller_number": "+601X-XXX-5567",
+    "spoken_dialects": [
+      "BM"
+    ],
+    "dispatch_confidence": 0.78,
+    "call_duration": "03:55",
+    "call_received_at": "2026-05-29T18:45:00.000Z",
+    "dispatched_at": "2026-05-29T18:47:20.000Z",
+    "arrived_at": "2026-05-29T18:58:20.000Z",
+    "resolved_at": "2026-05-29T20:23:20.000Z",
+    "response_time_seconds": 140,
+    "reasoning_report": {
+      "content": "Caller reported 'small bump' between two cars, later revealed a third vehicle involved with a trapped passenger.",
+      "sopUsed": [
+        "Multi-Vehicle Collision Response SOP 3.4"
+      ]
+    },
+    "sop_actions": [
+      "Dispatched ambulance and fire rescue jaws-of-life unit.",
+      "Requested highway patrol for lane closure."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Upgraded from minor to multi-unit response after contradiction.",
+    "notes": "Trapped passenger extracted within 20 minutes, transported with non-life-threatening injuries.",
+    "supervising_release": {
+      "inspector": "OFFICER RAZALI",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-009",
+    "emotional_analysis": {
+      "panicLevel": "High",
+      "distressScore": 82,
+      "speechRate": "198 wpm",
+      "tremorDetected": true,
+      "volumeTrend": "Escalating",
+      "aiConfidence": 78,
+      "contradiction": "Caller said 'just two cars, small bump' then 'ada orang terperangkap dalam kereta ketiga!' moments later."
+    },
+    "transcript": [
+      {
+        "time": "00:06",
+        "speaker": "Caller",
+        "text": "Ada accident, dua kereta je, kemek sikit."
+      },
+      {
+        "time": "00:52",
+        "speaker": "Caller",
+        "text": "Wait — ada kereta ketiga, ada orang terperangkap dalam!"
+      },
+      {
+        "time": "01:10",
+        "speaker": "Operator",
+        "text": "Fire rescue dan ambulans dihantar sekarang."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. FARID ISKANDAR",
+      "role": "Traffic Dispatcher",
+      "action": "Upgraded dispatch from single ambulance to fire rescue + ambulance after live contradiction.",
+      "reason": "AI's initial 78% confidence classification undercounted vehicles involved.",
+      "timestampLabel": "18:46:15"
+    },
+    "closing_report": {
+      "closedBy": "OFFICER RAZALI",
+      "closedAt": "2026-05-29T20:23:20.000Z",
+      "outcome": "Trapped passenger extracted safely, transported with non-life-threatening injuries.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "18:45:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "18:45:30",
+        "event": "Incident classified: ACCIDENT / URGENT (confidence 78%)",
+        "type": "ai"
+      },
+      {
+        "time": "18:46:15",
+        "event": "HUMAN OVERRIDE — Op. Farid upgraded to fire rescue unit",
+        "type": "human"
+      },
+      {
+        "time": "18:47:20",
+        "event": "Fire rescue + ambulance dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "20:23:20",
+        "event": "Case sealed — passenger extracted",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0055",
+    "title": "Pasar Borong Selayang Warehouse Fire",
+    "outcome": "Override",
+    "location": "Pasar Borong Selayang, Selangor",
+    "incident_type": "FIRE",
+    "severity": "CRITICAL",
+    "caller": "MR. KUMARESAN",
+    "caller_number": "+601X-XXX-7723",
+    "spoken_dialects": [
+      "EN",
+      "Tamil"
+    ],
+    "dispatch_confidence": 0.81,
+    "call_duration": "04:40",
+    "call_received_at": "2026-05-30T02:15:00.000Z",
+    "dispatched_at": "2026-05-30T02:17:00.000Z",
+    "arrived_at": "2026-05-30T02:25:00.000Z",
+    "resolved_at": "2026-05-30T03:17:00.000Z",
+    "response_time_seconds": 120,
+    "reasoning_report": {
+      "content": "Cold storage warehouse fire reported as 'small and contained' initially, later revealed spreading toward propane tanks.",
+      "sopUsed": [
+        "Bomba Malaysia Code 4.2 (Warehouse Containment)"
+      ]
+    },
+    "sop_actions": [
+      "Escalated to 2 heavy engines with hazmat standby.",
+      "Cordoned 100m radius around propane storage."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Escalated after contradiction revealed propane risk.",
+    "notes": "Fire contained before reaching propane tanks. No casualties.",
+    "supervising_release": {
+      "inspector": "INSPECTOR MURTHY",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-010",
+    "emotional_analysis": {
+      "panicLevel": "Extreme",
+      "distressScore": 89,
+      "speechRate": "230 wpm",
+      "tremorDetected": true,
+      "volumeTrend": "Escalating",
+      "aiConfidence": 81,
+      "contradiction": "Caller said 'small fire, under control' then 'it's spreading toward the gas tanks!' 90 seconds later."
+    },
+    "transcript": [
+      {
+        "time": "00:05",
+        "speaker": "Caller",
+        "text": "There's a small fire in the warehouse, we think it's under control."
+      },
+      {
+        "time": "01:30",
+        "speaker": "Caller",
+        "text": "Wait, it's spreading fast — toward the propane tanks!"
+      },
+      {
+        "time": "01:45",
+        "speaker": "Operator",
+        "text": "Evacuate now. Heavy engines and hazmat dispatched."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. VIJAY KUMAR",
+      "role": "Senior Dispatcher",
+      "action": "Escalated engine count and added hazmat standby after propane risk was revealed mid-call.",
+      "reason": "AI's 81% confidence didn't capture the propane proximity risk from the initial description.",
+      "timestampLabel": "02:16:10"
+    },
+    "closing_report": {
+      "closedBy": "INSPECTOR MURTHY",
+      "closedAt": "2026-05-30T03:17:00.000Z",
+      "outcome": "Fire contained before reaching propane storage. No casualties, minor smoke inhalation for 1 worker.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "02:15:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "02:15:25",
+        "event": "Incident classified: FIRE / URGENT (confidence 81%)",
+        "type": "ai"
+      },
+      {
+        "time": "02:16:10",
+        "event": "HUMAN OVERRIDE — Op. Vijay escalated to CRITICAL + hazmat",
+        "type": "human"
+      },
+      {
+        "time": "02:17:00",
+        "event": "2 heavy engines + hazmat dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "03:17:00",
+        "event": "Case sealed — fire contained",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0056",
+    "title": "Bangsar South Residential Fall Injury",
+    "outcome": "Accept",
+    "location": "Bangsar South, Kuala Lumpur",
+    "incident_type": "MEDICAL",
+    "severity": "MODERATE",
+    "caller": "MS. CHUA",
+    "caller_number": "+601X-XXX-2201",
+    "spoken_dialects": [
+      "EN",
+      "Mandarin"
+    ],
+    "dispatch_confidence": 0.83,
+    "call_duration": "02:30",
+    "call_received_at": "2026-05-30T09:00:00.000Z",
+    "dispatched_at": "2026-05-30T09:03:00.000Z",
+    "arrived_at": "2026-05-30T09:10:00.000Z",
+    "resolved_at": "2026-05-30T09:40:00.000Z",
+    "response_time_seconds": 180,
+    "reasoning_report": {
+      "content": "Elderly resident fell down 3 steps, conscious with suspected ankle fracture, no head trauma reported.",
+      "sopUsed": [
+        "Minor Trauma Response Guideline"
+      ]
+    },
+    "sop_actions": [
+      "Instructed caller to keep patient still and elevate ankle.",
+      "Dispatched standard ambulance unit."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Straightforward case, AI recommendation followed as-is.",
+    "notes": "Patient transported for X-ray, confirmed minor fracture, discharged same day.",
+    "supervising_release": {
+      "inspector": "SYSTEM AUTOMATION",
+      "status": 1
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-011",
+    "emotional_analysis": {
+      "panicLevel": "Moderate",
+      "distressScore": 40,
+      "speechRate": "150 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 83
+    },
+    "transcript": [
+      {
+        "time": "00:06",
+        "speaker": "Caller",
+        "text": "My mother fell down a few steps, she's conscious but her ankle looks swollen."
+      },
+      {
+        "time": "00:30",
+        "speaker": "Operator",
+        "text": "Keep her still and elevate the ankle. Ambulance is on the way."
+      }
+    ],
+    "human_intervention": {
+      "required": false
+    },
+    "closing_report": {
+      "closedBy": "SYSTEM AUTOMATION",
+      "closedAt": "2026-05-30T09:40:00.000Z",
+      "outcome": "Minor ankle fracture confirmed, patient discharged same day.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "09:00:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "09:00:20",
+        "event": "Incident classified: MEDICAL / MODERATE (confidence 83%)",
+        "type": "ai"
+      },
+      {
+        "time": "09:03:00",
+        "event": "Ambulance dispatched — AI recommendation auto-approved",
+        "type": "dispatch"
+      },
+      {
+        "time": "09:40:00",
+        "event": "Case sealed — minor fracture confirmed",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0057",
+    "title": "Chow Kit Alley Break-In In Progress",
+    "outcome": "Override",
+    "location": "Chow Kit, Kuala Lumpur",
+    "incident_type": "CRIME",
+    "severity": "URGENT",
+    "caller": "MR. SAMY",
+    "caller_number": "+601X-XXX-4432",
+    "spoken_dialects": [
+      "EN"
+    ],
+    "dispatch_confidence": 0.72,
+    "call_duration": "03:05",
+    "call_received_at": "2026-05-31T00:30:00.000Z",
+    "dispatched_at": "2026-05-31T00:31:50.000Z",
+    "arrived_at": "2026-05-31T00:37:50.000Z",
+    "resolved_at": "2026-05-31T01:17:50.000Z",
+    "response_time_seconds": 110,
+    "reasoning_report": {
+      "content": "Neighbour reported sounds of forced entry at an adjacent shophouse, moderate confidence due to ambiguous audio.",
+      "sopUsed": [
+        "Active Break-In Response Protocol"
+      ]
+    },
+    "sop_actions": [
+      "Dispatched patrol unit silently, no sirens.",
+      "Instructed caller to remain indoors and observe from a safe distance."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Patrol unit sent despite moderate confidence given time of night.",
+    "notes": "Suspect fled before patrol arrival, no items reported stolen, shophouse door damage recorded for insurance.",
+    "supervising_release": {
+      "inspector": "SGT. MANIAM",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-012",
+    "emotional_analysis": {
+      "panicLevel": "Moderate",
+      "distressScore": 70,
+      "speechRate": "180 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 72
+    },
+    "transcript": [
+      {
+        "time": "00:07",
+        "speaker": "Caller",
+        "text": "I hear someone forcing the shutter open at the shop next door, it's past midnight."
+      },
+      {
+        "time": "00:35",
+        "speaker": "Operator",
+        "text": "Stay inside, don't approach. Patrol unit dispatched silently now."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. NURUL AIN",
+      "role": "Duty Dispatcher",
+      "action": "Approved silent patrol dispatch despite AI's moderate confidence, given late-night context.",
+      "reason": "AI confidence (72%) alone wasn't enough to justify unit dispatch under standard policy without dispatcher sign-off.",
+      "timestampLabel": "00:31:10"
+    },
+    "closing_report": {
+      "closedBy": "SGT. MANIAM",
+      "closedAt": "2026-05-31T01:17:50.000Z",
+      "outcome": "Suspect fled before arrival. Door damage recorded, no items stolen.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "00:30:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "00:30:30",
+        "event": "Incident classified: CRIME / URGENT (confidence 72%)",
+        "type": "ai"
+      },
+      {
+        "time": "00:31:10",
+        "event": "HUMAN SIGN-OFF — Op. Nurul approved silent patrol dispatch",
+        "type": "human"
+      },
+      {
+        "time": "00:31:50",
+        "event": "Patrol unit dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "01:17:50",
+        "event": "Case sealed — suspect fled",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0058",
+    "title": "Jalan Ipoh Minor Rear-End Collision",
+    "outcome": "Accept",
+    "location": "Jalan Ipoh, Kuala Lumpur",
+    "incident_type": "ACCIDENT",
+    "severity": "MODERATE",
+    "caller": "MS. FARAH",
+    "caller_number": "+601X-XXX-8890",
+    "spoken_dialects": [
+      "BM",
+      "EN"
+    ],
+    "dispatch_confidence": 0.88,
+    "call_duration": "01:55",
+    "call_received_at": "2026-05-31T13:10:00.000Z",
+    "dispatched_at": "2026-05-31T13:13:30.000Z",
+    "arrived_at": "2026-05-31T13:22:30.000Z",
+    "resolved_at": "2026-05-31T13:47:30.000Z",
+    "response_time_seconds": 210,
+    "reasoning_report": {
+      "content": "Two-vehicle rear-end collision, both drivers conscious and mobile, minor whiplash reported.",
+      "sopUsed": [
+        "Minor Traffic Incident SOP"
+      ]
+    },
+    "sop_actions": [
+      "Dispatched traffic patrol for accident report.",
+      "No ambulance required per AI assessment, confirmed by dispatcher."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Standard traffic response, AI recommendation followed as-is.",
+    "notes": "Both drivers exchanged information, no hospitalisation required.",
+    "supervising_release": {
+      "inspector": "SYSTEM AUTOMATION",
+      "status": 1
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-013",
+    "emotional_analysis": {
+      "panicLevel": "Low",
+      "distressScore": 35,
+      "speechRate": "155 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 88
+    },
+    "transcript": [
+      {
+        "time": "00:05",
+        "speaker": "Caller",
+        "text": "Small accident, car behind hit us, both cars can still drive, just need a police report."
+      },
+      {
+        "time": "00:25",
+        "speaker": "Operator",
+        "text": "Understood, traffic patrol dispatched for the report."
+      }
+    ],
+    "human_intervention": {
+      "required": false
+    },
+    "closing_report": {
+      "closedBy": "SYSTEM AUTOMATION",
+      "closedAt": "2026-05-31T13:47:30.000Z",
+      "outcome": "Police report filed, no injuries requiring hospitalisation.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "13:10:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "13:10:20",
+        "event": "Incident classified: ACCIDENT / MODERATE (confidence 88%)",
+        "type": "ai"
+      },
+      {
+        "time": "13:13:30",
+        "event": "Traffic patrol dispatched — AI recommendation auto-approved",
+        "type": "dispatch"
+      },
+      {
+        "time": "13:47:30",
+        "event": "Case sealed — report filed",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0059",
+    "title": "Taman Sri Muda Rapid Rising Floodwaters",
+    "outcome": "Override",
+    "location": "Taman Sri Muda, Shah Alam",
+    "incident_type": "FLOOD",
+    "severity": "CRITICAL",
+    "caller": "MR. HAFIZ",
+    "caller_number": "+601X-XXX-6650",
+    "spoken_dialects": [
+      "BM"
+    ],
+    "dispatch_confidence": 0.9,
+    "call_duration": "05:10",
+    "call_received_at": "2026-06-01T05:00:00.000Z",
+    "dispatched_at": "2026-06-01T05:02:00.000Z",
+    "arrived_at": "2026-06-01T05:16:00.000Z",
+    "resolved_at": "2026-06-01T06:56:00.000Z",
+    "response_time_seconds": 120,
+    "reasoning_report": {
+      "content": "Family trapped in single-storey home as floodwaters rose above 1m within minutes, family initially said they were fine before requesting urgent evacuation.",
+      "sopUsed": [
+        "JPS Flash Flood Response Protocol 2.1"
+      ]
+    },
+    "sop_actions": [
+      "Dispatched boat rescue with 2 additional units on standby.",
+      "Coordinated with JBPM for simultaneous multi-house rescue in the area."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — High-confidence critical rescue, human coordinated multi-house response.",
+    "notes": "Family of 5 rescued along with 3 neighbouring households in the same sweep.",
+    "supervising_release": {
+      "inspector": "INSPECTOR NORAINI",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-014",
+    "emotional_analysis": {
+      "panicLevel": "Extreme",
+      "distressScore": 90,
+      "speechRate": "225 wpm",
+      "tremorDetected": true,
+      "volumeTrend": "Escalating",
+      "aiConfidence": 90,
+      "contradiction": "Caller said 'kami okay buat masa ini' (we're okay for now) then 'air dah naik cepat, tolong kami segera!' within a minute."
+    },
+    "transcript": [
+      {
+        "time": "00:08",
+        "speaker": "Caller",
+        "text": "Air masuk rumah tapi kami okay buat masa ini."
+      },
+      {
+        "time": "00:55",
+        "speaker": "Caller",
+        "text": "Air dah naik cepat sangat, tolong kami segera!"
+      },
+      {
+        "time": "01:10",
+        "speaker": "Operator",
+        "text": "Bot penyelamat dihantar sekarang, kami juga check jiran sekitar."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. SHAHRUL NIZAM",
+      "role": "Flood Response Dispatcher",
+      "action": "Coordinated a multi-house rescue sweep across the street beyond the single reported address.",
+      "reason": "AI's 90% confidence covered only the reporting household; dispatcher expanded scope using local flood knowledge.",
+      "timestampLabel": "05:01:20"
+    },
+    "closing_report": {
+      "closedBy": "INSPECTOR NORAINI",
+      "closedAt": "2026-06-01T06:56:00.000Z",
+      "outcome": "4 households (17 residents) rescued safely in a single coordinated sweep.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "05:00:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "05:00:30",
+        "event": "Incident classified: FLOOD / CRITICAL (confidence 90%)",
+        "type": "ai"
+      },
+      {
+        "time": "05:01:20",
+        "event": "HUMAN ACTION — Op. Shahrul expanded rescue to 4 households",
+        "type": "human"
+      },
+      {
+        "time": "05:02:00",
+        "event": "Boat rescue units dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "06:56:00",
+        "event": "Case sealed — 17 residents rescued",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0060",
+    "title": "Petaling Jaya Diabetic Emergency",
+    "outcome": "Accept",
+    "location": "Section 17, Petaling Jaya",
+    "incident_type": "MEDICAL",
+    "severity": "URGENT",
+    "caller": "MRS. TEOH",
+    "caller_number": "+601X-XXX-3390",
+    "spoken_dialects": [
+      "EN",
+      "Hokkien"
+    ],
+    "dispatch_confidence": 0.93,
+    "call_duration": "02:48",
+    "call_received_at": "2026-06-01T16:20:00.000Z",
+    "dispatched_at": "2026-06-01T16:22:10.000Z",
+    "arrived_at": "2026-06-01T16:29:10.000Z",
+    "resolved_at": "2026-06-01T17:09:10.000Z",
+    "response_time_seconds": 130,
+    "reasoning_report": {
+      "content": "Known diabetic patient found unconscious, family confirmed history and recent insulin dose, clear symptom match for hypoglycemic episode.",
+      "sopUsed": [
+        "Diabetic Emergency Response Guideline"
+      ]
+    },
+    "sop_actions": [
+      "Instructed caller to administer glucose gel if patient could swallow.",
+      "Dispatched ambulance with glucagon kit."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Clear-cut case, AI recommendation followed as-is.",
+    "notes": "Patient regained consciousness en route, glucose levels stabilised at hospital.",
+    "supervising_release": {
+      "inspector": "SYSTEM AUTOMATION",
+      "status": 1
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-015",
+    "emotional_analysis": {
+      "panicLevel": "High",
+      "distressScore": 65,
+      "speechRate": "190 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 93
+    },
+    "transcript": [
+      {
+        "time": "00:06",
+        "speaker": "Caller",
+        "text": "My husband is diabetic and just collapsed, he's not responding."
+      },
+      {
+        "time": "00:28",
+        "speaker": "Operator",
+        "text": "Understood, glucose gel if he can swallow. Ambulance dispatched now."
+      }
+    ],
+    "human_intervention": {
+      "required": false
+    },
+    "closing_report": {
+      "closedBy": "SYSTEM AUTOMATION",
+      "closedAt": "2026-06-01T17:09:10.000Z",
+      "outcome": "Patient regained consciousness en route, stabilised at hospital.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "16:20:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "16:20:25",
+        "event": "Incident classified: MEDICAL / URGENT (confidence 93%)",
+        "type": "ai"
+      },
+      {
+        "time": "16:22:10",
+        "event": "Ambulance dispatched — AI recommendation auto-approved",
+        "type": "dispatch"
+      },
+      {
+        "time": "17:09:10",
+        "event": "Case sealed — patient stabilised",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0061",
+    "title": "Setapak Apartment Kitchen Fire",
+    "outcome": "Accept",
+    "location": "Setapak, Kuala Lumpur",
+    "incident_type": "FIRE",
+    "severity": "MODERATE",
+    "caller": "MR. CHEN",
+    "caller_number": "+601X-XXX-2214",
+    "spoken_dialects": [
+      "Mandarin",
+      "EN"
+    ],
+    "dispatch_confidence": 0.97,
+    "call_duration": "01:45",
+    "call_received_at": "2026-06-03T07:00:00.000Z",
+    "dispatched_at": "2026-06-03T07:01:40.000Z",
+    "arrived_at": "2026-06-03T07:07:40.000Z",
+    "resolved_at": "2026-06-03T07:27:40.000Z",
+    "response_time_seconds": 100,
+    "reasoning_report": {
+      "content": "Contained kitchen grease fire, smoke detector triggered, resident already extinguished with fire blanket before Bomba arrival.",
+      "sopUsed": [
+        "Minor Structure Fire SOP"
+      ]
+    },
+    "sop_actions": [
+      "Instructed resident to cut off gas supply and ventilate.",
+      "Dispatched single engine for verification."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — High-confidence minor fire, AI recommendation followed as-is.",
+    "notes": "Fire fully extinguished before unit arrival, minor smoke damage to kitchen ceiling.",
+    "supervising_release": {
+      "inspector": "SYSTEM AUTOMATION",
+      "status": 1
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-016",
+    "emotional_analysis": {
+      "panicLevel": "Moderate",
+      "distressScore": 50,
+      "speechRate": "165 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 97
+    },
+    "transcript": [
+      {
+        "time": "00:05",
+        "speaker": "Caller",
+        "text": "Small kitchen fire, I already put it out with a fire blanket, just want it checked."
+      },
+      {
+        "time": "00:25",
+        "speaker": "Operator",
+        "text": "Good work. Cut off the gas supply, one engine is on the way to verify."
+      }
+    ],
+    "human_intervention": {
+      "required": false
+    },
+    "closing_report": {
+      "closedBy": "SYSTEM AUTOMATION",
+      "closedAt": "2026-06-03T07:27:40.000Z",
+      "outcome": "Fire fully extinguished, minor smoke damage only.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "07:00:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "07:00:20",
+        "event": "Incident classified: FIRE / MODERATE (confidence 97%)",
+        "type": "ai"
+      },
+      {
+        "time": "07:01:40",
+        "event": "Single engine dispatched — AI recommendation auto-approved",
+        "type": "dispatch"
+      },
+      {
+        "time": "07:27:40",
+        "event": "Case sealed — fire extinguished",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0062",
+    "title": "KLCC Anonymous Bomb Threat Hoax",
+    "outcome": "Reject",
+    "location": "KLCC, Kuala Lumpur",
+    "incident_type": "CRIME",
+    "severity": "CRITICAL",
+    "caller": "UNKNOWN CALLER (VOICE MASKED)",
+    "caller_number": "+601X-XXX-0000 (FLAGGED)",
+    "spoken_dialects": [
+      "EN"
+    ],
+    "dispatch_confidence": 0.98,
+    "call_duration": "00:58",
+    "call_received_at": "2026-06-03T10:00:00.000Z",
+    "dispatched_at": null,
+    "arrived_at": null,
+    "resolved_at": "2026-06-03T10:03:00.000Z",
+    "response_time_seconds": null,
+    "reasoning_report": {
+      "content": "Voice-masked caller pattern and phrasing matched 6 prior confirmed hoax bomb threats against the same landmark, cross-referenced with carrier metadata.",
+      "sopUsed": [
+        "MERS Anti-Harassment & Prank Assessment Framework"
+      ]
+    },
+    "sop_actions": [
+      "Rejected emergency unit dispatch per high-confidence hoax match.",
+      "Logged to police cyber crimes unit for legal follow-up."
+    ],
+    "operator_verdict": "REJECTED — High-confidence hoax pattern match, no dispatch required.",
+    "notes": "Cross-referenced voice fingerprint matched a known repeat offender under active investigation.",
+    "supervising_release": {
+      "inspector": "CYBER AUDIT DESK",
+      "status": 1
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-017",
+    "emotional_analysis": {
+      "panicLevel": "Low",
+      "distressScore": 20,
+      "speechRate": "140 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 98
+    },
+    "transcript": [
+      {
+        "time": "00:04",
+        "speaker": "Caller",
+        "text": "There is a bomb in KLCC tower. [voice masked, call ends abruptly]"
+      }
+    ],
+    "human_intervention": {
+      "required": false
+    },
+    "closing_report": {
+      "closedBy": "CYBER AUDIT DESK",
+      "closedAt": "2026-06-03T10:03:00.000Z",
+      "outcome": "Confirmed hoax matching known repeat offender pattern, referred to cyber crimes unit.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "10:00:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "10:00:15",
+        "event": "Voice fingerprint matched known hoax pattern (98% confidence)",
+        "type": "ai"
+      },
+      {
+        "time": "10:00:30",
+        "event": "Dispatch recommendation: REJECT",
+        "type": "ai"
+      },
+      {
+        "time": "10:03:00",
+        "event": "Referred to cyber crimes unit — case auto-closed",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0063",
+    "title": "Federal Highway Motorcycle Collision",
+    "outcome": "Override",
+    "location": "Federal Highway, Petaling Jaya",
+    "incident_type": "ACCIDENT",
+    "severity": "URGENT",
+    "caller": "MR. SYAFIQ",
+    "caller_number": "+601X-XXX-7781",
+    "spoken_dialects": [
+      "BM",
+      "EN"
+    ],
+    "dispatch_confidence": 0.99,
+    "call_duration": "02:15",
+    "call_received_at": "2026-06-03T19:30:00.000Z",
+    "dispatched_at": "2026-06-03T19:31:30.000Z",
+    "arrived_at": "2026-06-03T19:38:30.000Z",
+    "resolved_at": "2026-06-03T20:13:30.000Z",
+    "response_time_seconds": 90,
+    "reasoning_report": {
+      "content": "Motorcyclist down after collision with car, conscious with visible leg injury, clear high-confidence classification from consistent caller description.",
+      "sopUsed": [
+        "Motorcycle Collision Response SOP"
+      ]
+    },
+    "sop_actions": [
+      "Instructed caller not to move the rider.",
+      "Dispatched ambulance with trauma kit."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Very high-confidence case, AI recommendation followed as-is.",
+    "notes": "Rider transported with fractured tibia, stable condition.",
+    "supervising_release": {
+      "inspector": "SYSTEM AUTOMATION",
+      "status": 1
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-018",
+    "emotional_analysis": {
+      "panicLevel": "High",
+      "distressScore": 60,
+      "speechRate": "185 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 99
+    },
+    "transcript": [
+      {
+        "time": "00:05",
+        "speaker": "Caller",
+        "text": "Motorcyclist just got hit by a car, he's conscious but his leg looks badly hurt."
+      },
+      {
+        "time": "00:25",
+        "speaker": "Operator",
+        "text": "Don't move him. Ambulance dispatched now."
+      }
+    ],
+    "human_intervention": {
+      "required": false
+    },
+    "closing_report": {
+      "closedBy": "SYSTEM AUTOMATION",
+      "closedAt": "2026-06-03T20:13:30.000Z",
+      "outcome": "Rider transported with fractured tibia, condition stable.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "19:30:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "19:30:20",
+        "event": "Incident classified: ACCIDENT / URGENT (confidence 99%)",
+        "type": "ai"
+      },
+      {
+        "time": "19:31:30",
+        "event": "Ambulance dispatched — AI recommendation auto-approved",
+        "type": "dispatch"
+      },
+      {
+        "time": "20:13:30",
+        "event": "Case sealed — rider stable",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0064",
+    "title": "Cheras Elderly Fall With Head Injury",
+    "outcome": "Override",
+    "location": "Cheras, Kuala Lumpur",
+    "incident_type": "MEDICAL",
+    "severity": "MODERATE",
+    "caller": "MS. AMIRAH",
+    "caller_number": "+601X-XXX-9012",
+    "spoken_dialects": [
+      "BM",
+      "EN"
+    ],
+    "dispatch_confidence": 0.95,
+    "call_duration": "02:40",
+    "call_received_at": "2026-06-03T22:00:00.000Z",
+    "dispatched_at": "2026-06-03T22:02:30.000Z",
+    "arrived_at": "2026-06-03T22:10:30.000Z",
+    "resolved_at": "2026-06-03T22:45:30.000Z",
+    "response_time_seconds": 150,
+    "reasoning_report": {
+      "content": "Elderly patient fell and hit head on tile floor, family requested confirmation given patient is on blood thinners — a detail the AI's SOP flagged for mandatory human sign-off.",
+      "sopUsed": [
+        "Geriatric Head Injury Protocol"
+      ]
+    },
+    "sop_actions": [
+      "Instructed family to keep patient still, do not give food or water.",
+      "Dispatched ambulance with trauma monitoring."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — High-confidence case still required human sign-off due to anticoagulant use.",
+    "notes": "Patient transported for CT scan as precaution given blood thinner use, no bleed found.",
+    "supervising_release": {
+      "inspector": "DR. RASHID",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-019",
+    "emotional_analysis": {
+      "panicLevel": "Moderate",
+      "distressScore": 58,
+      "speechRate": "170 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 95
+    },
+    "transcript": [
+      {
+        "time": "00:06",
+        "speaker": "Caller",
+        "text": "My grandmother fell and hit her head, she's on blood thinners, I'm worried."
+      },
+      {
+        "time": "00:28",
+        "speaker": "Operator",
+        "text": "Keep her still, don't give anything to eat or drink. Ambulance dispatched."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "DR. RASHID",
+      "role": "Medical Sign-off",
+      "action": "Confirmed CT scan precaution given the patient's anticoagulant use, a mandatory human sign-off step regardless of AI confidence.",
+      "reason": "SOP requires human medical sign-off whenever anticoagulant use is mentioned, independent of AI confidence score.",
+      "timestampLabel": "22:01:40"
+    },
+    "closing_report": {
+      "closedBy": "DR. RASHID",
+      "closedAt": "2026-06-03T22:45:30.000Z",
+      "outcome": "CT scan clear, no bleed found. Patient monitored overnight as precaution.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "22:00:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "22:00:20",
+        "event": "Incident classified: MEDICAL / MODERATE (confidence 95%)",
+        "type": "ai"
+      },
+      {
+        "time": "22:01:40",
+        "event": "HUMAN SIGN-OFF — Dr. Rashid confirmed CT scan precaution",
+        "type": "human"
+      },
+      {
+        "time": "22:02:30",
+        "event": "Ambulance dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "22:45:30",
+        "event": "Case sealed — no bleed found",
+        "type": "close"
+      }
+    ]
+  },
+  {
+    "id": "INC-0065",
+    "title": "Kepong Domestic Disturbance Call",
+    "outcome": "Override",
+    "location": "Kepong, Kuala Lumpur",
+    "incident_type": "CRIME",
+    "severity": "MODERATE",
+    "caller": "NEIGHBOUR — MDM. YAP",
+    "caller_number": "+601X-XXX-4456",
+    "spoken_dialects": [
+      "Cantonese",
+      "EN"
+    ],
+    "dispatch_confidence": 0.58,
+    "call_duration": "02:20",
+    "call_received_at": "2026-05-27T21:00:00.000Z",
+    "dispatched_at": "2026-05-27T21:04:00.000Z",
+    "arrived_at": "2026-05-27T21:16:00.000Z",
+    "resolved_at": "2026-05-27T22:06:00.000Z",
+    "response_time_seconds": 240,
+    "reasoning_report": {
+      "content": "Neighbour reported raised voices next door, ambiguous audio made it difficult for AI to distinguish argument from genuine distress.",
+      "sopUsed": [
+        "Domestic Disturbance Welfare Check SOP"
+      ]
+    },
+    "sop_actions": [
+      "Dispatched welfare-check patrol, non-confrontational approach.",
+      "Advised caller to avoid direct intervention."
+    ],
+    "operator_verdict": "APPROVED & DISPATCHED — Low AI confidence required dispatcher judgment call to proceed.",
+    "notes": "Patrol confirmed a verbal argument, no injuries, both parties calmed down after welfare check.",
+    "supervising_release": {
+      "inspector": "SGT. WONG",
+      "status": 0
+    },
+    "incident_sha": "MERS999-SECURE-AUDIT-SESSION-2026-020",
+    "emotional_analysis": {
+      "panicLevel": "Moderate",
+      "distressScore": 62,
+      "speechRate": "175 wpm",
+      "tremorDetected": false,
+      "volumeTrend": "Stable",
+      "aiConfidence": 58
+    },
+    "transcript": [
+      {
+        "time": "00:06",
+        "speaker": "Caller",
+        "text": "I can hear my neighbours shouting loudly, not sure if it's serious or just an argument."
+      },
+      {
+        "time": "00:35",
+        "speaker": "Operator",
+        "text": "Understood, a welfare-check patrol will head over to check in."
+      }
+    ],
+    "human_intervention": {
+      "required": true,
+      "interventionBy": "OP. LEE CHEN WEI",
+      "role": "Duty Dispatcher",
+      "action": "Decided to send a welfare-check patrol despite the AI's low confidence read, given the ambiguous risk of a domestic situation.",
+      "reason": "AI confidence (58%) was too low to auto-decide; dispatcher chose to err on the side of caution.",
+      "timestampLabel": "21:02:30"
+    },
+    "closing_report": {
+      "closedBy": "SGT. WONG",
+      "closedAt": "2026-05-27T22:06:00.000Z",
+      "outcome": "Verbal argument confirmed, no injuries, both parties calmed after welfare check.",
+      "caseStatus": "CLOSED"
+    },
+    "event_timeline": [
+      {
+        "time": "21:00:00",
+        "event": "Call received — MERS AI Core activated",
+        "type": "system"
+      },
+      {
+        "time": "21:00:25",
+        "event": "Incident classified: CRIME / MODERATE (low confidence 58%)",
+        "type": "ai"
+      },
+      {
+        "time": "21:02:30",
+        "event": "HUMAN DECISION — Op. Lee approved welfare-check patrol",
+        "type": "human"
+      },
+      {
+        "time": "21:04:00",
+        "event": "Patrol unit dispatched",
+        "type": "dispatch"
+      },
+      {
+        "time": "22:06:00",
+        "event": "Case sealed — no injuries found",
+        "type": "close"
+      }
+    ]
+  }
+]

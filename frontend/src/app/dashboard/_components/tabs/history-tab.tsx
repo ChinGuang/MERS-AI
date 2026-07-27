@@ -3,12 +3,13 @@
 import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import {
-  Search, CheckCircle2, XCircle, UserCheck, Zap,
-  AlertTriangle, ChevronRight, MapPin, Flame, Heart, Shield, Car, Droplets,
+  Search, CheckCircle2, XCircle, UserCheck,
+  AlertTriangle, ChevronRight, MapPin, Flame, Heart, Shield, Car, Droplets
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table"
@@ -16,9 +17,10 @@ import {
   DropdownMenu, DropdownMenuCheckboxItem,
   DropdownMenuContent, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { HISTORICAL_REPORTS } from "@/data/historicalReports"
 import { cn } from "@/lib/utils"
-import { SeverityType as ReportSeverityType, ApprovalType, IncidentType } from "@/models/report"
+import { SeverityType as ReportSeverityType, IncidentType, OutcomeType } from "@/models/report"
+import { useAuth } from "@/context/auth/useAuth"
+import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 const PAGE_SIZE = 10
 
@@ -46,22 +48,20 @@ const TYPE_ICON_STYLE: Record<string, string> = {
   [IncidentType.UNKNOWN]:  "bg-muted          text-muted-foreground",
 }
 
-function formatResponseTime(seconds?: number | null) {
-  if (!seconds) return "—"
-  return seconds < 60 ? `${seconds}s` : `${Math.floor(seconds / 60)}m ${seconds % 60}s`
-}
-
-// ── Main component ────────────────────────────────────────────────────────────
-
 export function HistoryTab() {
   const router = useRouter()
-  const [search, setSearch]           = useState("")
+  const { user } = useAuth()
+  const operatorName = user?.user_metadata?.full_name || user?.email || "OP. Khalid"
+
+  const { reports, loading } = useHistoricalReports()
+
+  const [search, setSearch]                 = useState("")
   const [severityFilter, setSeverityFilter] = useState<string[]>([])
-  const [typeFilter, setTypeFilter]   = useState("")
-  const [page, setPage]               = useState(0)
+  const [typeFilter, setTypeFilter]         = useState("")
+  const [page, setPage]                     = useState(0)
 
   const filtered = useMemo(() => {
-    return HISTORICAL_REPORTS.filter((r) => {
+    return reports.filter((r) => {
       const q = search.toLowerCase()
       const matchSearch =
         r.title.toLowerCase().includes(q) ||
@@ -72,7 +72,7 @@ export function HistoryTab() {
       const matchType     = !typeFilter || r.incidentType.toLowerCase().includes(typeFilter.toLowerCase())
       return matchSearch && matchSeverity && matchType
     })
-  }, [search, severityFilter, typeFilter])
+  }, [reports, search, severityFilter, typeFilter])
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
   const pageData   = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
@@ -128,88 +128,104 @@ export function HistoryTab() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/40 hover:bg-muted/40">
-                {["ID","Incident","Severity","Caller","Duration","Response","Human?","Outcome","AI Conf.",""].map((h, i) => (
-                  <TableHead key={i} className={cn("text-[10px] uppercase tracking-wider", i === 9 && "w-10")}>{h}</TableHead>
+                {["ID", "Incident", "Severity", "Caller", "Operator", "Duration", "Outcome", ""].map((h, i) => (
+                  <TableHead key={i} className={cn("text-[10px] uppercase tracking-wider", i === 7 && "w-10")}>{h}</TableHead>
                 ))}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pageData.map((report) => {
-                const isApproved   = report.approvedStatus === ApprovalType.APPROVED
-                const hasHuman     = report.humanIntervention?.required
-                const TypeIcon     = TYPE_ICON[report.incidentType] ?? AlertTriangle
-                const iconStyle    = TYPE_ICON_STYLE[report.incidentType] ?? "bg-muted text-muted-foreground"
-
-                return (
-                  <TableRow
-                    key={report.id}
-                    className="cursor-pointer transition-colors hover:bg-muted/30"
-                    onClick={() => router.push(`/dashboard/history/${report.id}`)}
-                  >
-                    <TableCell className="font-mono text-xs text-muted-foreground">{report.id}</TableCell>
-
+              {loading ? (
+                Array.from({ length: 5 }).map((_, idx) => (
+                  <TableRow key={idx}>
+                    <TableCell><Skeleton className="h-4 w-16" /></TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2.5">
-                        <div className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", iconStyle)}>
-                          <TypeIcon className="size-4" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-semibold leading-tight">{report.title}</p>
-                          <p className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
-                            <MapPin className="size-2.5" />{report.location.split(",")[0]}
-                          </p>
+                        <Skeleton className="size-8 rounded-lg shrink-0" />
+                        <div className="space-y-1.5 flex-1">
+                          <Skeleton className="h-4 w-44" />
+                          <Skeleton className="h-3 w-28" />
                         </div>
                       </div>
                     </TableCell>
-
-                    <TableCell>
-                      <span className={cn(
-                        "inline-flex items-center rounded border px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest",
-                        SEVERITY_BADGE[report.severity] ?? "border-muted bg-muted text-muted-foreground"
-                      )}>
-                        {report.severity}
-                      </span>
-                    </TableCell>
-
-                    <TableCell className="text-xs">{report.caller}</TableCell>
-                    <TableCell className="font-mono text-xs">{report.callDuration}</TableCell>
-                    <TableCell className="font-mono text-xs">{formatResponseTime(report.responseTimeSeconds)}</TableCell>
-
-                    <TableCell>
-                      {hasHuman
-                        ? <Badge className="bg-warning dark:bg-warning/50 border-2 border-black dark:border-warning text-white text-[10px]"><UserCheck className="mr-1 size-2.5" />Yes</Badge>
-                        : <Badge className="bg-secondary dark:bg-secondary/50 border-2 border-black dark:border-secondary text-white text-[10px]"><Zap className="mr-1 size-2.5" />AI Only</Badge>
-                      }
-                    </TableCell>
-
-                    <TableCell>
-                      {isApproved
-                        ? <span className="flex items-center gap-1 text-xs font-medium text-secondary"><CheckCircle2 className="size-3.5" />Dispatched</span>
-                        : <span className="flex items-center gap-1 text-xs font-medium text-destructive"><XCircle className="size-3.5" />Rejected</span>
-                      }
-                    </TableCell>
-
-                    <TableCell>
-                      <div className="flex items-center gap-1.5">
-                        <div className="h-1.5 w-12 overflow-hidden rounded-full bg-muted">
-                          <div
-                            className={cn("h-full rounded-full", report.dispatchConfindece >= 0.8 ? "bg-secondary" : report.dispatchConfindece >= 0.5 ? "bg-warning" : "bg-destructive")}
-                            style={{ width: `${Math.round(report.dispatchConfindece * 100)}%` }}
-                          />
-                        </div>
-                        <span className="text-[10px] font-mono">{Math.round(report.dispatchConfindece * 100)}%</span>
-                      </div>
-                    </TableCell>
-
-                    <TableCell>
-                      <ChevronRight className="size-4 text-muted-foreground" />
-                    </TableCell>
+                    <TableCell><Skeleton className="h-5 w-16 rounded" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-12" /></TableCell>
+                    <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
+                    <TableCell><Skeleton className="size-4 rounded" /></TableCell>
                   </TableRow>
-                )
-              })}
-              {pageData.length === 0 && (
+                ))
+              ) : (
+                pageData.map((report) => {
+                  const TypeIcon  = TYPE_ICON[report.incidentType] ?? AlertTriangle
+                  const iconStyle = TYPE_ICON_STYLE[report.incidentType] ?? "bg-muted text-muted-foreground"
+
+                  return (
+                    <TableRow
+                      key={report.id}
+                      className="cursor-pointer transition-colors hover:bg-muted/30"
+                      onClick={() => router.push(`/dashboard/history/${report.id}`)}
+                    >
+                      <TableCell className="font-mono text-xs text-muted-foreground">{report.id}</TableCell>
+
+                      <TableCell>
+                        <div className="flex items-center gap-2.5">
+                          <div className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", iconStyle)}>
+                            <TypeIcon className="size-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold leading-tight">{report.title}</p>
+                            <p className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+                              <MapPin className="size-2.5" />{report.location.split(",")[0]}
+                            </p>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      <TableCell>
+                        <span className={cn(
+                          "inline-flex items-center rounded border px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest",
+                          SEVERITY_BADGE[report.severity] ?? "border-muted bg-muted text-muted-foreground"
+                        )}>
+                          {report.severity}
+                        </span>
+                      </TableCell>
+
+                      <TableCell className="text-xs">{report.caller}</TableCell>
+                      <TableCell className="text-xs font-medium">{operatorName}</TableCell>
+                      <TableCell className="font-mono text-xs">{report.callDuration}</TableCell>
+
+                      <TableCell>
+                        {report.outcome === OutcomeType.ACCEPT && (
+                          <Badge className="bg-emerald-600/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold">
+                            <CheckCircle2 className="mr-1 size-2.5 text-emerald-400" />
+                            Accept
+                          </Badge>
+                        )}
+                        {report.outcome === OutcomeType.OVERRIDE && (
+                          <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-bold">
+                            <UserCheck className="mr-1 size-2.5 text-amber-400" />
+                            Override
+                          </Badge>
+                        )}
+                        {report.outcome === OutcomeType.REJECT && (
+                          <Badge className="bg-rose-600/20 text-rose-400 border border-rose-500/40 text-[10px] font-bold">
+                            <XCircle className="mr-1 size-2.5 text-rose-400" />
+                            Reject
+                          </Badge>
+                        )}
+                      </TableCell>
+
+                      <TableCell>
+                        <ChevronRight className="size-4 text-muted-foreground" />
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+              )}
+              {!loading && pageData.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={10} className="py-10 text-center text-sm text-muted-foreground">
+                  <TableCell colSpan={8} className="py-10 text-center text-sm text-muted-foreground">
                     No incidents match your filters.
                   </TableCell>
                 </TableRow>
