@@ -26,3 +26,4 @@ pgvector
 psycopg-pool
 langgraph
 pytest
+requests
