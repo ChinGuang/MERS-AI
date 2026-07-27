@@ -31,3 +31,4 @@ DATA_DIR = PROJECT_DIR / "data"
 RETRIEVAL_SIGNALS_PATH= DATA_DIR / "retrieval_signals.json"
 SKILL_CARDS_PATH = DATA_DIR / "sop_skill_cards.jsonl"
 FULL_SOPS_PATH = DATA_DIR / "full_sops"
+GOOGLE_MAPS_API_KEY=os.getenv("GOOGLE_MAPS_API_KEY")

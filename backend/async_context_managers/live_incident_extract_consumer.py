@@ -8,7 +8,7 @@ from constants.redis_key import ACTIVE_CALLS_SET_KEY
 from async_context_managers import base
 from agents.transcript_incident_agent.live_chain import live_chain
 from agents.transcript_incident_agent.chain import format_utterances
-from modules import db_module
+from modules import db_module, map_module
 from modules.redis_module import redis_client
 from modules.transcripts import call_transcript_module
 from models.enum.index import IncidentType
@@ -59,6 +59,10 @@ async def live_incident_extract_consumer():
                     update_payload = {"title": extracted.title}
                     if extracted.location:
                         update_payload["location"] = extracted.location
+                        geocode_details = map_module.get_location_details(extracted.location)
+                        if geocode_details is not None:
+                            update_payload["location_address"] = geocode_details.address
+                            update_payload["coordinates"] = geocode_details.coordinates
                     if extracted.type:
                         try:
                             update_payload["type"] = IncidentType(extracted.type.lower())
