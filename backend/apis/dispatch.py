@@ -7,6 +7,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel
+from models.schema import DispatchRequest
+from database import db_dependency
 
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -15,10 +17,13 @@ GOOGLE_MAPS_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 router = APIRouter(prefix="/dispatch", tags=["dispatch"])
 
 class Transcript(BaseModel):
-    transcript: str
+    # transcript: str
+    incident_location: str
+    incident_type: str
+
 
 @router.post('')
-async def get_dispatch(transcript: Transcript):
+async def get_dispatch(db: db_dependency, input: Transcript):
     # Initialize Google Maps Client
     gmaps = googlemaps.Client(key=GOOGLE_MAPS_KEY)
 
@@ -29,15 +34,29 @@ async def get_dispatch(transcript: Transcript):
             (
                 "system",
                 """
-                You are a helpful emergency dispatcher. Based on the provided caller input transcript, please identify the location name/address & the most suitable type of dispatch station to respond to the emergency situation. Output json format with the following keys: 'location' & 'service'.
+                You are an expert emergency dispatch analyst. Your task is to determine the primary emergency service needed based on the provided incident type ['medical', 'fire', 'crime', 'accident', 'flood'].
 
-                2. Categorize the needed emergency service:
-                    - Fire / Explosion / Trapped -> 'bomba'
-                    - Medical Emergency / Injuries -> 'ambulance'
-                    - Crime / Traffic / Robbery -> 'police'
-                    - Maritime / Water Rescue -> 'maritime'
-                    - Floods / Natural Disasters -> 'civil_defense'
-                """
+                    CLASSIFICATION RULES FOR 'service':
+                    - 'bomba': Fires, explosions, chemical leaks, or structural entrapment/rescue.
+                    - 'ambulance': Medical emergencies, heart attacks, severe illness, or direct physical injuries requiring medical care.
+                    - 'police': Crimes, robberies, violence, traffic accidents/disturbances, or active safety threats.
+                    - 'maritime': Water rescue, drowning, ocean/river vessel accidents, or off-shore emergencies.
+                    - 'civil_defense': Floods, landslides, severe storms, natural disasters, or large-scale community relief/evacuation.
+
+                    NOTE ON INCIDENT TYPES:
+                    - Primary mapping guide:
+                    * fire -> 'bomba'
+                    * medical -> 'ambulance'
+                    * crime -> 'police'
+                    * accident -> 'police'
+                    * flood -> 'civil_defense'
+
+                    OUTPUT REQUIREMENTS:
+                    Return strictly a single JSON object with no markdown formatting around it:
+                    {{
+                    "service_type": "<bomba | ambulance | police | maritime | civil_defense>"
+                    }}
+                """ 
             ),
             (
                 "human",
@@ -51,12 +70,13 @@ async def get_dispatch(transcript: Transcript):
     ai_msg = chain.invoke({
         "input": 
         {
-            transcript.transcript
+            "incident_location": input.incident_location,
+            "incident_type": input.incident_type
         }
     })
 
-    # print(ai_msg)
-    # print(ai_msg["location"])
+    print(ai_msg)
+    # print(ai_msg["service_type"])
 
     def location2Coordinate(location_name: str) -> tuple:
         # This function will take the location name/address and convert it to coordinates (latitude, longitude)
@@ -67,14 +87,10 @@ async def get_dispatch(transcript: Transcript):
             return (location['lat'], location['lng'])
         return None
 
-    loc =location2Coordinate(ai_msg["location"])
+    loc =location2Coordinate(input.incident_location)
     print(loc)
 
     ######## Google Map API Key #############
-
-    # Input data
-    input_data = ai_msg
-    input_coords = loc
 
     def find_nearest_station_by_traffic(data_input, user_coords, gmap_client, file_path="data/station.json"):
         # 1. Read / Load the station.json file
@@ -88,8 +104,10 @@ async def get_dispatch(transcript: Transcript):
             print(f"Error: Failed to parse '{file_path}'. Check JSON formatting.")
             return None
 
+        
+
         # 2. Filter by service_type (case-insensitive)
-        target_service = data_input.get("service", "").strip().lower()
+        target_service = data_input.get("service_type", "").strip().lower()
         
         filtered_stations = [
             station
@@ -103,7 +121,7 @@ async def get_dispatch(transcript: Transcript):
 
         # Convert string lat/lng from JSON into float tuples for Google Maps API
         destinations = [
-            (float(s["latitude"]), float(s["longitude"])) 
+            (float(s["latitude"]), float(s["longitude"]))
             for s in filtered_stations
         ]
 
@@ -148,17 +166,37 @@ async def get_dispatch(transcript: Transcript):
             return None
 
 
+    # Input data
+    input_data = ai_msg
+    input_coords = loc
+
     # Run the function
     result = find_nearest_station_by_traffic(input_data, input_coords, gmaps)
 
     if result:
         print(result)
-        # station, details = result
-        # print("Fastest Station Found (with real-time traffic):")
-        # print(json.dumps(station, indent=2))
+        station, details = result
+        print("Fastest Station Found (with real-time traffic):")
+        print(json.dumps(station, indent=2))
+        print(station["id"])
         # print(f"\nEstimated Travel Time: {details['duration_text']}")
         # print(f"Driving Distance: {details['distance_text']}")
+
+        new_dispatch = DispatchRequest(
+            incident_fkid = "06a4392c-c5e3-7210-80ae-94beae621d03",
+            nearest_service_station_id = station["id"],
+            incident_coordinate = (result[0]['latitude'], result[0]['longitude']),
+            incident_location = input.incident_location,
+            distance = result[1]['distance_text'],
+            eta = result[1]['duration_text'],
+            remark = ""
+        )
+        db.add(new_dispatch)
+        db.commit()
+
     return {
-        "source": (str(loc[0]), str(loc[1])),
-        "destination": (result[0]['latitude'], result[0]['longitude'])
+        "incident": (str(loc[0]), str(loc[1])),
+        "service_station": (result[0]['latitude'], result[0]['longitude']),
+        "distance": (result[1]['distance_text']),
+        "ETA": (result[1]['duration_text'])
     }

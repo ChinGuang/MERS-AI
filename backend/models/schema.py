@@ -1,4 +1,5 @@
 from datetime import datetime
+import uuid
 
 from sqlalchemy import Column, String, Integer, Float, Text, DateTime, ForeignKey, Enum, JSON
 from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
@@ -230,3 +231,27 @@ class HistoricalReport(BaseTable):
     closing_report = Column(JSONB, nullable=False)  # See ClosingReportDTO
     event_timeline = Column(JSONB, nullable=False, default=[])  # List[EventTimelineItemDTO]
     transcript = Column(JSONB, nullable=False, default=[])  # List[TranscriptItemDTO]
+
+class DispatchStation(Base):
+    __tablename__ = "dispatch_station"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True)
+    department = Column(Text, nullable=False)
+    service_type = Column(Text, nullable=False)
+    station_name = Column(Text, nullable=False)
+    address = Column(Text, nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+
+class DispatchRequest(BaseTable):
+    __tablename__ = "dispatch_request"
+
+    id = Column(UUID(as_uuid=True), default=uuid.uuid4, primary_key=True, index=True)
+    incident_fkid = Column(UUID(as_uuid=True), ForeignKey("incidents.id"), index=True)
+    nearest_service_station_id = Column(UUID(as_uuid=True), ForeignKey("dispatch_station.id"), index=True)
+
+    incident_coordinate = Column(ARRAY(Float), nullable=True)
+    incident_location = Column(String, nullable=True)
+    distance = Column(String, nullable=True)
+    eta = Column(String, nullable=True)
+    remark = Column(String, nullable=True)
