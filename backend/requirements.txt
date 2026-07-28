@@ -27,6 +27,7 @@ pgvector
 psycopg-pool
 langgraph
 pytest
+requests
 
 googlemaps
 livekit-agents

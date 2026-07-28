@@ -34,6 +34,7 @@ class Incident(BaseTable):
     dispatch_center = Column(JSON, nullable=True)  # {id, name, lat, lng} - nearest EmergencyDispatchServiceLocation
     title= Column(String, nullable=False)
     location = Column(String, nullable=True)
+    location_address = Column(String, nullable=True)
     ai_confidence = Column(Float, nullable=True)
     ai_summary = Column(String, nullable=True)
     dispatcher_id = Column(UUID(as_uuid=True), ForeignKey("dispatchers.id"), nullable=True)

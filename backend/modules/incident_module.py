@@ -29,11 +29,9 @@ def patch_data(payload: dict[str, Any], db) -> Incident:
 
             normalized_timeline.append(entry)
 
-        cleaned_payload["timeline"] = normalized_timeline
-
         db_module.update_data_by_id(
             cleaned_payload["id"],
-            {"timeline": normalized_timeline},
+            {"time": normalized_timeline},
             db,
             Incident
         )
