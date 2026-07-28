@@ -12,7 +12,7 @@ def get_location_details(location_name: str) -> GeocodeDetailDto | None:
     print(response)
     if response.status_code == 200:
         result = response.json()
-        print(result)
+        print(f"Geocode result: {result['results'][0]["formattedAddress"]}")
         if len(result["results"]) > 0:
             return GeocodeDetailDto(coordinates=(result["results"][0]["location"]["latitude"], result["results"][0]["location"]["longitude"]), address=result["results"][0]["formattedAddress"])
         else:
