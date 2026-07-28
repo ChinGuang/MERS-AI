@@ -5,7 +5,7 @@ import time
 from async_context_managers import base
 from datetime_utils import now_utc
 from models.database.call import InitCallPayload
-from models.database.incident import InitIncidentPayload, UpdateIncidentPayload
+from models.database.incident import InitIncidentPayload
 from models.schema import Call
 from fastapi import WebSocketDisconnect
 
@@ -19,8 +19,9 @@ from fastapi import WebSocket
 from modules.redis_module import redis_client
 
 from models.dto.retell import ConfigResponse, inbound_event_adapter, RetellInboundEvent, \
-    RetellInteractionType, ResponseRequiredRequest, ResponseResponseEvent, RetellResponseType
-from modules import call_module, db_module, incident_module
+    RetellInteractionType, ResponseResponseEvent
+from modules import call_module
+from modules.incidents import incident_module
 from concurrent.futures import TimeoutError as ConnectionTimeoutError
 
 
