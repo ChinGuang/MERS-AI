@@ -36,6 +36,7 @@ def patch_data(payload: dict[str, Any], db) -> Incident:
             db,
             Incident
         )
+        db.commit()
     return Incident(**cleaned_payload)
 
 def init_incident(payload: InitIncidentPayload, db: Session) -> Incident:
