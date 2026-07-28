@@ -24,14 +24,14 @@ def patch_data(payload: dict[str, Any], db) -> Incident:
         for item in timeline:
             entry = dict(item)
 
-            if "time" not in entry and "timestamp" in entry:
+            if "timestamp" in entry:
                 entry["time"] = entry.pop("timestamp")
 
             normalized_timeline.append(entry)
 
         db_module.update_data_by_id(
             cleaned_payload["id"],
-            {"time": normalized_timeline},
+            {"timeline": normalized_timeline},
             db,
             Incident
         )
