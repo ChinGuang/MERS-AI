@@ -10,7 +10,7 @@ from models.schema import Call
 from fastapi import WebSocketDisconnect
 
 from agents.voice_agent import prompting_to_voice_agent
-from modules import location_agent_module
+from modules import location_agent_module, incident_module
 from constants.redis_key import PENDING_CALL_TRANSCRIPT_MAP_KEY, TRANSCRIPT_CONSUME_QUEUE_KEY, INCIDENT_EXTRACT_QUEUE_KEY, ACTIVE_CALLS_SET_KEY
 from main import app
 from database import db_dependency
@@ -21,7 +21,6 @@ from modules.redis_module import redis_client
 from models.dto.retell import ConfigResponse, inbound_event_adapter, RetellInboundEvent, \
     RetellInteractionType, ResponseResponseEvent
 from modules import call_module
-from modules.incidents import incident_module
 from concurrent.futures import TimeoutError as ConnectionTimeoutError
 
 

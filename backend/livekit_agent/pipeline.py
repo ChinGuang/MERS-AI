@@ -39,8 +39,7 @@ from models.database.incident import InitIncidentPayload
 from models.dto.livekit import LiveKitUtterance
 from models.dto.retell import RetellRoleType
 from models.schema import Call
-from modules import call_module
-from modules.incidents import incident_module
+from modules import call_module, incident_module
 from modules.redis_module import redis_client
 
 logger = logging.getLogger(__name__)

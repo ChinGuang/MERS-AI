@@ -1,18 +1,13 @@
 import asyncio
 import json
-import uuid
 from uuid import UUID
 
-import uuid_v7
 from pydantic import BaseModel
 from fastapi.responses import StreamingResponse
 
-from database import db_dependency
 from datetime_utils import to_iso_utc
 from main import app
-from models.database.call_transcript import CreateCallTranscriptPayload
-from modules.transcripts import call_transcript_module
-from modules.transcripts.call_transcript_broadcaster import call_transcript_broadcaster
+from modules.broadcaster_module import call_transcript_broadcaster
 
 class Payload(BaseModel):
     call_id: UUID

@@ -8,7 +8,7 @@ from datetime_utils import now_utc
 from models.dto.retell import Utterance
 from models.schema import Call
 from modules.redis_module import redis_client
-from modules.transcripts import call_transcript_module
+from modules import call_transcript_module
 from async_context_managers import base
 
 

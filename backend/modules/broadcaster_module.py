@@ -1,6 +1,6 @@
 import asyncio
 
-class CallTranscriptBroadcaster:
+class Broadcaster:
     def __init__(self):
         self._listeners = set()
 
@@ -17,4 +17,6 @@ class CallTranscriptBroadcaster:
         for queue in list(self._listeners):
             await queue.put(transcript_payload)
 
-call_transcript_broadcaster = CallTranscriptBroadcaster()
+call_transcript_broadcaster = Broadcaster()
+incident_update_broadcaster = Broadcaster()
+dispatch_request_update_broadcaster = Broadcaster()

@@ -1,6 +1,6 @@
 import asyncio
 from async_context_managers import base
-from modules.transcripts.call_transcript_broadcaster import call_transcript_broadcaster
+from modules.broadcaster_module import call_transcript_broadcaster
 
 job_queue = asyncio.Queue()
 

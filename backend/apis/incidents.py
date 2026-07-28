@@ -6,8 +6,8 @@ from fastapi.responses import StreamingResponse
 
 from database import db_dependency
 from models.database.incident import QueryIncidentPayload
-from modules.incidents import incident_module
-from modules.incidents.incident_update_broadcaster import incident_update_broadcaster
+from modules import incident_module
+from modules.broadcaster_module import incident_update_broadcaster
 
 router = APIRouter(prefix="/incidents", tags=["incidents"])
 

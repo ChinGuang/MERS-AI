@@ -6,8 +6,7 @@ from async_context_managers.transcript_broadcast_consumer import job_queue as tr
 from datetime_utils import to_iso_utc
 from async_context_managers.incident_broadcast_consumer import job_queue as incident_job_queue
 from models.schema import Call, CallTranscript, Incident
-from modules.incidents import incident_module
-from modules.transcripts import call_transcript_module
+from modules import call_transcript_module, incident_module
 
 
 @event.listens_for(CallTranscript, "after_insert")
