@@ -146,14 +146,14 @@ export function DispatchLocationPanel({ incident }: DispatchLocationPanelProps) 
 
           <TabsContent value="map" className="space-y-2">
             <div className="overflow-hidden rounded-lg border">
-              <iframe
-                title={`Google Maps — ${incident.id}`}
+              {/* <iframe
+                title={`Google Maps — ${incident.case_number}`}
                 src={buildGoogleEmbedUrl(lat, lng)}
                 className="h-44 w-full border-0"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 allowFullScreen
-              />
+              /> */}
             </div>
 
             <Button variant="outline" size="sm" className="w-full" asChild>

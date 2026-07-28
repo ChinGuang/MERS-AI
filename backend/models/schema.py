@@ -29,6 +29,7 @@ class Incident(BaseTable):
     __tablename__ = "incidents"
 
     id = Column(UUID(as_uuid=True), primary_key=True, index=True)
+    case_number = Column(String, nullable=False)
     type = Column(Enum(IncidentType), nullable=True)
     coordinates = Column(ARRAY(Float), nullable=True)
     dispatch_center = Column(JSON, nullable=True)  # {id, name, lat, lng} - nearest EmergencyDispatchServiceLocation
