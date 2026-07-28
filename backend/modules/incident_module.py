@@ -6,36 +6,37 @@ from sqlalchemy import select, or_
 from sqlalchemy.orm import Session, joinedload
 from uuid_v7.base import uuid7
 
+from datetime_utils import to_iso_utc
 from models.database.incident import InitIncidentPayload, InitIncidentLogPayload, QueryIncidentPayload, \
     UpdateIncidentPayload
 from models.schema import Incident, IncidentLog, Call
 from modules import db_module
 from modules.transcripts import call_transcript_module
 
-def patch_data(payload: dict[str, Any], db) -> Incident:
-    cleaned_payload = {
-        key: val for key, val in payload.items()
-        if key != "_sa_instance_state"
-    }
-    timeline = cleaned_payload.get("timeline")
+def patch_data(payload: Incident, db):
+    timeline = payload.timeline
 
     if timeline is not None:
         normalized_timeline = []
+        need_update = False
         for item in timeline:
             entry = dict(item)
-
-            if "time" not in entry and "timestamp" in entry:
+            if "timestamp" in entry:
                 entry["time"] = entry.pop("timestamp")
-
-            normalized_timeline.append(entry)
-
-        db_module.update_data_by_id(
-            cleaned_payload["id"],
-            {"time": normalized_timeline},
-            db,
-            Incident
-        )
-    return Incident(**cleaned_payload)
+                need_update = True
+                normalized_timeline.append(entry)
+            else:
+                continue
+        if need_update:
+            payload.timeline = normalized_timeline
+            db_module.update_data_by_id(
+                payload.id,
+                {"timeline": normalized_timeline},
+                db,
+                Incident
+            )
+            db.commit()
+    return payload
 
 def init_incident(payload: InitIncidentPayload, db: Session) -> Incident:
     incident_payload = (payload.model_dump() | {"id": uuid7()})
@@ -57,7 +58,7 @@ def read_incidents(payload:QueryIncidentPayload , db: Session) -> list[Incident]
     incidents = db.scalars(stmt).unique().all()
     formatted_incidents = []
     for incident in incidents:
-        patch_incident = patch_data(incident.__dict__, db)
+        patch_incident = patch_data(incident, db)
         populated_incident = _convert_incident(patch_incident, db)
         formatted_incidents.append(populated_incident)
     return formatted_incidents
@@ -84,8 +85,10 @@ def _convert_incident(incident: Any, db: Session):
             "call_id": str(u.call_id),
             "transcript": u.transcript,
             "role": u.role,
-            "created_at": u.created_at.isoformat() if getattr(u, "created_at", None) else None,
-            "updated_at": u.updated_at.isoformat() if getattr(u, "updated_at", None) else None,
+            "language": u.language,
+            "translated_text": u.translated_text,
+            "created_at": to_iso_utc(getattr(u, "created_at", None)),
+            "updated_at": to_iso_utc(getattr(u, "updated_at", None)),
         }
         for u in raw_transcripts
     ]
@@ -102,8 +105,13 @@ def _convert_incident(incident: Any, db: Session):
         "lang": getattr(first_call, "lang", "") if first_call else "",
         "caller": getattr(first_call, "caller_name", "") if first_call else "",
         "callId": str(call_id) if call_id else "",
+        # Real call-start timestamp - the frontend used to decode this from the
+        # call's UUIDv7 instead, which turned out to embed a bogus, unrelated
+        # timestamp (a bug in the uuid_v7 package's encoding, not a timezone
+        # issue). Sending the actual DB timestamp instead of trusting the UUID.
+        "callStartedAt": to_iso_utc(getattr(first_call, "received_at", None)),
         # Date format converted to ISO-8601 string standard
-        "occurDateTime": incident.occur_date_time.isoformat() + "Z" if incident.occur_date_time else None,
+        "occurDateTime": to_iso_utc(incident.occur_date_time),
 
         "distressScore": incident.distress_score,
         "panicLevel": incident.panic_level,

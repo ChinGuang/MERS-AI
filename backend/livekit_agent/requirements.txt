@@ -7,7 +7,10 @@
 
 livekit-agents
 livekit-api
-livekit-plugins-deepgram
-livekit-plugins-cartesia
-livekit-plugins-silero
 livekit-plugins-google
+
+# No longer required now that worker.py uses Gemini's realtime model for STT+TTS too -
+# left here in case you revert to a Deepgram/Cartesia pipeline later.
+# livekit-plugins-deepgram
+# livekit-plugins-cartesia
+# livekit-plugins-silero

@@ -12,6 +12,7 @@ import {
 } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useIncident } from "@/context/incident/useIncident"
+import { useCallDuration } from "@/hooks/useCallDuration"
 import { cn } from "@/lib/utils"
 
 // ── Constants ───────────────────────────────────────────────────────────────
@@ -197,18 +198,18 @@ function LiveTranscript({ incident }: { incident: ReturnType<typeof useIncident>
                 <div
                   key={i}
                   className={cn(
-                    "flex flex-col gap-0.5 transition-all duration-300",
+                    "flex flex-col gap-1 transition-all duration-300",
                     !isCaller && "items-end",
                     isNew && "animate-in fade-in-0 slide-in-from-bottom-2"
                   )}
                 >
-                  <span className="text-[9px] font-mono text-muted-foreground/50">
+                  <span className="text-[11px] font-mono text-black/80 dark:text-white/80">
                     [{line.speaker.toUpperCase()}]
                     {line.time && <span className="ml-1 opacity-60">{line.time}</span>}
                   </span>
                   <div
                     className={cn(
-                      "relative max-w-[88%] rounded-2xl px-3 py-2 text-xs leading-relaxed",
+                      "relative max-w-[88%] rounded-2xl px-3 py-2 text-xs leading-relaxed mb-2",
                       isCaller
                         ? "rounded-tl-sm bg-muted/70 text-foreground"
                         : "rounded-tr-sm bg-secondary text-secondary-foreground shadow-[0_2px_12px_rgba(34,182,123,0.25)]",
@@ -216,6 +217,19 @@ function LiveTranscript({ incident }: { incident: ReturnType<typeof useIncident>
                     )}
                   >
                     {line.text}
+                    {/* Original was non-English - show the English translation underneath,
+                        since the app's default working language is English. */}
+                    {line.translatedText && line.language && line.language !== "en" && (
+                      <div
+                        className={cn(
+                          "mt-1.5 flex items-start gap-1 border-t pt-1.5 text-[11px] italic opacity-80",
+                          isCaller ? "border-foreground/15" : "border-secondary-foreground/25"
+                        )}
+                      >
+                        <Languages className="mt-0.5 size-3 shrink-0" />
+                        <span>{line.translatedText}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )
@@ -246,6 +260,7 @@ export function LiveIntelligence() {
   const { activeIncident } = useIncident()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const hasLiveCall = (activeIncident?.transcript?.length ?? 0) > 0
+  const callDuration = useCallDuration(activeIncident?.callStartedAt)
 
   return (
     <aside className="hidden min-h-0 flex-col border-l bg-card lg:flex">
@@ -299,7 +314,7 @@ export function LiveIntelligence() {
                 {activeIncident.caller}
               </p>
               <p className="text-[9px] text-muted-foreground">
-                {activeIncident.location} · {activeIncident.duration}
+                {activeIncident.location} · {callDuration}
               </p>
             </div>
           </div>

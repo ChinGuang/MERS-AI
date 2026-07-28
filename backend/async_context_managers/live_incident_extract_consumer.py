@@ -12,7 +12,7 @@ from modules import db_module, map_module
 from modules.redis_module import redis_client
 from modules.transcripts import call_transcript_module
 from models.enum.index import IncidentType
-from models.schema import Call, Incident
+from models.schema import Call, Incident, CallTranscript
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +24,8 @@ def _get_active_call_ids() -> Set[str]:
     members = redis_client.smembers(ACTIVE_CALLS_SET_KEY)
     return set(members) if members else set()
 
+def extract_incident_detail(transcript: list[CallTranscript]):
+    return live_chain.invoke(format_utterances(transcript))
 
 async def live_incident_extract_consumer():
     last_extracted: dict[str, float] = {}
@@ -48,10 +50,8 @@ async def live_incident_extract_consumer():
                 if now - last_utterance_time < DEBOUNCE_SECONDS:
                     continue
 
-                transcript_str = format_utterances(utterances)
-
                 try:
-                    extracted = live_chain.invoke({"transcript": transcript_str})
+                    extracted = extract_incident_detail(utterances)
                     call = base.db.get(Call, call_id)
                     if call is None:
                         continue
