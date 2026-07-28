@@ -90,6 +90,10 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
                     distressScore: parsedData.distressScore ?? 0,
                     caller: parsedData.caller ?? "",
                     contradiction: parsedData.contradiction ?? undefined,
+                    dispatchCenter: parsedData.dispatchCenter ? {
+                        ...parsedData.dispatchCenter,
+                        name: parsedData.dispatchCenter.name ?? undefined,
+                    } : undefined,
                     responder: {
                         name: parsedData.responder?.name ?? '',
                         distance: parsedData.responder?.distance ?? '',
