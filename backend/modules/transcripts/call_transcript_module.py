@@ -44,6 +44,8 @@ def upsert_call_transcript(
     start_duration: int,
     end_duration: int,
     db: Session,
+    language: str | None = None,
+    translated_text: str | None = None,
 ) -> CallTranscript:
     call_id = UUID(str(call_id)) if not isinstance(call_id, UUID) else call_id
     role_str = str(role)
@@ -77,6 +79,12 @@ def upsert_call_transcript(
         if existing.end_duration != end_duration and end_duration > 0:
             existing.end_duration = end_duration
             changed = True
+        if language is not None and existing.language != language:
+            existing.language = language
+            changed = True
+        if translated_text is not None and existing.translated_text != translated_text:
+            existing.translated_text = translated_text
+            changed = True
         if changed:
             db.add(existing)
             db.flush()
@@ -88,6 +96,8 @@ def upsert_call_transcript(
         transcript=content,
         start_duration=start_duration,
         end_duration=end_duration,
+        language=language,
+        translated_text=translated_text,
     )
     return create_call_transcript(payload, db)
 

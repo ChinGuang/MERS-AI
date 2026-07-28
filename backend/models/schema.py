@@ -5,6 +5,7 @@ from sqlalchemy import Column, String, Integer, Float, Text, DateTime, ForeignKe
 from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
 from sqlalchemy.orm import declarative_base, relationship
 
+from datetime_utils import now_utc
 from models.enum.index import IncidentType, SeverityType
 
 Base = declarative_base()
@@ -12,8 +13,8 @@ Base = declarative_base()
 
 class BaseTable(Base):
     __abstract__ = True
-    created_at = Column(DateTime, default=datetime.now)
-    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+    created_at = Column(DateTime, default=now_utc)
+    updated_at = Column(DateTime, default=now_utc, onupdate=now_utc)
 
 class Dispatcher(BaseTable):
     __tablename__ = "dispatchers"
@@ -83,6 +84,8 @@ class CallTranscript(BaseTable):
     call_id = Column(UUID(as_uuid=True), ForeignKey("calls.id"), nullable=False)
     transcript = Column(String, nullable=False)
     role = Column(String, nullable=False, server_default="user")  # "agent" or "user"
+    language = Column(String, nullable=True)  # e.g. "en", "ms", "zh", "ta" - detected, not caller-declared
+    translated_text = Column(Text, nullable=True)  # English translation; null when language is already English
 
 
 class AITriageAssessment(BaseTable):

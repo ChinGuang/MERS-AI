@@ -18,13 +18,19 @@ LIVEKIT_URL = os.getenv("LIVEKIT_URL")
 LIVEKIT_API_KEY = os.getenv("LIVEKIT_API_KEY")
 LIVEKIT_API_SECRET = os.getenv("LIVEKIT_API_SECRET")
 
-# LLM: reuse the same Gemini key the rest of the project already uses (read-only env access,
-# no import from backend/environment.py needed since it's a single os.getenv call).
+# Voice model: reuse the same Gemini key the rest of the project already uses (read-only
+# env access, no import from backend/environment.py needed since it's a single os.getenv call).
+# Realtime/Live models have different names than regular text Gemini models (e.g. the
+# gemini-2.5-flash used elsewhere in this project is NOT a realtime-audio model) - verify
+# this default against Gemini's current realtime/Live model list if worker.py errors on it.
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-LIVEKIT_LLM_MODEL = os.getenv("LIVEKIT_LLM_MODEL", "gemini-2.5-flash")
+# Confirmed against your actual account via list_gemini_live_models.py - "gemini-2.0-flash-exp"
+# (the first guess) doesn't support the Live API at all for direct Gemini API keys.
+LIVEKIT_LLM_MODEL = os.getenv("LIVEKIT_LLM_MODEL", "gemini-2.5-flash-native-audio-latest")
 
-# STT/TTS provider keys - only required once you pick providers in worker.py.
-# Left as plain env reads so swapping providers never means changing this file's shape.
+# No longer used now that worker.py uses Gemini's realtime model for STT+TTS too - left
+# here in case you switch back to a Deepgram/Cartesia pipeline for more control/latency
+# tuning later.
 DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 CARTESIA_API_KEY = os.getenv("CARTESIA_API_KEY")
 

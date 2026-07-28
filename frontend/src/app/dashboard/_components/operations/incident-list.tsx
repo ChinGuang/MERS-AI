@@ -142,7 +142,7 @@ export function IncidentList({ collapsed, onCollapsedChange }: { collapsed: bool
 
       {/* ── Desktop sidebar ── */}
       {!collapsed && (
-        <aside className="hidden w-[350px] min-h-0 flex-col border-r bg-card transition-all duration-300 md:flex">
+        <aside className="hidden w-[350px] lg:w-500px min-h-0 flex-col border-r bg-card transition-all duration-300 md:flex">
           <>
             {/* Header */}
             <div className="flex shrink-0 items-center justify-between border-b px-4 py-3">
@@ -245,10 +245,10 @@ export function IncidentList({ collapsed, onCollapsedChange }: { collapsed: bool
                           <TypeIcon className="size-4" />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-xs font-semibold leading-snug">
+                          <p className="text-xs font-semibold leading-snug whitespace-normal break-words">
                             {incident.title}
                           </p>
-                          <p className="truncate text-[11px] text-muted-foreground">
+                          <p className="text-[11px] text-muted-foreground whitespace-normal break-words">
                             {incident.location}
                           </p>
                         </div>

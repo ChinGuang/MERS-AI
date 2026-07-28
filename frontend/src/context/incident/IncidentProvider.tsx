@@ -4,7 +4,6 @@ import { Incident, SeverityType } from '@/types';
 import { IncidentApi } from '@/apis/incidents';
 import { IncidentDto, IncidentDtoSchema, TranscriptItem } from '@/dtos/incidents';
 import { INITIAL_INCIDENTS } from '@/data/initialIncidents';
-import { addMilliseconds, uuidv7ToDate } from '@/lib/utils';
 import { useSSE } from '@/hooks/useSSE';
 import { CallTranscriptAPI } from '@/apis/call-transcripts';
 
@@ -17,17 +16,23 @@ interface Utterance {
     role: string;
     created_at: string | null;
     updated_at: string | null;
+    language?: string | null;
+    translated_text?: string | null;
 }
 
-function transcriptItemToUtterance(t: Pick<TranscriptItem, "call_id" | "start_duration" | "transcript" | "role">): Incident["transcript"][number] {
-    const call_id = t.call_id;
-    const datetime = uuidv7ToDate(call_id);
-    const newDatetime = addMilliseconds(datetime, t.start_duration)
+function transcriptItemToUtterance(t: Pick<TranscriptItem, "created_at" | "transcript" | "role" | "language" | "translated_text">): Incident["transcript"][number] {
+    // Uses the row's real created_at timestamp directly - NOT a value decoded from the
+    // call's UUIDv7, which turned out to embed a bogus timestamp (a bug in the uuid_v7
+    // package's encoding, unrelated to timezone handling) and made transcript times
+    // display nonsense regardless of any timezone fix.
+    const datetime = t.created_at instanceof Date ? t.created_at : new Date(t.created_at);
     return {
-        time: newDatetime.toTimeString(),
+        time: datetime.toTimeString(),
         speaker: t.role,
         text: t.transcript,
-        highlight: undefined
+        highlight: undefined,
+        language: t.language ?? undefined,
+        translatedText: t.translated_text ?? undefined,
     }
 }
 
@@ -89,6 +94,7 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
                     panicLevel: parsedData.panicLevel ?? "",
                     distressScore: parsedData.distressScore ?? 0,
                     caller: parsedData.caller ?? "",
+                    callStartedAt: parsedData.callStartedAt ?? undefined,
                     contradiction: parsedData.contradiction ?? undefined,
                     dispatchCenter: parsedData.dispatchCenter ? {
                         ...parsedData.dispatchCenter,
@@ -138,6 +144,7 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
                     distressScore: r.distressScore ?? 0,
                     caller: r.caller ?? "",
                     occurDateTime: r.occurDateTime ?? new Date().toLocaleString(),
+                    callStartedAt: r.callStartedAt ?? undefined,
                     lang: r.lang ?? "",
                     priority: r.priority ?? 0,
                     location: r.location ?? '',

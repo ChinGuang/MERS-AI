@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { Mic, Radio } from "lucide-react"
+import { Languages, Mic, Radio } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import type { Incident } from "@/types"
@@ -84,6 +84,19 @@ export function TranscriptFeed({ incident, fillHeight }: TranscriptFeedProps) {
                   <span className="ml-2 inline-block rounded bg-warning/20 px-1 text-[9px] font-bold uppercase tracking-wide text-warning">
                     flagged
                   </span>
+                )}
+                {/* Original was non-English - show the English translation underneath,
+                    since the app's default working language is English. */}
+                {line.translatedText && line.language && line.language !== "en" && (
+                  <div
+                    className={cn(
+                      "mt-1.5 flex items-start gap-1 border-t pt-1.5 text-[11px] italic opacity-80",
+                      isOperator ? "border-primary-foreground/25" : "border-foreground/15"
+                    )}
+                  >
+                    <Languages className="mt-0.5 size-3 shrink-0" />
+                    <span>{line.translatedText}</span>
+                  </div>
                 )}
               </div>
             </div>

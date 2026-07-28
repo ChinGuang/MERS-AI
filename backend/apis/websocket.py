@@ -1,9 +1,9 @@
 import asyncio
 import json
 import time
-from datetime import datetime
 
 from async_context_managers import base
+from datetime_utils import now_utc
 from models.database.call import InitCallPayload
 from models.database.incident import InitIncidentPayload, UpdateIncidentPayload
 from models.schema import Call
@@ -104,7 +104,7 @@ async def llm_websocket_for_retell(websocket: WebSocket, db: db_dependency, call
             init_incident_payload = InitIncidentPayload(title="DRAFT INCIDENT")
             new_incident = incident_module.init_incident(init_incident_payload, db)
             init_call_payload = InitCallPayload(
-                received_at=datetime.now(),
+                received_at=now_utc(),
                 caller_number="UNKNOWN",
                 provider_sid=call_id,
                 incident_id=new_incident.id
@@ -187,7 +187,7 @@ async def llm_websocket_for_retell(websocket: WebSocket, db: db_dependency, call
             redis_client.srem(ACTIVE_CALLS_SET_KEY, str(internal_call_id))
             call = db.get(Call, internal_call_id)
             if call and call.ended_at is None:
-                call.ended_at = datetime.now()
+                call.ended_at = now_utc()
                 db.commit()
                 loop = base.main_loop
                 if loop is not None and loop.is_running():

@@ -1,24 +1,17 @@
 "use client"
 
 import {
-  AlertTriangle,
   CheckCircle2,
   XCircle,
-  HeartPulse,
   ThumbsUp,
   Timer,
   ClipboardList,
   UserCheck,
-  Clock3,
-  Archive,
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import { useIncident } from "@/context/incident/useIncident"
-import { SeverityType } from "@/types"
-import { OutcomeType } from "@/models/report"
+import { OutcomeType, type ArchivedReport } from "@/models/report"
 import { useMemo } from "react"
-import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 interface StatCardProps {
   label: string
@@ -55,7 +48,7 @@ function StatCard({ label, value, icon: Icon, iconColor, iconBg, subtitle }: Sta
   )
 }
 
-function SectionHeader({
+export function SectionHeader({
   icon: Icon,
   title,
   subtitle,
@@ -73,146 +66,83 @@ function SectionHeader({
   )
 }
 
-export function TodayStatCards() {
-  const { incidents } = useIncident()
-
-  const stats = useMemo(() => {
-    const total    = incidents.length
-    const active   = incidents.filter((i) => i.severity !== SeverityType.RESOLVED).length
-    const critical = incidents.filter((i) => i.severity === SeverityType.CRITICAL).length
-    const urgent   = incidents.filter((i) => i.severity === SeverityType.URGENT).length
-    const resolved = incidents.filter((i) => i.severity === SeverityType.RESOLVED).length
-    const pct = (n: number) => (active > 0 ? Math.round((n / active) * 100) : 0)
-
-    return [
-      {
-        label: "Active Cases",
-        value: active,
-        icon: AlertTriangle,
-        iconColor: "text-destructive",
-        iconBg: "bg-destructive/15",
-        subtitle: critical > 0 ? `${critical} critical · ${urgent} urgent` : "None critical",
-      },
-      {
-        label: "Critical",
-        value: critical,
-        icon: HeartPulse,
-        iconColor: "text-destructive",
-        iconBg: "bg-destructive/15",
-        subtitle: critical > 0 ? `${pct(critical)}% of active cases` : "None right now",
-      },
-      {
-        label: "Urgent",
-        value: urgent,
-        icon: Timer,
-        iconColor: "text-warning",
-        iconBg: "bg-warning/15",
-        subtitle: urgent > 0 ? `${pct(urgent)}% of active cases` : "None right now",
-      },
-      {
-        label: "Resolved",
-        value: resolved,
-        icon: CheckCircle2,
-        iconColor: "text-secondary",
-        iconBg: "bg-secondary/15",
-        subtitle: total > 0 ? `${Math.round((resolved / total) * 100)}% of live queue` : "—",
-      },
-    ]
-  }, [incidents])
-
-  return (
-    <div className="flex flex-col gap-3">
-      <SectionHeader icon={Clock3} title="Today" subtitle="live incident queue, right now" />
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {stats.map((stat) => (
-          <StatCard key={stat.label} {...stat} />
-        ))}
-      </div>
-    </div>
-  )
-}
-
 function formatResponseTime(seconds?: number | null) {
   if (!seconds) return "—"
   return seconds < 60 ? `${seconds}s` : `${Math.floor(seconds / 60)}m ${seconds % 60}s`
 }
 
-export function AllTimeStatCards() {
-  const { reports } = useHistoricalReports()
+function getReportStats(reports: ArchivedReport[]): StatCardProps[] {
+  const total      = reports.length
+  const dispatched = reports.filter((r) => r.outcome !== OutcomeType.REJECT).length
+  const overridden = reports.filter((r) => r.outcome === OutcomeType.OVERRIDE).length
+  const approvedAiOnly = reports.filter((r) => r.outcome === OutcomeType.ACCEPT).length
+  const rejectedAiOnly = reports.filter((r) => r.outcome === OutcomeType.REJECT).length
+  const withResponse = reports.filter((r) => r.responseTimeSeconds)
+  const avgResponse = withResponse.length
+    ? Math.round(withResponse.reduce((sum, r) => sum + (r.responseTimeSeconds ?? 0), 0) / withResponse.length)
+    : 0
+  const approvalRate = total ? Math.round((dispatched / total) * 100) : 0
 
-  const stats = useMemo(() => {
-    const total      = reports.length
-    const dispatched = reports.filter((r) => r.outcome !== OutcomeType.REJECT).length
-    const overridden = reports.filter((r) => r.outcome === OutcomeType.OVERRIDE)
-    const aiOnly     = reports.filter((r) => r.outcome !== OutcomeType.OVERRIDE)
-    const approvedAiOnly = reports.filter((r) => r.outcome === OutcomeType.ACCEPT).length
-    const rejectedAiOnly = reports.filter((r) => r.outcome === OutcomeType.REJECT).length
-    const withResponse = reports.filter((r) => r.responseTimeSeconds)
-    const avgResponse = withResponse.length
-      ? Math.round(withResponse.reduce((sum, r) => sum + (r.responseTimeSeconds ?? 0), 0) / withResponse.length)
-      : 0
-    const approvalRate = total ? Math.round((dispatched / total) * 100) : 0
+  return [
+    {
+      label: "Total Cases",
+      value: total,
+      icon: ClipboardList,
+      iconColor: "text-primary",
+      iconBg: "bg-primary/15",
+      subtitle: "Cases handled",
+    },
+    {
+      label: "Approval Rate",
+      value: `${approvalRate}%`,
+      icon: ThumbsUp,
+      iconColor: "text-primary",
+      iconBg: "bg-primary/15",
+      subtitle: "SLA target 95%",
+    },
+    {
+      label: "Avg Response",
+      value: formatResponseTime(avgResponse),
+      icon: Timer,
+      iconColor: "text-warning",
+      iconBg: "bg-warning/15",
+      subtitle: "Call to dispatch",
+    },
+    {
+      label: "Approved (AI-only)",
+      value: approvedAiOnly,
+      icon: CheckCircle2,
+      iconColor: "text-secondary",
+      iconBg: "bg-secondary/15",
+      subtitle: "Dispatched, no review needed",
+    },
+    {
+      label: "Rejected (AI-only)",
+      value: rejectedAiOnly,
+      icon: XCircle,
+      iconColor: "text-destructive",
+      iconBg: "bg-destructive/15",
+      subtitle: "No resources deployed",
+    },
+    {
+      label: "Overridden",
+      value: overridden,
+      icon: UserCheck,
+      iconColor: "text-warning",
+      iconBg: "bg-warning/15",
+      subtitle: "Resolved with a dispatcher",
+    },
+  ]
+}
 
-    return [
-      {
-        label: "Total Cases",
-        value: total,
-        icon: ClipboardList,
-        iconColor: "text-primary",
-        iconBg: "bg-primary/15",
-        subtitle: "All-time archive",
-      },
-      {
-        label: "Approval Rate",
-        value: `${approvalRate}%`,
-        icon: ThumbsUp,
-        iconColor: "text-primary",
-        iconBg: "bg-primary/15",
-        subtitle: "SLA target 95%",
-      },
-      {
-        label: "Avg Response",
-        value: formatResponseTime(avgResponse),
-        icon: Timer,
-        iconColor: "text-warning",
-        iconBg: "bg-warning/15",
-        subtitle: "Call to dispatch",
-      },
-      {
-        label: "Approved (AI-only)",
-        value: approvedAiOnly,
-        icon: CheckCircle2,
-        iconColor: "text-secondary",
-        iconBg: "bg-secondary/15",
-        subtitle: "Dispatched, no review needed",
-      },
-      {
-        label: "Rejected (AI-only)",
-        value: rejectedAiOnly,
-        icon: XCircle,
-        iconColor: "text-destructive",
-        iconBg: "bg-destructive/15",
-        subtitle: "No resources deployed",
-      },
-      {
-        label: "Overridden",
-        value: overridden.length,
-        icon: UserCheck,
-        iconColor: "text-warning",
-        iconBg: "bg-warning/15",
-        subtitle: "Resolved with a dispatcher",
-      },
-    ]
-  }, [])
+export function StatCardsGrid({ reports }: { reports: ArchivedReport[] }) {
+  const stats = useMemo(() => getReportStats(reports), [reports])
 
   return (
-    <div className="flex flex-col gap-3">
-      <SectionHeader icon={Archive} title="All Time" subtitle="historical archive" />
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        {stats.map((stat) => (
-          <StatCard key={stat.label} {...stat} />
-        ))}
-      </div>
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+      {stats.map((stat) => (
+        <StatCard key={stat.label} {...stat} />
+      ))}
     </div>
   )
 }
