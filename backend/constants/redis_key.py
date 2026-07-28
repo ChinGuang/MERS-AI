@@ -6,6 +6,7 @@ PENDING_CALL_TRANSCRIPT_MAP_LIVE_AGENT_KEY = "pending_call_transcript_map_live_a
 TRANSCRIPT_CONSUME_QUEUE_KEY = "transcript_consume_queue"
 INCIDENT_EXTRACT_QUEUE_KEY = "incident_extract_queue"
 ACTIVE_CALLS_SET_KEY: str = "active_calls"
+INCIDENT_DISPATCH_SET_KEY: str =  "incident_dispatch_set"
 
 def get_transcript_utterance_set_key(call_id):
     return f"transcript_utterance_set:{call_id}"

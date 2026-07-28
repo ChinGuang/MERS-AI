@@ -4,11 +4,14 @@ import time
 from typing import Set
 from uuid import UUID
 
-from constants.redis_key import ACTIVE_CALLS_SET_KEY
+from agents import dispatch_agent
+from constants.redis_key import ACTIVE_CALLS_SET_KEY, INCIDENT_DISPATCH_SET_KEY
 from async_context_managers import base
 from agents.transcript_incident_agent.live_chain import live_chain
 from agents.transcript_incident_agent.chain import format_utterances
-from modules import db_module, map_module
+from models.dto.dispatch_request import CreateDispatchRequestPayload
+from models.dto.voice_agent import DispatchInputPayload
+from modules import db_module, map_module, dispatch_request_module
 from modules.redis_module import redis_client
 from modules.transcripts import call_transcript_module
 from models.enum.index import IncidentType
@@ -68,7 +71,23 @@ async def live_incident_extract_consumer():
                             update_payload["type"] = IncidentType(extracted.type.lower())
                         except ValueError:
                             logger.warning("Invalid incident type: %s", extracted.type)
-
+                    if extracted.location and extracted.type:
+                        has_dispatch = redis_client.sismember(INCIDENT_DISPATCH_SET_KEY, str(call.incident_id))
+                        if not has_dispatch:
+                            dispatch_result = dispatch_agent.get_dispatch(base.db, DispatchInputPayload(
+                                incident_type=extracted.type,
+                                incident_location=extracted.location
+                            ))
+                            dispatch_request_module.create_dispatch_request(CreateDispatchRequestPayload(
+                                incident_fkid=call.incident_id,
+                                incident_coordinate=list(dispatch_result["incident"]),
+                                incident_location=extracted.location,
+                                nearest_service_station_id=dispatch_result["nearest_service_station_id"],
+                                distance=dispatch_result["distance"],
+                                eta=dispatch_result["ETA"],
+                            ),base.db)
+                            base.db.commit()
+                            redis_client.sadd(INCIDENT_DISPATCH_SET_KEY, str(call.incident_id))
                     db_module.update_data_by_id(call.incident_id, update_payload, base.db, Incident)
                     base.db.commit()
 

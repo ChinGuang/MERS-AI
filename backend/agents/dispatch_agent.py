@@ -10,7 +10,7 @@ from models.schema import DispatchRequest
 from database import db_dependency
 from environment import GEMINI_API_KEY, GOOGLE_MAPS_API_KEY
 
-async def get_dispatch(db: db_dependency, input_payload: DispatchInputPayload):
+def get_dispatch(db: db_dependency, input_payload: DispatchInputPayload):
     # Initialize Google Maps Client
     gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
 
@@ -164,22 +164,10 @@ async def get_dispatch(db: db_dependency, input_payload: DispatchInputPayload):
         print(station["id"])
         # print(f"\nEstimated Travel Time: {details['duration_text']}")
         # print(f"Driving Distance: {details['distance_text']}")
-
-        new_dispatch = DispatchRequest(
-            incident_fkid="06a4392c-c5e3-7210-80ae-94beae621d03",
-            nearest_service_station_id=station["id"],
-            incident_coordinate=(result[0]['latitude'], result[0]['longitude']),
-            incident_location=input_payload.incident_location,
-            distance=result[1]['distance_text'],
-            eta=result[1]['duration_text'],
-            remark=""
-        )
-        db.add(new_dispatch)
-        db.commit()
-
     return {
-        "incident": (str(loc[0]), str(loc[1])),
-        "service_station": (result[0]['latitude'], result[0]['longitude']),
+        "incident": (loc[0], loc[1]),
+        "service_station": (float(result[0]['latitude']), float(result[0]['longitude'])),
         "distance": (result[1]['distance_text']),
-        "ETA": (result[1]['duration_text'])
+        "ETA": (result[1]['duration_text']),
+        "nearest_service_station_id": result[0]['id']
     }
