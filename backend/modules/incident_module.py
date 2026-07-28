@@ -6,6 +6,7 @@ from sqlalchemy import select, or_
 from sqlalchemy.orm import Session, joinedload
 from uuid_v7.base import uuid7
 
+from datetime_utils import to_iso_utc
 from models.database.incident import InitIncidentPayload, InitIncidentLogPayload, QueryIncidentPayload, \
     UpdateIncidentPayload
 from models.schema import Incident, IncidentLog, Call
@@ -86,8 +87,10 @@ def _convert_incident(incident: Any, db: Session):
             "call_id": str(u.call_id),
             "transcript": u.transcript,
             "role": u.role,
-            "created_at": u.created_at.isoformat() if getattr(u, "created_at", None) else None,
-            "updated_at": u.updated_at.isoformat() if getattr(u, "updated_at", None) else None,
+            "language": u.language,
+            "translated_text": u.translated_text,
+            "created_at": to_iso_utc(getattr(u, "created_at", None)),
+            "updated_at": to_iso_utc(getattr(u, "updated_at", None)),
         }
         for u in raw_transcripts
     ]
@@ -103,8 +106,13 @@ def _convert_incident(incident: Any, db: Session):
         "lang": getattr(first_call, "lang", "") if first_call else "",
         "caller": getattr(first_call, "caller_name", "") if first_call else "",
         "callId": str(call_id) if call_id else "",
+        # Real call-start timestamp - the frontend used to decode this from the
+        # call's UUIDv7 instead, which turned out to embed a bogus, unrelated
+        # timestamp (a bug in the uuid_v7 package's encoding, not a timezone
+        # issue). Sending the actual DB timestamp instead of trusting the UUID.
+        "callStartedAt": to_iso_utc(getattr(first_call, "received_at", None)),
         # Date format converted to ISO-8601 string standard
-        "occurDateTime": incident.occur_date_time.isoformat() + "Z" if incident.occur_date_time else None,
+        "occurDateTime": to_iso_utc(incident.occur_date_time),
 
         "distressScore": incident.distress_score,
         "panicLevel": incident.panic_level,

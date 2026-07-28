@@ -1,12 +1,16 @@
 import asyncio
 import json
 import time
+import uuid
 from typing import List
 
+from agents.translation_agent import detect_and_translate
 from constants.redis_key import TRANSCRIPT_CONSUME_QUEUE_KEY, PENDING_CALL_TRANSCRIPT_MAP_KEY, \
     get_transcript_utterance_set_key
+from datetime_utils import now_utc
 from models.database.call_transcript import CreateCallTranscriptPayload, UtteranceExistsPayload
 from models.dto.retell import Utterance
+from models.schema import Call
 from modules.redis_module import redis_client
 from modules.transcripts import call_transcript_module
 from async_context_managers import base
@@ -36,6 +40,23 @@ async def transcript_process_consumer():
                         default_start_duration = int(utterance.words[0].start * 1000)
                     if utterance.words[-1].end is not None:
                         default_end_duration = int(utterance.words[-1].end * 1000)
+                else:
+                    # No word-level timing (every LiveKit-sourced utterance today,
+                    # plus some Retell partial updates) used to fall back to 0,
+                    # which made every untimed utterance in a call display the
+                    # exact same call-start timestamp on the frontend. Use real
+                    # elapsed wall-clock time since the call started instead, so
+                    # timestamps still progress through the conversation.
+                    call = base.db.get(Call, uuid.UUID(process_call_id))
+                    if call and call.received_at:
+                        elapsed_ms = max(int((now_utc() - call.received_at).total_seconds() * 1000), 0)
+                        default_start_duration = elapsed_ms
+                        default_end_duration = elapsed_ms
+
+                # Runs in a worker thread - detect_and_translate makes a blocking
+                # Gemini call, and this consumer runs on the main event loop
+                # (same pattern as location_agent_module.py's geocoding call).
+                translated = await asyncio.to_thread(detect_and_translate, utterance.content)
 
                 call_transcript_module.upsert_call_transcript(
                     call_id=process_call_id,
@@ -44,6 +65,12 @@ async def transcript_process_consumer():
                     start_duration=default_start_duration,
                     end_duration=default_end_duration,
                     db=base.db,
+                    language=translated.language if translated else None,
+                    translated_text=(
+                        translated.english_translation
+                        if translated and not translated.is_english
+                        else None
+                    ),
                 )
 
             base.db.commit()

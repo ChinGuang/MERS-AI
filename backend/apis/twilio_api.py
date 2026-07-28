@@ -1,7 +1,6 @@
-from datetime import datetime
-
 from twilio.twiml.voice_response import VoiceResponse, Connect, Dial
 
+from datetime_utils import now_utc
 from main import app
 from database import db_dependency
 from fastapi import Request, Form, Response
@@ -30,7 +29,7 @@ async def twilio_webhook(req: Request, db: db_dependency, From: str = Form(...),
         init_incident_payload = InitIncidentPayload(title="DRAFT INCIDENT")
         new_incident = incident_module.init_incident(init_incident_payload, db)
         # Store Retell's call_id as provider_sid so the Retell webhook can look it up later
-        init_call_payload = InitCallPayload(received_at=datetime.now(), caller_number=From, provider_sid=phone_call_response.call_id, incident_id=new_incident.id)
+        init_call_payload = InitCallPayload(received_at=now_utc(), caller_number=From, provider_sid=phone_call_response.call_id, incident_id=new_incident.id)
         call_module.init_call(init_call_payload, db)
 
 

@@ -24,7 +24,6 @@ app's process. Because of that:
 import json
 import logging
 import time
-from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Session
@@ -36,6 +35,7 @@ from constants.redis_key import (
     TRANSCRIPT_CONSUME_QUEUE_KEY,
 )
 from database import SessionLocal
+from datetime_utils import now_utc
 from models.database.call import InitCallPayload
 from models.database.incident import InitIncidentPayload
 from models.dto.retell import RetellRoleType, Utterance
@@ -67,7 +67,7 @@ def get_or_create_call(room_name: str, db: Session) -> tuple[UUID, UUID]:
     )
     call_module.init_call(
         InitCallPayload(
-            received_at=datetime.now(),
+            received_at=now_utc(),
             caller_number="UNKNOWN (LiveKit)",
             provider_sid=room_name,
             incident_id=new_incident.id,
@@ -118,7 +118,7 @@ def end_call(internal_call_id: UUID, db: Session) -> None:
 
     call = db.get(Call, internal_call_id)
     if call is not None and call.ended_at is None:
-        call.ended_at = datetime.now()
+        call.ended_at = now_utc()
         db.commit()
         redis_client.lpush(INCIDENT_EXTRACT_QUEUE_KEY, str(internal_call_id))
         logger.info("[livekit_agent] enqueued incident extraction for call %s", internal_call_id)

@@ -51,9 +51,10 @@ See `.env.example` in this folder for the exact keys to add to your real `backen
 (not read automatically — it's a reference list, not a second env file).
 
 1. A LiveKit account — `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`.
-2. Deepgram (STT) and Cartesia (TTS) API keys — `DEEPGRAM_API_KEY`, `CARTESIA_API_KEY`.
-3. Reuses the existing `GEMINI_API_KEY` for the LLM — no new key needed there.
-4. Install the incremental packages (everything else — FastAPI, uvicorn, dotenv, redis — is already
+2. Reuses the existing `GEMINI_API_KEY` for STT+LLM+TTS via Gemini's realtime voice model — no
+   new voice-provider account needed. (Deepgram/Cartesia keys are no longer required; kept as
+   optional env vars in case you revert to that pipeline for more latency/voice control later.)
+3. Install the incremental packages (everything else — FastAPI, uvicorn, dotenv, redis — is already
    satisfied by `backend/requirements.txt`, which you already have installed to run the main app):
    ```
    pip install -r livekit_agent/requirements.txt
@@ -91,11 +92,7 @@ code, in parallel with `api.py`, which stays useful once you want your own dashb
 
 ## Not done yet (intentionally — needs your go-ahead first)
 
-- **No button in the dashboard UI** to trigger a fallback call — test via `curl`/Postman against
-  `api.py`, or LiveKit's hosted test client, for now.
 - **`api.py` is not mounted into `main.py`** — it's its own process/port. Merging it in later is one
-  import line, held until you want that.
-- **Nothing added to `backend/requirements.txt`** — `livekit_agent/requirements.txt` (new, isolated
-  file) covers the incremental packages instead, so the shared root file stays untouched.
-- **No `Call.provider` column** to record "this call came via LiveKit" — that's part of the next
-  planned phase (Phase 0), which does touch `models/schema.py`.
+  import line, held until you want that. The dashboard's Operations tab now has a "Start Fallback
+  Voice Line" button (`frontend/.../operations/livekit-fallback-call.tsx`) that talks to it directly.
+- **No `Call.provider` column** to record "this call came via LiveKit" — not yet added.

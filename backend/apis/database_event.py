@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from async_context_managers import base
 from async_context_managers.transcript_broadcast_consumer import job_queue as transcript_job_queue
+from datetime_utils import to_iso_utc
 from async_context_managers.incident_broadcast_consumer import job_queue as incident_job_queue
 from models.schema import Call, CallTranscript, Incident
 from modules import incident_module
@@ -25,8 +26,10 @@ def receive_after_insert_call_transcript(mapper, connection, target):
                     "call_id": str(u.call_id),
                     "transcript": u.transcript,
                     "role": u.role,
-                    "created_at": u.created_at.isoformat() if getattr(u, "created_at", None) else None,
-                    "updated_at": u.updated_at.isoformat() if getattr(u, "updated_at", None) else None,
+                    "language": u.language,
+                    "translated_text": u.translated_text,
+                    "created_at": to_iso_utc(getattr(u, "created_at", None)),
+                    "updated_at": to_iso_utc(getattr(u, "updated_at", None)),
                 }
                 for u in utterances
             ]
@@ -63,8 +66,10 @@ def receive_after_update_call_transcript(mapper, connection, target):
                     "call_id": str(u.call_id),
                     "transcript": u.transcript,
                     "role": u.role,
-                    "created_at": u.created_at.isoformat() if getattr(u, "created_at", None) else None,
-                    "updated_at": u.updated_at.isoformat() if getattr(u, "updated_at", None) else None,
+                    "language": u.language,
+                    "translated_text": u.translated_text,
+                    "created_at": to_iso_utc(getattr(u, "created_at", None)),
+                    "updated_at": to_iso_utc(getattr(u, "updated_at", None)),
                 }
                 for u in utterances
             ]
