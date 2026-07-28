@@ -23,7 +23,6 @@ app's process. Because of that:
 
 import json
 import logging
-import time
 from uuid import UUID
 
 from sqlalchemy.orm import Session
@@ -38,7 +37,7 @@ from datetime_utils import now_utc
 from models.database.call import InitCallPayload
 from models.database.incident import InitIncidentPayload
 from models.dto.livekit import LiveKitUtterance
-from models.dto.retell import RetellRoleType, Utterance
+from models.dto.retell import RetellRoleType
 from models.schema import Call
 from modules import call_module, incident_module
 from modules.redis_module import redis_client

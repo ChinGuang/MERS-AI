@@ -1,4 +1,3 @@
-import json
 from typing import Any
 from uuid import UUID
 
@@ -10,8 +9,8 @@ from datetime_utils import to_iso_utc
 from models.database.incident import InitIncidentPayload, InitIncidentLogPayload, QueryIncidentPayload, \
     UpdateIncidentPayload
 from models.schema import Incident, IncidentLog, Call
-from modules import db_module
-from modules.transcripts import call_transcript_module
+from modules import db_module, call_transcript_module
+
 
 def patch_data(payload: Incident, db):
     timeline = payload.timeline

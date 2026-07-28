@@ -1,6 +1,6 @@
 import asyncio
 from async_context_managers import base
-from modules.incidents.incident_update_broadcaster import incident_update_broadcaster
+from modules.broadcaster_module import incident_update_broadcaster
 
 job_queue = asyncio.Queue()
 

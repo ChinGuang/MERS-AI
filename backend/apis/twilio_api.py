@@ -7,7 +7,7 @@ from fastapi import Request, Form, Response
 
 from models.database.call import InitCallPayload
 from models.database.incident import InitIncidentPayload
-from modules import call_module, db_module, incident_module, retell_module
+from modules import call_module, db_module, retell_module, incident_module
 
 
 @app.post("/voice")
