@@ -31,13 +31,13 @@ from sqlalchemy.orm import Session
 from constants.redis_key import (
     ACTIVE_CALLS_SET_KEY,
     INCIDENT_EXTRACT_QUEUE_KEY,
-    PENDING_CALL_TRANSCRIPT_MAP_KEY,
-    TRANSCRIPT_CONSUME_QUEUE_KEY,
+    PENDING_CALL_TRANSCRIPT_MAP_LIVE_AGENT_KEY,
 )
 from database import SessionLocal
 from datetime_utils import now_utc
 from models.database.call import InitCallPayload
 from models.database.incident import InitIncidentPayload
+from models.dto.livekit import LiveKitUtterance
 from models.dto.retell import RetellRoleType, Utterance
 from models.schema import Call
 from modules import call_module, incident_module
@@ -98,13 +98,8 @@ def enqueue_transcript(internal_call_id: UUID, role: RetellRoleType, content: st
     if not content.strip():
         return
 
-    utterance = Utterance(role=role, content=content, words=None)
-    redis_client.hset(
-        PENDING_CALL_TRANSCRIPT_MAP_KEY,
-        str(internal_call_id),
-        json.dumps([utterance.model_dump()]),
-    )
-    redis_client.zadd(TRANSCRIPT_CONSUME_QUEUE_KEY, {str(internal_call_id): time.time()})
+    utterance = LiveKitUtterance(role=role, content=content, words=None, call_id=str(internal_call_id))
+    redis_client.lpush(PENDING_CALL_TRANSCRIPT_MAP_LIVE_AGENT_KEY, json.dumps(utterance.model_dump()))
 
 
 def end_call(internal_call_id: UUID, db: Session) -> None:

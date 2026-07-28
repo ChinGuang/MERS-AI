@@ -1,14 +1,10 @@
 import asyncio
 import json
-import time
 import uuid
-from typing import List
 
 from agents.translation_agent import detect_and_translate
-from constants.redis_key import TRANSCRIPT_CONSUME_QUEUE_KEY, PENDING_CALL_TRANSCRIPT_MAP_KEY, \
-    get_transcript_utterance_set_key
+from constants.redis_key import TRANSCRIPT_CONSUME_QUEUE_KEY, PENDING_CALL_TRANSCRIPT_MAP_KEY
 from datetime_utils import now_utc
-from models.database.call_transcript import CreateCallTranscriptPayload, UtteranceExistsPayload
 from models.dto.retell import Utterance
 from models.schema import Call
 from modules.redis_module import redis_client
@@ -24,7 +20,7 @@ async def transcript_process_consumer():
                 await asyncio.sleep(0.1)
                 continue
             process_call_id = result[0][0]
-            print("transcript_process_consumer: Processing call transcript for call", process_call_id)
+            print("transcript_process_consumer: Processing call trtranscript_process_consumer.pyanscript for call", process_call_id)
 
             transcript_json = redis_client.hpop(PENDING_CALL_TRANSCRIPT_MAP_KEY, process_call_id)
             print("transcript_process_consumer: Processing call transcript for call", process_call_id, "with transcript", transcript_json)
