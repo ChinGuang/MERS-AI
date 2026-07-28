@@ -142,6 +142,10 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
                     priority: r.priority ?? 0,
                     location: r.location ?? '',
                     transcript: r.transcript.map(transcriptItemToUtterance),
+                    dispatchCenter: r.dispatchCenter ? {
+                        ...r.dispatchCenter,
+                        name: r.dispatchCenter.name ?? undefined
+                    } : undefined,
                     type: r.type ?? undefined,
                     severity: (r.severity?.toLowerCase() as Exclude<SeverityType, SeverityType.ALL> ?? SeverityType.MODERATE),
                     contradiction: r.contradiction ?? undefined,
