@@ -94,6 +94,7 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
                     panicLevel: parsedData.panicLevel ?? "",
                     distressScore: parsedData.distressScore ?? 0,
                     caller: parsedData.caller ?? "",
+                    callStartedAt: parsedData.callStartedAt ?? undefined,
                     contradiction: parsedData.contradiction ?? undefined,
                     dispatchCenter: parsedData.dispatchCenter ? {
                         ...parsedData.dispatchCenter,
@@ -143,6 +144,7 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
                     distressScore: r.distressScore ?? 0,
                     caller: r.caller ?? "",
                     occurDateTime: r.occurDateTime ?? new Date().toLocaleString(),
+                    callStartedAt: r.callStartedAt ?? undefined,
                     lang: r.lang ?? "",
                     priority: r.priority ?? 0,
                     location: r.location ?? '',

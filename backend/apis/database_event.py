@@ -138,7 +138,7 @@ def receive_after_insert_incident(mapper, connection, target):
 
 @event.listens_for(Incident, "after_update")
 def receive_after_update_incident(mapper, connection, target):
-    print(f"sent sse event with whole incident with {target.id}")
+    print(f"sent sse event with update whole incident with {target.id}")
     try:
         session = Session(bind=connection)
         try:

@@ -13,31 +13,30 @@ from models.schema import Incident, IncidentLog, Call
 from modules import db_module
 from modules.transcripts import call_transcript_module
 
-def patch_data(payload: dict[str, Any], db) -> Incident:
-    cleaned_payload = {
-        key: val for key, val in payload.items()
-        if key != "_sa_instance_state"
-    }
-    timeline = cleaned_payload.get("timeline")
+def patch_data(payload: Incident, db):
+    timeline = payload.timeline
 
     if timeline is not None:
         normalized_timeline = []
+        need_update = False
         for item in timeline:
             entry = dict(item)
-
             if "timestamp" in entry:
                 entry["time"] = entry.pop("timestamp")
-
-            normalized_timeline.append(entry)
-
-        db_module.update_data_by_id(
-            cleaned_payload["id"],
-            {"timeline": normalized_timeline},
-            db,
-            Incident
-        )
-        db.commit()
-    return Incident(**cleaned_payload)
+                need_update = True
+                normalized_timeline.append(entry)
+            else:
+                continue
+        if need_update:
+            payload.timeline = normalized_timeline
+            db_module.update_data_by_id(
+                payload.id,
+                {"timeline": normalized_timeline},
+                db,
+                Incident
+            )
+            db.commit()
+    return payload
 
 def init_incident(payload: InitIncidentPayload, db: Session) -> Incident:
     incident_payload = (payload.model_dump() | {"id": uuid7()})
@@ -59,7 +58,7 @@ def read_incidents(payload:QueryIncidentPayload , db: Session) -> list[Incident]
     incidents = db.scalars(stmt).unique().all()
     formatted_incidents = []
     for incident in incidents:
-        patch_incident = patch_data(incident.__dict__, db)
+        patch_incident = patch_data(incident, db)
         populated_incident = _convert_incident(patch_incident, db)
         formatted_incidents.append(populated_incident)
     return formatted_incidents
