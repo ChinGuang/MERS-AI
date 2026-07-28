@@ -9,6 +9,8 @@ class CreateCallTranscriptPayload(BaseModel):
     call_id: UUID
     transcript: str
     role: str
+    language: str | None = None
+    translated_text: str | None = None
 
 class UtteranceExistsPayload(BaseModel):
     call_id: UUID

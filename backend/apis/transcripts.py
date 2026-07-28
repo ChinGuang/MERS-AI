@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from fastapi.responses import StreamingResponse
 
 from database import db_dependency
+from datetime_utils import to_iso_utc
 from main import app
 from models.database.call_transcript import CreateCallTranscriptPayload
 from modules.transcripts import call_transcript_module
@@ -26,8 +27,10 @@ def serialize_transcript(transcript):
         "call_id": str(transcript.call_id),
         "transcript": transcript.transcript,
         "role": transcript.role,
-        "created_at": transcript.created_at.isoformat() if getattr(transcript, "created_at", None) else None,
-        "updated_at": transcript.updated_at.isoformat() if getattr(transcript, "updated_at", None) else None,
+        "language": transcript.language,
+        "translated_text": transcript.translated_text,
+        "created_at": to_iso_utc(getattr(transcript, "created_at", None)),
+        "updated_at": to_iso_utc(getattr(transcript, "updated_at", None)),
     }
 
 

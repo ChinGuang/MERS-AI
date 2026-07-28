@@ -15,6 +15,7 @@ NEXT_PUBLIC_TOGGLE_HARDCODE=true
 * cd backend, .venv\Scripts\activate, uvicorn livekit_agent.api:app --port 8010 --reload
 * cd backend, .venv\Scripts\activate, python -m livekit_agent.worker dev
 * cd backend, .venv\Scripts\activate, fastapi dev main.py
+* cd backend, .venv\Scripts\activate, fastapi dev main2.py --port 8001
 * cd frontend, npm i, npm run dev
 
 

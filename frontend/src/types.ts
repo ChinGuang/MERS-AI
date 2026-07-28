@@ -14,6 +14,8 @@ export interface Incident {
   occurDateTime: string;
   caller: string;
   callId: string;
+  /** Real call-start timestamp (ISO, UTC) - use this, not a decoded UUID, for any duration/elapsed-time math. */
+  callStartedAt?: string;
   callerAge?: string;
   callerGender?: string;
   duration: string;
@@ -39,6 +41,10 @@ export interface Incident {
     speaker: string;
     text: string;
     highlight?: boolean;
+    /** ISO 639-1 code detected by the backend, e.g. "en", "ms", "zh", "ta". */
+    language?: string;
+    /** English translation, present only when language isn't already English. */
+    translatedText?: string;
   }[];
   coordinates?: { lat: number; lng: number };
   /** Nearest emergency service location computed by the backend's location/dispatcher agent. */

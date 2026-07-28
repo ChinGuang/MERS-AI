@@ -6,9 +6,9 @@ from fastapi import FastAPI
 
 from async_context_managers.incident_broadcast_consumer import incident_broadcast_consumer
 from async_context_managers.transcript_broadcast_consumer import transcript_broadcast_consumer
+from async_context_managers.transcript_livekit_process_consumer import transcript_livekit_process_consumer
 from async_context_managers.transcript_process_consumer import transcript_process_consumer
 from async_context_managers.incident_extract_consumer import incident_extract_consumer
-from async_context_managers.live_incident_extract_consumer import live_incident_extract_consumer
 from modules.redis_module import redis_client
 
 @asynccontextmanager
@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
     broadcast_consumer_task = asyncio.create_task(transcript_broadcast_consumer())
     incident_broadcast_consumer_task = asyncio.create_task(incident_broadcast_consumer())
     incident_extract_task = asyncio.create_task(asyncio.to_thread(incident_extract_consumer))
-    live_extract_task = asyncio.create_task(live_incident_extract_consumer())
+    transcript_livekit_task = asyncio.create_task(transcript_livekit_process_consumer())
 
     yield
     base.keep_running = False
@@ -32,8 +32,8 @@ async def lifespan(app: FastAPI):
         wait_for_complete(process_consumer_task),
         wait_for_complete(broadcast_consumer_task),
         wait_for_complete(incident_extract_task),
-        wait_for_complete(live_extract_task),
-        wait_for_complete(incident_broadcast_consumer_task)
+        wait_for_complete(incident_broadcast_consumer_task),
+        wait_for_complete(transcript_livekit_task),
     )
 
     async def close_db():
