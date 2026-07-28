@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 from datetime import datetime
 import uuid
 
-=======
->>>>>>> 61054d6ab1b667ad42ac2e7aef078564a2bcabec
 from sqlalchemy import Column, String, Integer, Float, Text, DateTime, ForeignKey, Enum, JSON
 from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSONB
 from sqlalchemy.orm import declarative_base, relationship
