@@ -16,3 +16,7 @@ class IncidentUpdatePayload(BaseModel):
 class VoiceAgentResponse(BaseModel):
     content: str
     incident_update:IncidentUpdatePayload
+
+class DispatchInputPayload(BaseModel):
+    incident_location: str
+    incident_type: str
