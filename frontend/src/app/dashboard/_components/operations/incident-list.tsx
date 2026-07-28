@@ -115,6 +115,7 @@ export function IncidentList({ collapsed, onCollapsedChange }: { collapsed: bool
       return matchesSearch && matchesSeverity
     })
   }, [searchQuery, filterSeverity, activeIncidents])
+  // console.log(results)
 
   return (
     <>
@@ -230,7 +231,7 @@ export function IncidentList({ collapsed, onCollapsedChange }: { collapsed: bool
                           {incident.severity}
                         </span>
                         <p className="mt-2 font-mono text-[9px] text-muted-foreground/70">
-                          {incident.id}
+                          {incident.case_number}
                         </p>
                       </div>
 

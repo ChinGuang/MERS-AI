@@ -29,6 +29,7 @@ langgraph
 pytest
 requests
 
+googlemaps
 livekit-agents
 livekit-api
 livekit-plugins-deepgram

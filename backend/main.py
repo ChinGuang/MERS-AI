@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from apis.incidents import router as incident_router
+from apis.dispatch import router as dispatch_router
 from async_context_managers.lifespan import lifespan
 from database import engine
 from environment import ALLOW_ORIGINS
@@ -15,6 +16,7 @@ def db_setup():
 db_setup()
 
 app.include_router(incident_router)
+app.include_router(dispatch_router)
 import apis.twilio_api
 import apis.websocket
 import apis.transcripts

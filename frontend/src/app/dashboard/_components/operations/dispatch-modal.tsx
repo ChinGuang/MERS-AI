@@ -233,7 +233,7 @@ export function DispatchModal({ incident }: DispatchModalProps) {
           : inc
       )
     )
-    toast.warning(`Dispatch request rejected for ${incident.id}`)
+    toast.warning(`Dispatch request rejected for ${incident.case_number}`)
     setRejectOpen(false)
     setRejectReason("")
     setExpanded(false)
@@ -331,7 +331,7 @@ export function DispatchModal({ incident }: DispatchModalProps) {
               <span className="text-lg">🚨</span>
               <div className="min-w-0">
                 <h3 className="truncate text-sm font-bold uppercase">
-                  Dispatch Request — {incident.id}
+                  Dispatch Request — {incident.case_number}
                 </h3>
                 <p className="truncate text-xs text-muted-foreground">
                   {incident.title}
@@ -537,7 +537,7 @@ export function DispatchModal({ incident }: DispatchModalProps) {
             <DialogTitle>Reject Dispatch Request</DialogTitle>
             <DialogDescription>
               Please provide a reason for rejecting the dispatch request for{" "}
-              {incident.id}.
+              {incident.case_number}.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
@@ -594,7 +594,7 @@ export function DispatchModal({ incident }: DispatchModalProps) {
           <DialogHeader>
             <DialogTitle>Override Request Details</DialogTitle>
             <DialogDescription>
-              Correct AI-extracted details before dispatching {incident.id}. All
+              Correct AI-extracted details before dispatching {incident.case_number}. All
               changes are logged in the incident timeline.
             </DialogDescription>
           </DialogHeader>
@@ -811,7 +811,7 @@ export function DispatchModal({ incident }: DispatchModalProps) {
           <div className="rounded-lg border bg-muted/30 p-3 text-sm space-y-1">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Incident</span>
-              <span className="font-medium">{incident.id}</span>
+              <span className="font-medium">{incident.case_number}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Responder</span>

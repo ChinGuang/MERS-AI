@@ -72,6 +72,7 @@ export function SimulationTab() {
   function launchSimulation(scenario: (typeof SCENARIOS)[0]) {
     const newSim: Incident = {
       id: "SIM-9999",
+      case_number: "INC-9999",
       type: scenario.incidentType,
       title: scenario.name,
       location: "Kuala Lumpur, Malaysia",

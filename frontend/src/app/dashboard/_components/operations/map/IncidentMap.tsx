@@ -180,7 +180,7 @@ export function IncidentMap({
                                                     inc.severity === 'urgent' ? 'orange' :
                                                         inc.severity === 'moderate' ? 'yellow' : 'green',
                                         }}
-                                        title={`${inc.id} · ${inc.title}`}
+                                        title={`${inc.case_number} · ${inc.title}`}
                                     />
                                 </Marker>
                             )
@@ -212,20 +212,22 @@ export function IncidentMap({
                         >
                         <div className="w-1.5 h-1.5 rounded-full bg-white" />
                         </div>
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold whitespace-nowrap pointer-events-none"
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 px-1.5 py-0.5 rounded text-[12px] font-mono font-bold whitespace-nowrap pointer-events-none"
                         style={{
+                            textAlign: 'center',
                             backgroundColor: 'rgba(13, 16, 27, 0.95)',
                             color: 'white',
                             borderLeft: `2px solid ${pinColor}`,
                         }}
                         >
-                            {activeIncident.id}
+                            <div>{activeIncident.case_number}</div>
+                            {displayLocation && <div>{displayLocation}</div>}
                         </div>
                         </div>
                 </Marker>
 
                 {/* Active incident pin — only once the agent has actually resolved a location */}
-                {hasCoordinates && (
+                {/* {hasCoordinates && (
                     <Marker longitude={lng} latitude={lat} anchor="center">
                         <div className="relative cursor-pointer"
                         onMouseEnter={() => setHoveredIncident(activeIncident)}
@@ -247,14 +249,14 @@ export function IncidentMap({
                                 borderLeft: `2px solid ${isApproximate ? '#F59E0B' : pinColor}`,
                             }}
                             >
-                                <div>{displayLocation || activeIncident.id}</div>
+                                <div>{activeIncident.case_number} {displayLocation}</div>
                                 {isApproximate && (
                                     <div className="mt-0.5 text-amber-400 tracking-wide">≈ APPROX — CONFIRM</div>
                                 )}
                             </div>
                             </div>
                     </Marker>
-                )}
+                )} */}
 
                 {/* Locating state — shown while the agent hasn't extracted/geocoded a location yet */}
                 {!hasCoordinates && (

@@ -70,24 +70,24 @@ export function DispatchLocationPanel({ incident }: DispatchLocationPanelProps) 
 
   const address: CallerAddress = matchedLocation
     ? {
-        formatted: matchedLocation.formatted,
-        street: matchedLocation.street,
-        area: matchedLocation.area,
-        city: matchedLocation.city,
-        state: matchedLocation.state,
-        postalCode: matchedLocation.postalCode,
-        landmark: matchedLocation.landmark,
-        source: "ai",
-      }
+      formatted: matchedLocation.formatted,
+      street: matchedLocation.street,
+      area: matchedLocation.area,
+      city: matchedLocation.city,
+      state: matchedLocation.state,
+      postalCode: matchedLocation.postalCode,
+      landmark: matchedLocation.landmark,
+      source: "ai",
+    }
     : {
-        formatted: incident.location,
-        city: incident.location.split(",")[0]?.trim(),
-        state: incident.location.split(",")[1]?.trim(),
-        landmark: incident.location.includes("(")
-          ? incident.location.split("(")[1]?.replace(")", "").trim()
-          : undefined,
-        source: "ai",
-      }
+      formatted: incident.location,
+      city: incident.location.split(",")[0]?.trim(),
+      state: incident.location.split(",")[1]?.trim(),
+      landmark: incident.location.includes("(")
+        ? incident.location.split("(")[1]?.replace(")", "").trim()
+        : undefined,
+      source: "ai",
+    }
 
   const spotImageUrl = hasCoords
     ? buildSpotImageUrl(lat, lng)
@@ -140,14 +140,14 @@ export function DispatchLocationPanel({ incident }: DispatchLocationPanelProps) 
         <Tabs defaultValue="map" className="flex flex-col gap-2">
           <div className="flex items-center justify-between p-2">
             <p className="flex text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              <Navigation className="mr-2 size-3.5"/> Map View
+              <Navigation className="mr-2 size-3.5" /> Map View
             </p>
           </div>
 
           <TabsContent value="map" className="space-y-2">
             <div className="overflow-hidden rounded-lg border">
               <iframe
-                title={`Google Maps — ${incident.id}`}
+                title={`Google Maps — ${incident.case_number}`}
                 src={buildGoogleEmbedUrl(lat, lng)}
                 className="h-44 w-full border-0"
                 loading="lazy"

@@ -25,6 +25,7 @@ ALLOW_ORIGINS = os.getenv("ALLOW_ORIGINS").split(",") if os.getenv("ALLOW_ORIGIN
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MAPBOX_TOKEN = os.getenv("MAPBOX_TOKEN")
+GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
 PROJECT_DIR = Path(__file__).parent
 DATA_DIR = PROJECT_DIR / "data"

@@ -94,6 +94,7 @@ def _convert_incident(incident: Any, db: Session):
     ]
     return {
         "id": str(incident.id),
+        "case_number": incident.case_number,
         "type": incident.type.value if hasattr(incident.type, "value") else incident.type,
         "title": incident.title,
         "location": incident.location,

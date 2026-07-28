@@ -1,6 +1,7 @@
 import { ArchivedReport as ArchivedReportModel } from "./models/report";
 export interface Incident {
   id: string;
+  case_number: string;
   type?: "medical" | "fire" | "crime" | "accident" | "flood";
   title: string;
   location: string;
