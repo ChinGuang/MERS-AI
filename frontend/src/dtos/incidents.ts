@@ -42,6 +42,8 @@ export const TranscriptItemSchema = z.object({
   end_duration: z.int().nonnegative(),
   call_id: z.uuidv7(),
   role: z.string(),
+  language: z.string().nullish(),
+  translated_text: z.string().nullish(),
 });
 
 export type TranscriptItem = z.infer<typeof TranscriptItemSchema>;
@@ -82,6 +84,7 @@ export const IncidentDtoSchema = z.object({
   contradiction: z.string().nullable().optional(),
   callId: z.string(),
   // CamelCase properties received from backend DTO
+  callStartedAt: z.string().nullish(),
   occurDateTime: z.string().nullish(), // Validates strict ISO 8601 string format (ends with Z)
   distressScore: z.number().nullish(),
   panicLevel: z.string().nullish(),
