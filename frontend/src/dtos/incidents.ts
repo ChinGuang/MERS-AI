@@ -92,7 +92,7 @@ export const IncidentDtoSchema = z.object({
   sopProcedure: z.array(z.string()),
 
   // Nested Structures
-  entities: z.array(z.string()),
+  entities: z.array(z.string()).default([]),
   responder: ResponderSchema.nullish(),
   timeline: z.array(TimelineItemSchema),
   transcript: z.array(TranscriptItemSchema),
