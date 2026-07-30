@@ -26,10 +26,10 @@ async def lifespan(app: FastAPI):
 
     async def close_db():
         await base.db.close()
-        print("[✓] DB connection closed. Shutdown complete.")
+        print("[OK] DB connection closed. Shutdown complete.")
 
     async def close_redis():
         await redis_client.close()
-        print("[✓] Redis connection closed. Shutdown complete.")
+        print("[OK] Redis connection closed. Shutdown complete.")
 
     await asyncio.gather(close_db(), close_redis())

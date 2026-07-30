@@ -8,6 +8,7 @@ from models.enum.index import SeverityType
 
 class InitIncidentPayload(BaseModel):
     title: str
+    case_number: Optional[str] = None
 
 class InitIncidentLogPayload(BaseModel):
     incident_id: UUID

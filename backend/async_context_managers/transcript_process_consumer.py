@@ -72,4 +72,10 @@ async def transcript_process_consumer():
             base.db.commit()
         except Exception as e:
             print(f"transcript_process_consumer error: {e}")
+            # base.db is shared across every background consumer - roll back so one
+            # failure here doesn't poison it (PendingRollbackError) for the others.
+            try:
+                base.db.rollback()
+            except Exception as rollback_err:
+                print(f"transcript_process_consumer: failed to roll back: {rollback_err}")
             await asyncio.sleep(0.5)

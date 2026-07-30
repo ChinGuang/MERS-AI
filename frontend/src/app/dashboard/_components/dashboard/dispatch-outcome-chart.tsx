@@ -3,18 +3,14 @@
 import { useMemo } from "react"
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { HISTORICAL_REPORTS } from "@/data/historicalReports"
 import { OutcomeType, ArchivedReport } from "@/models/report"
 import { ChartInfoDialog } from "./chart-info-dialog"
-import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 const APPROVED_COLOR = "hsl(var(--secondary))"
 const REJECTED_COLOR = "hsl(var(--destructive))"
 const OVERRIDE_COLOR = "hsl(var(--warning))"
 
-export function DispatchOutcomeChart() {
-  const { reports } = useHistoricalReports()
-
+export function DispatchOutcomeChart({ reports }: { reports: ArchivedReport[] }) {
   const { outcomeSplit, overrideCount, totalCount } = useMemo(() => {
     const overridden = reports.filter((r) => r.outcome === OutcomeType.OVERRIDE)
     const approvedAiOnly = reports.filter((r) => r.outcome === OutcomeType.ACCEPT).length

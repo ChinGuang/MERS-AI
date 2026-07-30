@@ -58,11 +58,22 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
             })
             const callId = parsedData[0].call_id;
             setIncidents((prev) => {
+                // Only merge into an incident that's genuinely this call's (matched by
+                // callId). This used to also fall back to "the first incident in the
+                // list" whenever nothing matched yet (e.g. this transcript update
+                // arriving slightly before the new incident's own creation broadcast) -
+                // but position 0 is one of the 3 seed/demo incidents by default, so any
+                // such race misattached a real caller's live transcript onto a mock
+                // incident's card. If nothing matches yet, drop the update: the
+                // incident-creation/update stream below already carries its own
+                // transcript embedded, so this is redundant once that arrives.
+                if (!prev.some((v) => v.callId === callId)) {
+                    return prev
+                }
                 return prev.map<Incident>((oldV) => {
-                    if (oldV.callId == callId || (!oldV.callId && prev[0]?.id === oldV.id)) {
+                    if (oldV.callId === callId) {
                         return {
                             ...oldV,
-                            callId: oldV.callId || callId,
                             transcript: parsedData.map(transcriptItemToUtterance),
                         }
                     }
@@ -128,7 +139,12 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
         IncidentApi.readIncidents({ page: 1, size: 100 })
             .then((result: IncidentDto[]) => {
                 if (result.length === 0) return;
-                setIncidents(result.map<Incident>((r) => ({
+                // Keep the 3 seed/demo cases visible at the base of the list rather than
+                // replacing them outright - real incidents (backend returns newest-first)
+                // sit above them, and a brand new one created via SSE (see the
+                // [newIncident, ...prev] branch above) lands above everything, including
+                // these, since it prepends onto whatever `prev` already holds.
+                setIncidents([...INITIAL_INCIDENTS, ...result.map<Incident>((r) => ({
                     ...r,
                     responder: {
                         name: r.responder?.name ?? '',
@@ -156,7 +172,7 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
                     type: r.type ?? undefined,
                     severity: (r.severity?.toLowerCase() as Exclude<SeverityType, SeverityType.ALL> ?? SeverityType.MODERATE),
                     contradiction: r.contradiction ?? undefined,
-                })));
+                }))]);
             })
             .catch((e) => {
                 console.error(e)

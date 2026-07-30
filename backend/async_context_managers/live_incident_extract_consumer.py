@@ -53,15 +53,30 @@ async def live_incident_extract_consumer():
                     continue
 
                 try:
-                    extracted = extract_incident_detail(utterances)
+                    # Every call below that hits the network (Gemini, Mapbox/Google
+                    # geocoding, Google Maps) was being called directly instead of via
+                    # asyncio.to_thread - a blocking call inside an `async def` freezes the
+                    # ENTIRE event loop (this is single-threaded asyncio, not real
+                    # concurrency) for its whole duration, starving every other consumer
+                    # sharing it (transcript_livekit_process_consumer's queue got stuck
+                    # again specifically because of this, confirmed once this consumer
+                    # started actually running for the first time). Wrapped in to_thread.
+                    extracted = await asyncio.to_thread(extract_incident_detail, utterances)
                     call = base.db.get(Call, call_id)
                     if call is None:
                         continue
 
+                    incident = base.db.get(Incident, call.incident_id)
+                    already_located = bool(incident and incident.coordinates and len(incident.coordinates) == 2)
+
                     update_payload = {"title": extracted.title}
-                    if extracted.location:
+                    # Skip re-extracting location once it's set (e.g. a pinned demo
+                    # fallback for LiveKit calls, or a prior successful extraction) -
+                    # avoids a live geocode call clobbering a known-good location with
+                    # every poll.
+                    if extracted.location and not already_located:
                         update_payload["location"] = extracted.location
-                        geocode_details = map_module.get_location_details(extracted.location)
+                        geocode_details = await asyncio.to_thread(map_module.get_location_details, extracted.location)
                         if geocode_details is not None:
                             update_payload["location_address"] = geocode_details.address
                             update_payload["coordinates"] = geocode_details.coordinates
@@ -75,10 +90,14 @@ async def live_incident_extract_consumer():
                         if not has_dispatch:
                             try:
                                 redis_client.sadd(INCIDENT_DISPATCH_SET_KEY, str(call.incident_id))
-                                dispatch_result = dispatch_agent.get_dispatch(base.db, DispatchInputPayload(
-                                    incident_type=extracted.type,
-                                    incident_location=extracted.location
-                                ))
+                                dispatch_result = await asyncio.to_thread(
+                                    dispatch_agent.get_dispatch,
+                                    base.db,
+                                    DispatchInputPayload(
+                                        incident_type=extracted.type,
+                                        incident_location=extracted.location
+                                    ),
+                                )
                                 dispatch_request_module.create_dispatch_request(CreateDispatchRequestPayload(
                                     incident_fkid=call.incident_id,
                                     incident_coordinate=list(dispatch_result["incident"]),
@@ -98,10 +117,23 @@ async def live_incident_extract_consumer():
                     logger.info("Live extracted: %s — %s", call_id_str, extracted.title)
 
                 except Exception as e:
-                    raise e
-                    # logger.warning("Live extraction failed for %s: %s", call_id_str, e)
+                    # Was a bare `raise e` - since this whole function is one long-lived
+                    # asyncio.create_task() with nothing awaiting/checking its result, an
+                    # uncaught exception here doesn't just skip one call, it silently kills
+                    # this ENTIRE background consumer forever (confirmed: dispatch_agent's
+                    # broken Gemini model name alone would trigger this on the very first
+                    # call with both a location and type extracted). Log and keep going.
+                    logger.warning("Live extraction failed for %s: %s", call_id_str, e)
+                    try:
+                        base.db.rollback()
+                    except Exception as rollback_err:
+                        logger.error("Failed to roll back shared session: %s", rollback_err)
 
         except Exception as e:
-            raise e
+            logger.error("live_incident_extract_consumer loop error: %s", e)
+            try:
+                base.db.rollback()
+            except Exception as rollback_err:
+                logger.error("Failed to roll back shared session: %s", rollback_err)
 
         await asyncio.sleep(1)

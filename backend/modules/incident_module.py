@@ -1,7 +1,7 @@
 from typing import Any
 from uuid import UUID
 
-from sqlalchemy import select, or_
+from sqlalchemy import select, or_, func
 from sqlalchemy.orm import Session, joinedload
 from uuid_v7.base import uuid7
 
@@ -37,8 +37,23 @@ def patch_data(payload: Incident, db):
             db.commit()
     return payload
 
+def _generate_case_number(db: Session) -> str:
+    """
+    case_number is required by the frontend's IncidentDtoSchema (a plain, non-nullable
+    string) but nothing in the live pipeline ever set it - only hardcoded demo/simulation
+    data did. Every real incident (Retell or LiveKit) was landing with case_number=None,
+    which fails that schema's strict `.parse()` on the incident-update SSE stream and
+    silently drops the update client-side. Auto-generating one here at creation time
+    (shared by every incident-creation path) fixes that at the source.
+    """
+    count = db.scalar(select(func.count()).select_from(Incident)) or 0
+    return f"INC-{count + 1:04d}"
+
+
 def init_incident(payload: InitIncidentPayload, db: Session) -> Incident:
     incident_payload = (payload.model_dump() | {"id": uuid7()})
+    if not incident_payload.get("case_number"):
+        incident_payload["case_number"] = _generate_case_number(db)
     new_incident = db_module.init_data(incident_payload, db, Incident)
     new_incident_id = new_incident.id
     init_incident_log_pydantic = InitIncidentLogPayload(incident_id=new_incident_id, payload=incident_payload)
@@ -112,11 +127,17 @@ def _convert_incident(incident: Any, db: Session):
         # Date format converted to ISO-8601 string standard
         "occurDateTime": to_iso_utc(incident.occur_date_time),
 
-        "distressScore": incident.distress_score,
+        # Stored in the DB as a plain 0.0-1.0 float (the standard ML convention, and what
+        # the extraction prompt asks Gemini for) - but the frontend's progress bars and
+        # "> 70" / "X/100" displays (dispatch-modal.tsx's MetricBar, the History detail
+        # page) all assume a 0-100 scale. Scaled here at the API boundary rather than
+        # changing the stored representation or duplicating this conversion in every
+        # frontend component that reads it.
+        "distressScore": round(incident.distress_score * 100) if incident.distress_score is not None else 0,
         "panicLevel": incident.panic_level,
         "entities": incident.entities or [],
         "reason": incident.reason or incident.ai_summary,
-        "confidence": incident.ai_confidence or 0.0,
+        "confidence": round((incident.ai_confidence or 0.0) * 100),
         "contradiction": incident.contradiction,
         "sopCitation": incident.sop_citation,
         "sopProcedure": incident.sop_procedure or [],

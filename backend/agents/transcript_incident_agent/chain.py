@@ -30,7 +30,13 @@ Extract the following fields from the transcript:
 - priority: Priority level (1 highest to 5 lowest)
 - occur_date_time: When the incident occurred if mentioned
 - distress_score: Estimated caller distress level (0.0 to 1.0)
-- panic_level: Description of caller's panic level
+- panic_level: A SHORT category only - exactly one of: Low, Moderate, High, Severe.
+  Never a sentence or explanation - put any reasoning/quotes in `contradiction` or
+  `ai_summary` instead, never in this field.
+- caller_name: The caller's own first name or full name, ONLY if they state it
+  themselves during the call (e.g. "This is Ramesh", caller introduces themselves, or
+  the operator addresses them by a name the caller confirmed). Null if never stated -
+  do not guess or infer a name from context.
 - entities: List of entities mentioned (people, vehicles, weapons, locations, etc.)
 - reason: The reasoning for the incident type classification
 - contradiction: Any contradictory information in the transcript

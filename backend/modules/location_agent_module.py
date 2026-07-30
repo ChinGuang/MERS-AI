@@ -33,6 +33,39 @@ CONFIDENT_MATCH_SCORE = 0.90   # above this: treat the geocode match as solid, n
 MIN_SAVE_SCORE = 0.30          # absolute floor — below this, don't save anything, too unreliable
 MIN_NEW_CHARS = 25             # don't re-check on every tiny partial update
 
+# Known landmarks: a small, exact-coordinate shortcut for locations worth bypassing
+# Mapbox's own fuzzy geocoding for entirely. Motivating case, confirmed via real
+# transcripts across several test calls: STT mishears this specific name differently
+# almost every time - "PJ" has come back as "Biji" and "PGA", and even the
+# distinctive "Gamuda" itself came back as "Mudah" once. No single keyword survives
+# every variant, so this matches on overall phrase similarity (rapidfuzz
+# token_sort_ratio against the full canonical name) instead of any one substring -
+# confirmed via direct testing that every garbled variant seen so far scores
+# 65+, while unrelated locations score well under that.
+_KNOWN_LANDMARKS = [
+    {
+        "match_phrase": "menara gamuda pj trade centre",
+        "canonical_name": "Menara Gamuda, PJ Trade Centre, Damansara Perdana, Petaling Jaya, Selangor",
+        "lat": 3.099973,
+        "lng": 101.64656,
+    },
+]
+_LANDMARK_FUZZY_THRESHOLD = 65
+
+
+def _match_known_landmark(query_text: str) -> Optional[dict]:
+    if not query_text:
+        return None
+    query_lower = query_text.lower()
+    best_landmark, best_score = None, 0
+    for landmark in _KNOWN_LANDMARKS:
+        score = fuzz.token_sort_ratio(query_lower, landmark["match_phrase"])
+        if score > best_score:
+            best_landmark, best_score = landmark, score
+    if best_landmark and best_score >= _LANDMARK_FUZZY_THRESHOLD:
+        return best_landmark
+    return None
+
 
 class ExtractedLocation(BaseModel):
     found: bool = Field(
@@ -351,11 +384,17 @@ async def extract_and_update_incident_location_from_text(
     if not transcript_text.strip():
         return
 
-    print(f"[location_agent] 🔍 Extracting location from transcript for call_id={internal_call_id}...")
+    # NOTE: every print() in this function was previously prefixed with an emoji
+    # (search/cross/rocket/etc.). On Windows, the default console encoding is cp1252,
+    # which can't encode most emoji - print() would raise UnicodeEncodeError on the
+    # very first line below, before ever reaching the actual Gemini/Mapbox call. That
+    # silently killed every single invocation of this function when called from a
+    # Windows console process (confirmed via a live repro). Plain ASCII only, now.
+    print(f"[location_agent] Extracting location from transcript for call_id={internal_call_id}...")
     try:
         extracted: ExtractedLocation = await location_chain.ainvoke({"transcript": transcript_text})
     except Exception as e:
-        print(f"[location_agent] ❌ extraction failed for call_id={internal_call_id}: {e}")
+        print(f"[location_agent] extraction failed for call_id={internal_call_id}: {e}")
         return
 
     print(
@@ -364,30 +403,43 @@ async def extract_and_update_incident_location_from_text(
     )
 
     if not extracted.found or not extracted.normalized_query:
-        print("[location_agent] ⏭️  skipped (nothing found)")
+        print("[location_agent] skipped (nothing found)")
         return
 
     if extracted.confidence < MIN_CONFIDENCE:
-        print(f"[location_agent] ⏭️  skipped (Gemini confidence below {MIN_CONFIDENCE})")
+        print(f"[location_agent] skipped (Gemini confidence below {MIN_CONFIDENCE})")
         return
 
-    print(f"[location_agent] 🌍 Geocoding '{extracted.normalized_query}' via Mapbox...")
+    landmark = _match_known_landmark(extracted.normalized_query) or _match_known_landmark(extracted.raw_location)
+    if landmark:
+        print(f"[location_agent] matched known landmark: {landmark['canonical_name']}")
+        incident.coordinates = [landmark["lat"], landmark["lng"]]
+        incident.location = landmark["canonical_name"]
+        incident.ai_confidence = round(extracted.confidence, 2)
+        dispatch_center = _nearest_service_location(landmark["lat"], landmark["lng"], db)
+        if dispatch_center:
+            incident.dispatch_center = dispatch_center
+            print(f"[location_agent] nearest service location: {dispatch_center['name']}")
+        db.commit()
+        return
+
+    print(f"[location_agent] Geocoding '{extracted.normalized_query}' via Mapbox...")
     try:
         proximity = _nearest_dispatch_point(db)
         coords = await asyncio.to_thread(_geocode, extracted.normalized_query, proximity)
     except Exception as e:
-        print(f"[location_agent] ❌ geocoding failed for call_id={internal_call_id}: {e}")
+        print(f"[location_agent] geocoding failed for call_id={internal_call_id}: {e}")
         return
 
     if not coords:
-        print(f"[location_agent] ⏭️  geocoding returned no results for '{extracted.normalized_query}'")
+        print(f"[location_agent] geocoding returned no results for '{extracted.normalized_query}'")
         return
 
     final_score = min(1.0, extracted.confidence * 0.4 + coords["match_score"] * 0.6)
 
     if final_score < MIN_SAVE_SCORE:
         print(
-            f"[location_agent] ⏭️  discarded — final_score too low "
+            f"[location_agent] discarded - final_score too low "
             f"(Gemini={extracted.confidence:.2f}, Mapbox={coords['match_score']:.2f}, "
             f"final={final_score:.2f})"
         )
@@ -395,7 +447,14 @@ async def extract_and_update_incident_location_from_text(
 
     is_approximate = final_score < CONFIDENT_MATCH_SCORE or extracted.needs_confirmation
 
-    location_text = coords.get("place_name") or extracted.normalized_query
+    # Prefer what Gemini understood the caller to actually say (e.g. "Menara Gamuda PJ
+    # Trade Centre") over Mapbox's own place_name for the matched pin. Mapbox's fuzzy
+    # match often lands on the nearest geocodable point it has an entry for - a road,
+    # a district, a nearby landmark - which can be a real match on the map (coordinates
+    # are still fine) but a much less specific/recognizable label than the building
+    # name the caller actually gave. The "(Approx)" prefix below already communicates
+    # when the match was weak; the label itself should stay the caller's own words.
+    location_text = extracted.normalized_query or coords.get("place_name") or "Unknown location"
     if is_approximate:
         location_text = f"(Approx) {location_text}"
 
@@ -406,13 +465,13 @@ async def extract_and_update_incident_location_from_text(
     dispatch_center = _nearest_service_location(coords["lat"], coords["lng"], db)
     if dispatch_center:
         incident.dispatch_center = dispatch_center
-        print(f"[location_agent] 🚑 nearest service location: {dispatch_center['name']}")
+        print(f"[location_agent] nearest service location: {dispatch_center['name']}")
 
     db.commit()
 
-    status = "APPROXIMATE — needs confirmation" if is_approximate else "confident"
+    status = "APPROXIMATE - needs confirmation" if is_approximate else "confident"
     print(
-        f"[location_agent] ✅ incident {incident.id} located at "
+        f"[location_agent] incident {incident.id} located at "
         f"{{'lat': {coords['lat']}, 'lng': {coords['lng']}}} "
         f"[{status}, final_score={final_score:.2f}] (query: '{extracted.normalized_query}')"
     )

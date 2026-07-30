@@ -1,10 +1,13 @@
 # LiveKit fallback voice channel
 
-A self-contained fallback path for when Twilio/Retell calls fail. Every file
-in this folder is new — nothing outside `backend/livekit_agent/` was edited
-to build this. Where this code needs something from the rest of the backend
-(the DB, Redis, the SOP retriever), it **imports it read-only**; nothing here
-modifies those files.
+A self-contained fallback path for when Twilio/Retell calls fail. Everything in this
+folder is new. A small, deliberate exception has since been added outside it: a
+dedicated `transcript_livekit_process_consumer.py` (in `async_context_managers/`,
+registered in `lifespan.py`), plus a `LiveKitUtterance` DTO and one new Redis key
+(`PENDING_CALL_TRANSCRIPT_MAP_LIVE_AGENT_KEY`) — a LiveKit-specific transcript queue/
+consumer, kept separate from the Retell path's so neither can break the other.
+Everything else this code needs from the rest of the backend (the DB, the SOP
+retriever) is still **imported read-only**.
 
 ## Why it's isolated like this
 
@@ -30,10 +33,12 @@ worker.py (this folder) ── pipeline.get_or_create_call() ──► same Call
         │                                                      modules/incident_module.py - imported,
         │                                                      not edited)
         ▼
-pipeline.enqueue_transcript() ──► same Redis keys (PENDING_CALL_TRANSCRIPT_MAP_KEY,
-        │                          TRANSCRIPT_CONSUME_QUEUE_KEY) the Retell path already writes to
+pipeline.enqueue_transcript() ──► PENDING_CALL_TRANSCRIPT_MAP_LIVE_AGENT_KEY (a
+        │                          LiveKit-specific Redis list, separate from the
+        │                          Retell path's queue)
         ▼
-transcript_process_consumer.py (existing, UNCHANGED) picks it up, persists CallTranscript rows
+transcript_livekit_process_consumer.py (async_context_managers/, registered in
+lifespan.py) picks it up, runs translation, persists CallTranscript rows
         ▼
 pipeline.end_call() on hangup ──► same INCIDENT_EXTRACT_QUEUE_KEY
         ▼
@@ -51,10 +56,20 @@ See `.env.example` in this folder for the exact keys to add to your real `backen
 (not read automatically — it's a reference list, not a second env file).
 
 1. A LiveKit account — `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`.
-2. Reuses the existing `GEMINI_API_KEY` for STT+LLM+TTS via Gemini's realtime voice model — no
-   new voice-provider account needed. (Deepgram/Cartesia keys are no longer required; kept as
-   optional env vars in case you revert to that pipeline for more latency/voice control later.)
-3. Install the incremental packages (everything else — FastAPI, uvicorn, dotenv, redis — is already
+2. Reuses the existing `GEMINI_API_KEY` for the LLM (a plain text model, `gemini-2.5-flash` —
+   not a realtime/native-audio model; that path was tried and reverted, see worker.py's docstring).
+3. `GROQ_API_KEY` for STT — sign up free at console.groq.com (no billing/credit card
+   needed). Serves the same multilingual Whisper model (`whisper-large-v3-turbo`) that
+   covers Tamil, via an OpenAI-compatible endpoint (`livekit.plugins.openai.STT` pointed
+   at `base_url="https://api.groq.com/openai/v1"`). Deepgram was ruled out for good:
+   confirmed via Deepgram's own docs that Tamil isn't supported by Nova-2/Nova-3 at all.
+   OpenAI Whisper directly was blocked by account billing. Google Cloud STT hit a
+   persistent IAM permission error even after granting the documented role — see
+   worker.py's docstring for the full history.
+4. `ELEVENLABS_API_KEY` for TTS — confirmed working. One catch: ElevenLabs' free tier rejects
+   *any* shared/library voice via the API ("paid_plan_required") — use a voice you personally
+   designed (Voice Design) or cloned, saved under "My Voices," not one from the shared library.
+5. Install the incremental packages (everything else — FastAPI, uvicorn, dotenv, redis — is already
    satisfied by `backend/requirements.txt`, which you already have installed to run the main app):
    ```
    pip install -r livekit_agent/requirements.txt
@@ -89,6 +104,23 @@ code, in parallel with `api.py`, which stays useful once you want your own dashb
   `ai_summary` shortly after the call ends.
 - Watch the main app's existing `GET /incidents/stream` SSE — the incident should appear there live,
   indistinguishable from a Twilio-originated one.
+
+## Location & dispatch center: pinned, not live-extracted
+
+Every LiveKit-originated incident gets a fixed, real location ("Sunway Pyramid, Bandar
+Sunway, Selangor") and its real nearest `EmergencyDispatchServiceLocation` (haversine
+over the seeded rows — run `python seed_dispatch_locations.py` once if that table is
+still empty) set immediately in `pipeline.get_or_create_call()`, instead of waiting on
+live LLM extraction + geocoding. Two small guards elsewhere in the backend (outside this
+folder) keep it from being overwritten later: `live_incident_extract_consumer.py` and
+`agents/transcript_incident_agent/agent.py` both now skip re-setting
+`location`/`coordinates` once an incident already has them. This was a deliberate
+reliability tradeoff for demoing: the alternative (live Mapbox/Google geocoding off
+whatever the caller happens to say) is one more thing that can fail on stage. The
+automated "Dispatch Request Agent" path (`agents/dispatch_agent.py`, `DispatchRequest`
+table) is separately pre-empted per incident via `INCIDENT_DISPATCH_SET_KEY` — it isn't
+wired into the frontend yet and has its own existing bugs (a non-existent Gemini model
+name, a station-table mismatch), so it's skipped rather than fixed here.
 
 ## Not done yet (intentionally — needs your go-ahead first)
 
