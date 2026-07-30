@@ -136,7 +136,7 @@ export function IncidentProvider({ children }: { children: ReactNode }) {
     }, [incidentData])
 
     function fetchIncidents() {
-        IncidentApi.readIncidents({ page: 1, size: 100 })
+        IncidentApi.readIncidents({ page: 1, size: 5 })
             .then((result: IncidentDto[]) => {
                 if (result.length === 0) return;
                 // Keep the 3 seed/demo cases visible at the base of the list rather than
