@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 import {
   LiveKitRoom,
   RoomAudioRenderer,
@@ -12,7 +12,7 @@ import { Mic, MicOff, Phone, PhoneOff, Radio } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { LiveKitApi, type LiveKitFallbackSession } from "@/apis/livekit"
+import { useLivekit } from '@/context/livekit/useLivekit'
 
 function CallControls({ onDisconnect }: { onDisconnect: () => void }) {
   const connectionState = useConnectionState()
@@ -66,24 +66,15 @@ function CallControls({ onDisconnect }: { onDisconnect: () => void }) {
  * main backend) via LiveKitApi.startFallbackSession().
  */
 export function LiveKitFallbackCall() {
-  const [session, setSession] = useState<LiveKitFallbackSession | null>(null)
-  const [connecting, setConnecting] = useState(false)
-
+  const { startFallbackSession, stopSession, session, isConnecting } = useLivekit();
   const handleStart = useCallback(async () => {
-    setConnecting(true)
-    try {
-      const result = await LiveKitApi.startFallbackSession()
-      setSession(result)
-    } catch (e) {
-      console.error("[livekit] failed to start fallback session", e)
+    await startFallbackSession(() => {
       toast.error("Could not start fallback voice line — is backend/livekit_agent/api.py running?")
-    } finally {
-      setConnecting(false)
-    }
+    })
   }, [])
 
   const handleDisconnect = useCallback(() => {
-    setSession(null)
+    stopSession()
   }, [])
 
   if (!session) {
@@ -94,10 +85,10 @@ export function LiveKitFallbackCall() {
           variant="outline"
           className="gap-2 border-warning/50 bg-card/95 shadow-lg backdrop-blur-sm"
           onClick={handleStart}
-          disabled={connecting}
+          disabled={isConnecting}
         >
           <Phone className="size-3.5" />
-          {connecting ? "Starting fallback line…" : "Start Fallback Voice Line"}
+          {isConnecting ? "Starting fallback line…" : "Start Fallback Voice Line"}
         </Button>
       </div>
     )

@@ -18,7 +18,7 @@ import { ThemeToggle } from "./theme-toggle"
 import { ProfileDropdown } from "./profile-dropdown"
 import { useTab } from "@/context/tab/useTab"
 import Image from 'next/image';
-import Logo from '@/assets/MERS-AI_Mascot-rmbg1.png';
+const logoPath = '/MERS-AI_Mascot-rmbg1.png';
 
 const NAV_TABS = [
   { id: TabName.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
@@ -52,9 +52,11 @@ export function Navbar() {
       <div className="flex min-w-0 items-center gap-3 lg:gap-4">
         <div className="flex items-center gap-1">
           <Image
-          src={Logo}
-          alt="Picture of a Logo"
-          className="size-10 text-primary"
+            width={40}
+            height={40}
+            src={logoPath}
+            alt="Picture of a Logo"
+            className="text-primary"
           />
 
           <h1 className="text-lg font-bold tracking-tight">MERS-AI</h1>
