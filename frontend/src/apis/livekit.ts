@@ -1,10 +1,8 @@
+import {
+  LiveKitFallbackSession,
+  LiveKitFallbackSessionSchema,
+} from "@/dtos/livekit";
 import axios from "axios";
-
-export interface LiveKitFallbackSession {
-  room_name: string;
-  livekit_url: string;
-  token: string;
-}
 
 /**
  * Talks to backend/livekit_agent/api.py - a separate standalone process/port
@@ -15,7 +13,7 @@ export interface LiveKitFallbackSession {
 async function startFallbackSession(): Promise<LiveKitFallbackSession> {
   const url = `${process.env.NEXT_PUBLIC_LIVEKIT_API_URL}/livekit/session`;
   const response = await axios.post(url);
-  return response.data;
+  return LiveKitFallbackSessionSchema.parse(response.data);
 }
 
 export const LiveKitApi = {
