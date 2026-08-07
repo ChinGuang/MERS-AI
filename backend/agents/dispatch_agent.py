@@ -14,7 +14,7 @@ def get_dispatch(db: db_dependency, input_payload: DispatchInputPayload):
     # Initialize Google Maps Client
     gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
 
-    llm = ChatGoogleGenerativeAI(model="gemini-3.5-flash", api_key=GEMINI_API_KEY)
+    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", api_key=GEMINI_API_KEY)
 
     prompt = ChatPromptTemplate.from_messages(
         [

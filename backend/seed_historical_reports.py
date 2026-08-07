@@ -33,10 +33,10 @@ def main():
     for report in reports:
         try:
             client.table("historical_reports").upsert(report).execute()
-            print(f"  ✓ Upserted: {report['id']} - {report['title']}")
+            print(f"  OK Upserted: {report['id']} - {report['title']}")
             success_count += 1
         except Exception as e:
-            print(f"  ✗ Failed on {report['id']}: {e}")
+            print(f"  FAILED on {report['id']}: {e}")
 
     print(f"\nCompleted: {success_count}/{len(reports)} historical reports seeded into Supabase.")
 

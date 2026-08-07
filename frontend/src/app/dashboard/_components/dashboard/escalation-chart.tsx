@@ -7,7 +7,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { SeverityType, ArchivedReport } from "@/models/report"
 import { ChartInfoDialog } from "./chart-info-dialog"
-import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 
 const SEVERITY_COLOR: Record<string, string> = {
   Critical: "hsl(var(--destructive))",
@@ -27,9 +26,7 @@ function severityBreakdown(reports: ArchivedReport[]) {
   }
 }
 
-export function EscalationChart() {
-  const { reports } = useHistoricalReports()
-
+export function EscalationChart({ reports }: { reports: ArchivedReport[] }) {
   const { chartData, flaggedCount, totalCount, flaggedCriticalPct } = useMemo(() => {
     const flagged = reports.filter((r) => !!r.emotionalAnalysis.contradiction)
     const standard = reports.filter((r) => !r.emotionalAnalysis.contradiction)

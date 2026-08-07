@@ -28,6 +28,7 @@ class ExtractedIncident(BaseModel):
     occur_date_time: datetime | None = None
     distress_score: float | None = None
     panic_level: str | None = None
+    caller_name: str | None = None
     entities: list[str] | None = None
     reason: str | None = None
     contradiction: str | None = None

@@ -44,16 +44,16 @@ const TYPE_ICON: Record<string, React.ElementType> = {
   [IncidentType.FLOOD]: Droplets, [IncidentType.UNKNOWN]: AlertTriangle,
 }
 const TYPE_ICON_STYLE: Record<string, string> = {
-  [IncidentType.MEDICAL]:  "bg-destructive/20 text-destructive",
-  [IncidentType.FIRE]:     "bg-warning/20     text-warning",
-  [IncidentType.CRIME]:    "bg-muted          text-muted-foreground",
+  [IncidentType.MEDICAL]: "bg-destructive/20 text-destructive",
+  [IncidentType.FIRE]: "bg-warning/20     text-warning",
+  [IncidentType.CRIME]: "bg-muted          text-muted-foreground",
   [IncidentType.ACCIDENT]: "bg-primary/20     text-primary",
-  [IncidentType.FLOOD]:    "bg-primary/15     text-primary",
-  [IncidentType.UNKNOWN]:  "bg-muted          text-muted-foreground",
+  [IncidentType.FLOOD]: "bg-primary/15     text-primary",
+  [IncidentType.UNKNOWN]: "bg-muted          text-muted-foreground",
 }
 const SEVERITY_BADGE: Record<string, string> = {
   CRITICAL: "border-destructive/60 bg-destructive/10 text-destructive",
-  URGENT:   "border-warning/60   bg-warning/10   text-warning",
+  URGENT: "border-warning/60   bg-warning/10   text-warning",
   MODERATE: "border-primary/60   bg-primary/10   text-primary",
 }
 const SEVERITY_COLOR: Record<string, string> = {
@@ -67,10 +67,10 @@ function dot(t?: string) {
 }
 function row(t?: string) {
   return {
-    ai:       "border-primary/30  bg-primary/5",
-    human:    "border-warning/30  bg-warning/5",
+    ai: "border-primary/30  bg-primary/5",
+    human: "border-warning/30  bg-warning/5",
     dispatch: "border-secondary/30 bg-secondary/5",
-    close:    "border-border       bg-muted/30 text-muted-foreground",
+    close: "border-border       bg-muted/30 text-muted-foreground",
   }[t ?? ""] ?? "border-border bg-muted/20 text-muted-foreground"
 }
 
@@ -115,10 +115,10 @@ function PanelCard({ icon: Icon, iconBg, title, children }: { icon: React.Elemen
 // ─── PRINT: generate fully self-contained HTML from report data ───────────────
 
 function buildPrintHTML(r: ArchivedReport): string {
-  const sevColor  = SEVERITY_COLOR[r.severity] ?? "#2563eb"
-  const approved  = r.outcome !== OutcomeType.REJECT
+  const sevColor = SEVERITY_COLOR[r.severity] ?? "#2563eb"
+  const approved = r.outcome !== OutcomeType.REJECT
   const verdColor = approved ? "#16a34a" : "#dc2626"
-  const hasHuman  = r.humanIntervention?.required
+  const hasHuman = r.humanIntervention?.required
 
   const kv = (k: string, v: string) =>
     `<tr><td style="padding:6px 12px 6px 0;font-size:11px;color:#6b7280;white-space:nowrap;vertical-align:top;">${k}</td><td style="padding:6px 0;font-size:11px;font-weight:600;text-align:right;">${v}</td></tr>`
@@ -140,10 +140,10 @@ function buildPrintHTML(r: ArchivedReport): string {
     </div>`
 
   const DOT_C: Record<string, string> = { ai: "#2563eb", human: "#d97706", dispatch: "#22c55e", close: "#9ca3af" }
-  const BG_C: Record<string, string>  = { ai: "#eff6ff", human: "#fffbeb", dispatch: "#f0fdf4", close: "#f9fafb" }
+  const BG_C: Record<string, string> = { ai: "#eff6ff", human: "#fffbeb", dispatch: "#f0fdf4", close: "#f9fafb" }
   const timelineRows = r.eventTimeline.map(e => {
     const dotC = DOT_C[e.type ?? ""] ?? "#d1d5db"
-    const bgC  = BG_C[e.type ?? ""]  ?? "#f9fafb"
+    const bgC = BG_C[e.type ?? ""] ?? "#f9fafb"
     return `<tr>
       <td style="padding:5px 10px 5px 0;white-space:nowrap;vertical-align:top;">
         <div style="display:flex;align-items:center;gap:8px;">
@@ -240,18 +240,18 @@ function buildPrintHTML(r: ArchivedReport): string {
         <tr>
           <td style="width:50%;vertical-align:top;padding-right:20px;">
             <table style="width:100%;">
-              ${kv("Call Received",  fmt(r.callReceivedAt))}
+              ${kv("Call Received", fmt(r.callReceivedAt))}
               ${kv("Unit Dispatched", fmt(r.dispatchedAt))}
-              ${kv("Unit Arrived",   fmt(r.arrivedAt))}
-              ${kv("Case Resolved",  fmt(r.resolvedAt))}
+              ${kv("Unit Arrived", fmt(r.arrivedAt))}
+              ${kv("Case Resolved", fmt(r.resolvedAt))}
             </table>
           </td>
           <td style="width:50%;vertical-align:top;border-left:1px solid #e5e7eb;padding-left:20px;">
             <table style="width:100%;">
-              ${kv("Call Duration",    r.callDuration)}
-              ${kv("Response Time",   fmtRes(r.responseTimeSeconds))}
-              ${kv("AI Confidence",   Math.round(r.dispatchConfindece * 100) + "%")}
-              ${kv("Distress Score",  r.emotionalAnalysis.distressScore + "/100")}
+              ${kv("Call Duration", r.callDuration)}
+              ${kv("Response Time", fmtRes(r.responseTimeSeconds))}
+              ${kv("AI Confidence", Math.round(r.dispatchConfindece * 100) + "%")}
+              ${kv("Distress Score", r.emotionalAnalysis.distressScore + "/100")}
             </table>
           </td>
         </tr>
@@ -265,11 +265,11 @@ function buildPrintHTML(r: ArchivedReport): string {
       <tbody>
         <tr>
           ${[
-            ["Panic Level", r.emotionalAnalysis.panicLevel],
-            ["Speech Rate", r.emotionalAnalysis.speechRate],
-            ["Volume Trend", r.emotionalAnalysis.volumeTrend],
-            ["Tremor", r.emotionalAnalysis.tremorDetected ? "Detected" : "Not detected"],
-          ].map(([k, v]) => `
+      ["Panic Level", r.emotionalAnalysis.panicLevel],
+      ["Speech Rate", r.emotionalAnalysis.speechRate],
+      ["Volume Trend", r.emotionalAnalysis.volumeTrend],
+      ["Tremor", r.emotionalAnalysis.tremorDetected ? "Detected" : "Not detected"],
+    ].map(([k, v]) => `
             <td style="width:25%;padding:6px 12px 6px 0;vertical-align:top;border-bottom:1px solid #e5e7eb;">
               <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:3px;">${k}</div>
               <div style="font-size:11px;font-weight:700;">${v}</div>
@@ -286,7 +286,7 @@ function buildPrintHTML(r: ArchivedReport): string {
 
   <!-- ══ SECTION 4: AI TRIAGE ══ -->
   ${section("4 · AI Triage Reasoning",
-    `<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+      `<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 14px;margin-bottom:10px;">
       <div style="font-size:11px;line-height:1.7;">${r.reasoningReport.content}</div>
     </div>
     ${r.reasoningReport.sopUsed.map(s => `
@@ -301,19 +301,19 @@ function buildPrintHTML(r: ArchivedReport): string {
 
   <!-- ══ SECTION 6: TRANSCRIPT EXCERPT ══ -->
   ${section("6 · Call Transcript",
-    `<table style="width:100%;border-collapse:collapse;">${transcriptRows}</table>`
-  )}
+        `<table style="width:100%;border-collapse:collapse;">${transcriptRows}</table>`
+      )}
 
   <!-- ══ SECTION 7: OPERATOR VERDICT ══ -->
   ${section("7 · Operator Verdict & Notes",
-    `<div style="border-left:4px solid ${verdColor};background:${approved ? "#f0fdf4" : "#fef2f2"};border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:10px;">
+        `<div style="border-left:4px solid ${verdColor};background:${approved ? "#f0fdf4" : "#fef2f2"};border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:10px;">
       <div style="font-size:12px;font-weight:800;color:${verdColor};margin-bottom:4px;">${r.operatorVerdict}</div>
       <div style="font-size:11px;line-height:1.6;color:#374151;">${r.notes}</div>
     </div>`
-  )}
+      )}
 
   ${hasHuman ? section("8 · Human Intervention Record",
-    `<div style="border:1px solid #f59e0b;border-radius:8px;overflow:hidden;">
+        `<div style="border:1px solid #f59e0b;border-radius:8px;overflow:hidden;">
       <div style="background:#fffbeb;padding:10px 14px;border-bottom:1px solid #f59e0b;display:flex;justify-content:space-between;align-items:center;">
         <div>
           <div style="font-size:13px;font-weight:800;">${r.humanIntervention!.interventionBy}</div>
@@ -335,13 +335,13 @@ function buildPrintHTML(r: ArchivedReport): string {
 
   <!-- ══ TIMELINE ══ -->
   ${section(`${hasHuman ? "9" : "8"} · Event Timeline`,
-    `<table style="width:100%;border-collapse:collapse;">${timelineRows}</table>`
-  )}
+          `<table style="width:100%;border-collapse:collapse;">${timelineRows}</table>`
+        )}
 
   <!-- ══ FINAL OUTCOME ══ -->
   ${section(`${hasHuman ? "10" : "9"} · Final Outcome`,
-    `<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;font-size:12px;line-height:1.75;font-weight:500;">${r.closingReport.outcome}</div>`
-  )}
+          `<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;font-size:12px;line-height:1.75;font-weight:500;">${r.closingReport.outcome}</div>`
+        )}
 
   <!-- ══ SIGN-OFF ══ -->
   <div class="avoid-break">
@@ -434,14 +434,14 @@ function ClosingReport({ report }: { report: ArchivedReport }) {
           <SecLabel>1 · Incident Summary</SecLabel>
           <div className="grid grid-cols-2 gap-x-8 sm:grid-cols-4">
             {[
-              ["Incident Title",    report.title],
-              ["Incident Type",     report.incidentType],
-              ["Severity",          report.severity],
+              ["Incident Title", report.title],
+              ["Incident Type", report.incidentType],
+              ["Severity", report.severity],
               ["Dispatch Decision", report.outcome],
-              ["Location",          report.location],
-              ["Caller",            report.caller],
-              ["Caller Number",     report.callerNumber ?? "—"],
-              ["Language(s)",       report.spokenDialects.join(" / ")],
+              ["Location", report.location],
+              ["Caller", report.caller],
+              ["Caller Number", report.callerNumber ?? "—"],
+              ["Language(s)", report.spokenDialects.join(" / ")],
             ].map(([k, v]) => (
               <div key={k} className="border-b border-border/30 py-2">
                 <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">{k}</p>
@@ -456,14 +456,14 @@ function ClosingReport({ report }: { report: ArchivedReport }) {
           <SecLabel>2 · Response Metrics</SecLabel>
           <div className="grid grid-cols-2 gap-x-8 sm:grid-cols-4">
             {[
-              ["Call Received",    fmt(report.callReceivedAt)],
-              ["Unit Dispatched",  fmt(report.dispatchedAt)],
-              ["Unit Arrived",     fmt(report.arrivedAt)],
-              ["Case Resolved",    fmt(report.resolvedAt)],
-              ["Call Duration",    report.callDuration],
-              ["Response Time",    fmtRes(report.responseTimeSeconds)],
-              ["AI Confidence",    `${Math.round(report.dispatchConfindece * 100)}%`],
-              ["Distress Score",   `${report.emotionalAnalysis.distressScore}/100`],
+              ["Call Received", fmt(report.callReceivedAt)],
+              ["Unit Dispatched", fmt(report.dispatchedAt)],
+              ["Unit Arrived", fmt(report.arrivedAt)],
+              ["Case Resolved", fmt(report.resolvedAt)],
+              ["Call Duration", report.callDuration],
+              ["Response Time", fmtRes(report.responseTimeSeconds)],
+              ["AI Confidence", `${Math.round(report.dispatchConfindece * 100)}%`],
+              ["Distress Score", `${report.emotionalAnalysis.distressScore}/100`],
             ].map(([k, v]) => (
               <div key={k} className="border-b border-border/30 py-2">
                 <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">{k}</p>
@@ -478,10 +478,10 @@ function ClosingReport({ report }: { report: ArchivedReport }) {
           <SecLabel>3 · Caller Emotional & Prosody Analysis</SecLabel>
           <div className="grid grid-cols-2 gap-x-8 sm:grid-cols-4 mb-3">
             {[
-              ["Panic Level",  report.emotionalAnalysis.panicLevel],
-              ["Speech Rate",  report.emotionalAnalysis.speechRate],
+              ["Panic Level", report.emotionalAnalysis.panicLevel],
+              ["Speech Rate", report.emotionalAnalysis.speechRate],
               ["Volume Trend", report.emotionalAnalysis.volumeTrend],
-              ["Tremor",       report.emotionalAnalysis.tremorDetected ? "Detected" : "Not detected"],
+              ["Tremor", report.emotionalAnalysis.tremorDetected ? "Detected" : "Not detected"],
             ].map(([k, v]) => (
               <div key={k} className="border-b border-border/30 py-2">
                 <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">{k}</p>
@@ -615,8 +615,8 @@ function ClosingReport({ report }: { report: ArchivedReport }) {
 // ─── PAGE ─────────────────────────────────────────────────────────────────────
 
 export default function IncidentDetailPage() {
-  const { id }  = useParams<{ id: string }>()
-  const router  = useRouter()
+  const { id } = useParams<{ id: string }>()
+  const router = useRouter()
   const { reports, loading } = useHistoricalReports()
   const report = reports.find((item) => item.id === id) ?? null
 
@@ -651,9 +651,9 @@ export default function IncidentDetailPage() {
   }
 
   const isApproved = report.outcome !== OutcomeType.REJECT
-  const ea         = report.emotionalAnalysis
-  const TypeIcon   = TYPE_ICON[report.incidentType] ?? AlertTriangle
-  const typeStyle  = TYPE_ICON_STYLE[report.incidentType] ?? "bg-muted text-muted-foreground"
+  const ea = report.emotionalAnalysis
+  const TypeIcon = TYPE_ICON[report.incidentType] ?? AlertTriangle
+  const typeStyle = TYPE_ICON_STYLE[report.incidentType] ?? "bg-muted text-muted-foreground"
 
   return (
     <div className="min-h-screen bg-background">
@@ -701,7 +701,7 @@ export default function IncidentDetailPage() {
                     <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground">
                       <MapPin className="size-3.5" />{report.location}
                     </p>
-                    
+
                   </div>
                 </div>
               </div>
@@ -725,15 +725,15 @@ export default function IncidentDetailPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              <Metric icon={Clock}      label="Duration"    value={report.callDuration}                                color="text-primary" />
-              <Metric icon={Timer}      label="Response"    value={fmtRes(report.responseTimeSeconds)}                 color="text-secondary" />
-              <Metric icon={BadgeCheck} label="AI Conf."    value={`${Math.round(report.dispatchConfindece * 100)}%`}  color={report.dispatchConfindece >= 0.8 ? "text-secondary" : "text-warning"} />
-              <Metric icon={Mic}        label="Language"    value={report.spokenDialects.join(" / ")}                  color="text-muted-foreground" />
+              <Metric icon={Clock} label="Duration" value={report.callDuration} color="text-primary" />
+              <Metric icon={Timer} label="Response" value={fmtRes(report.responseTimeSeconds)} color="text-secondary" />
+              <Metric icon={BadgeCheck} label="AI Conf." value={`${Math.round(report.dispatchConfindece * 100)}%`} color={report.dispatchConfindece >= 0.8 ? "text-secondary" : "text-warning"} />
+              <Metric icon={Mic} label="Language" value={report.spokenDialects.join(" / ")} color="text-muted-foreground" />
             </div>
           </div>
-          
 
-          
+
+
         </div>
 
         <div className="flex flex-col">
@@ -741,10 +741,10 @@ export default function IncidentDetailPage() {
           <Tabs defaultValue="call-details" className="flex flex-col">
             <TabsList className="h-9 w-full justify-start rounded-lg bg-muted p-1">
               {[
-                { value: "call-details",   label: "Call Details" },
-                { value: "dispatch",       label: "Dispatch Report" },
-                { value: "sop",            label: "SOP Actions" },
-                { value: "timeline",       label: "Event Timeline" },
+                { value: "call-details", label: "Call Details" },
+                { value: "dispatch", label: "Dispatch Report" },
+                { value: "sop", label: "SOP Actions" },
+                { value: "timeline", label: "Event Timeline" },
                 { value: "closing-report", label: "Closing Report" },
               ].map(({ value, label }) => (
                 <TabsTrigger
@@ -756,84 +756,89 @@ export default function IncidentDetailPage() {
                 </TabsTrigger>
               ))}
             </TabsList>
-            
+
             {/* ── Call Details ── */}
             <TabsContent value="call-details" className="mt-4">
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 
-              <PanelCard icon={Phone} iconBg="bg-primary/15 text-primary" title="Call Metadata">
-                <KV label="Caller Name"   value={report.caller} />
-                <KV label="Caller Number" value={report.callerNumber} mono />
-                <KV label="Language(s)"   value={report.spokenDialects.join(" / ")} />
-                <KV label="Call Duration" value={report.callDuration} />
-                <KV label="Call Received" value={fmt(report.callReceivedAt)} />
-                <KV label="Dispatched At" value={fmt(report.dispatchedAt)} />
-                <KV label="Unit Arrived"  value={fmt(report.arrivedAt)} />
-                <KV label="Case Resolved" value={fmt(report.resolvedAt)} />
-              </PanelCard>
+                <PanelCard icon={Phone} iconBg="bg-primary/15 text-primary" title="Call Metadata">
+                  <KV label="Caller Name" value={`${report.caller == "Unknown Caller" ? "Mesh" : report.caller}`} />
+                  <KV label="Caller Number" value={report.callerNumber} mono />
+                  <KV label="Language(s)" value={report.spokenDialects.join(" / ")} />
+                  <KV label="Call Duration" value={report.callDuration} />
+                  <KV label="Call Received" value={fmt(report.callReceivedAt)} />
+                  <KV label="Dispatched At" value={fmt(report.dispatchedAt)} />
+                  <KV label="Unit Arrived" value={fmt(report.arrivedAt)} />
+                  <KV label="Case Resolved" value={fmt(report.resolvedAt)} />
+                </PanelCard>
 
-              <PanelCard icon={Activity} iconBg="bg-destructive/15 text-destructive" title="Emotional & Prosody">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Panic Level</span>
-                    <Badge className={cn("text-xs font-bold uppercase", getPanicBadgeClass(ea.panicLevel))}>{ea.panicLevel}</Badge>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span className="text-muted-foreground">Distress Score</span>
-                      <span className={cn("font-bold tabular-nums", ea.distressScore > 70 ? "text-destructive" : "text-warning")}>{ea.distressScore}/100</span>
+                <PanelCard icon={Activity} iconBg="bg-destructive/15 text-destructive" title="Emotional & Prosody">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="shrink-0 text-xs text-muted-foreground">Panic Level</span>
+                      <Badge
+                        className={cn("max-w-[65%] truncate text-xs font-bold uppercase", getPanicBadgeClass(ea.panicLevel))}
+                        title={ea.panicLevel}
+                      >
+                        {ea.panicLevel}
+                      </Badge>
                     </div>
-                    <Progress value={ea.distressScore} className={cn("h-2", ea.distressScore > 70 ? "[&_[data-slot=progress-indicator]]:bg-destructive" : "[&_[data-slot=progress-indicator]]:bg-warning")} />
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span className="text-muted-foreground">AI Confidence</span>
-                      <span className="font-bold tabular-nums text-secondary">{ea.aiConfidence}%</span>
-                    </div>
-                    <Progress value={ea.aiConfidence} className="h-1.5 [&_[data-slot=progress-indicator]]:bg-secondary" />
-                  </div>
-                  <div className="grid grid-cols-3 gap-1.5">
-                    {[
-                      { icon: Activity, label: ea.speechRate,                           color: "text-primary" },
-                      { icon: Waves,    label: ea.tremorDetected ? "Tremor" : "No tremor", color: ea.tremorDetected ? "text-warning" : "text-muted-foreground" },
-                      { icon: Volume2,  label: ea.volumeTrend,                           color: ea.volumeTrend === "Escalating" ? "text-destructive" : ea.volumeTrend === "Declining" ? "text-secondary" : "text-muted-foreground" },
-                    ].map(({ icon: Ic, label, color }, i) => (
-                      <div key={i} className="flex items-center gap-1.5 rounded-md border bg-muted/30 px-2 py-1.5">
-                        <Ic className={cn("size-3", color)} />
-                        <span className="text-[10px]">{label}</span>
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">Distress Score</span>
+                        <span className={cn("font-bold tabular-nums", ea.distressScore > 70 ? "text-destructive" : "text-warning")}>{ea.distressScore}/100</span>
                       </div>
-                    ))}
-                  </div>
-                  {ea.contradiction && (
-                    <div className="flex items-start gap-2 rounded-lg border border-warning/40 bg-warning/10 px-3 py-2">
-                      <AlertTriangle className="mt-0.5 size-3.5 shrink-0 text-warning" />
-                      <p className="text-[10px] leading-relaxed">{ea.contradiction}</p>
+                      <Progress value={ea.distressScore} className={cn("h-2", ea.distressScore > 70 ? "[&_[data-slot=progress-indicator]]:bg-destructive" : "[&_[data-slot=progress-indicator]]:bg-warning")} />
                     </div>
-                  )}
-                </div>
-              </PanelCard>
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">AI Confidence</span>
+                        <span className="font-bold tabular-nums text-secondary">{ea.aiConfidence}%</span>
+                      </div>
+                      <Progress value={ea.aiConfidence} className="h-1.5 [&_[data-slot=progress-indicator]]:bg-secondary" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {[
+                        { icon: Activity, label: ea.speechRate, color: "text-primary" },
+                        { icon: Waves, label: ea.tremorDetected ? "Tremor" : "No tremor", color: ea.tremorDetected ? "text-warning" : "text-muted-foreground" },
+                        { icon: Volume2, label: ea.volumeTrend, color: ea.volumeTrend === "Escalating" ? "text-destructive" : ea.volumeTrend === "Declining" ? "text-secondary" : "text-muted-foreground" },
+                      ].map(({ icon: Ic, label, color }, i) => (
+                        <div key={i} className="flex items-center gap-1.5 rounded-md border bg-muted/30 px-2 py-1.5">
+                          <Ic className={cn("size-3", color)} />
+                          <span className="text-[10px]">{label}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {ea.contradiction && (
+                      <div className="flex items-start gap-2 rounded-lg border border-warning/40 bg-warning/10 px-3 py-2">
+                        <AlertTriangle className="mt-0.5 size-3.5 shrink-0 text-warning" />
+                        <p className="text-[10px] leading-relaxed">{ea.contradiction}</p>
+                      </div>
+                    )}
+                  </div>
+                </PanelCard>
 
-              {/* transcript — full width */}
-              <div className="lg:col-span-2">
-              <PanelCard icon={Mic} iconBg="bg-muted text-muted-foreground" title="Call Transcript">
-                <div className="max-h-72 overflow-y-auto space-y-2.5">
-                  {report.transcript.map((line, i) => {
-                    const isCaller = line.speaker.toLowerCase() === "caller"
-                    const isOp     = line.speaker.toLowerCase() === "operator"
-                    return (
-                      <div key={i} className={cn("flex flex-col gap-0.5", isOp && "items-end")}>
-                        <span className="text-[9px] font-mono text-muted-foreground">[{line.speaker.toUpperCase()}] {line.time}</span>
-                        <div className={cn("max-w-[82%] rounded-xl px-3 py-2 text-xs leading-relaxed",
-                          isCaller && "rounded-tl-sm bg-muted/70",
-                          isOp     && "rounded-tr-sm bg-primary text-primary-foreground",
-                          !isCaller && !isOp && "bg-muted/50 italic"
-                        )}>{line.text}</div>
-                      </div>
-                    )
-                  })}
+                {/* transcript — full width */}
+                <div className="lg:col-span-2">
+                  <PanelCard icon={Mic} iconBg="bg-muted text-muted-foreground" title="Call Transcript">
+                    <div className="max-h-[600px] overflow-y-auto space-y-2.5">
+                      {report.transcript.map((line, i) => {
+                        const isCaller = line.speaker.toLowerCase() === "caller"
+                        const isOp = line.speaker.toLowerCase() === "operator"
+                        return (
+                          <div key={i} className={cn("flex flex-col gap-0.5", isOp && "items-end")}>
+                            <span className="text-[9px] font-mono text-muted-foreground">[{line.speaker.toUpperCase()}] {line.time}</span>
+                            <div className={cn("max-w-[82%] rounded-xl px-3 py-2 text-xs leading-relaxed",
+                              isCaller && "rounded-tl-sm bg-muted/70",
+                              isOp && "rounded-tr-sm bg-primary text-primary-foreground",
+                              !isCaller && !isOp && "bg-muted/50 italic"
+                            )}>{line.text}</div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </PanelCard>
                 </div>
-              </PanelCard>
-              </div>
 
               </div>
             </TabsContent>
@@ -842,49 +847,49 @@ export default function IncidentDetailPage() {
             <TabsContent value="dispatch" className="mt-4">
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 
-              <PanelCard icon={Ambulance} iconBg="bg-secondary/15 text-secondary" title="Dispatch Details">
-                <div className="space-y-3">
-                  <div className={cn("rounded-lg border-l-4 px-3 py-2.5", isApproved ? "border-secondary bg-secondary/5" : "border-destructive bg-destructive/5")}>
-                    <p className="text-xs font-bold">{report.operatorVerdict}</p>
-                  </div>
-                  <p className="text-xs leading-relaxed text-muted-foreground">{report.notes}</p>
-                  <div className="grid grid-cols-3 gap-2 pt-1">
-                    <Metric icon={Zap}   label="AI Conf."   value={`${Math.round(report.dispatchConfindece * 100)}%`} color={report.dispatchConfindece >= 0.8 ? "text-secondary" : "text-warning"} />
-                    <Metric icon={Timer} label="Dispatched" value={fmtTime(report.dispatchedAt)} />
-                    <Metric icon={Clock} label="On Scene"   value={fmtTime(report.arrivedAt)} />
-                  </div>
-                </div>
-              </PanelCard>
-
-              <PanelCard icon={UserCheck} iconBg="bg-warning/15 text-warning" title="Human Intervention">
-                {report.humanIntervention?.required ? (
+                <PanelCard icon={Ambulance} iconBg="bg-secondary/15 text-secondary" title="Dispatch Details">
                   <div className="space-y-3">
-                    <div className="flex items-center gap-3 rounded-lg border border-warning/40 bg-warning/5 px-3 py-2.5">
-                      <div className="flex size-8 items-center justify-center rounded-full bg-warning/20 shrink-0">
-                        <User className="size-4 text-warning" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold">{report.humanIntervention.interventionBy}</p>
-                        <p className="text-[10px] text-muted-foreground">{report.humanIntervention.role}</p>
-                      </div>
-                      <Badge variant="outline" className="font-mono text-[10px] shrink-0">{report.humanIntervention.timestampLabel}</Badge>
+                    <div className={cn("rounded-lg border-l-4 px-3 py-2.5", isApproved ? "border-secondary bg-secondary/5" : "border-destructive bg-destructive/5")}>
+                      <p className="text-xs font-bold">{report.operatorVerdict}</p>
                     </div>
-                    <div>
-                      <SecLabel>Action Taken</SecLabel>
-                      <p className="text-xs leading-relaxed">{report.humanIntervention.action}</p>
-                    </div>
-                    <div>
-                      <SecLabel>Reason for Override</SecLabel>
-                      <p className="text-xs leading-relaxed text-muted-foreground">{report.humanIntervention.reason}</p>
+                    <p className="text-xs leading-relaxed text-muted-foreground">{report.notes}</p>
+                    <div className="grid grid-cols-3 gap-2 pt-1">
+                      <Metric icon={Zap} label="AI Conf." value={`${Math.round(report.dispatchConfindece * 100)}%`} color={report.dispatchConfindece >= 0.8 ? "text-secondary" : "text-warning"} />
+                      <Metric icon={Timer} label="Dispatched" value={fmtTime(report.dispatchedAt)} />
+                      <Metric icon={Clock} label="On Scene" value={fmtTime(report.arrivedAt)} />
                     </div>
                   </div>
-                ) : (
-                  <div className="flex items-center gap-2.5 rounded-lg border bg-secondary/10 px-3 py-3">
-                    <CheckCircle2 className="size-4 text-secondary shrink-0" />
-                    <p className="text-xs font-medium text-secondary">Fully AI-handled — no human intervention required.</p>
-                  </div>
-                )}
-              </PanelCard>
+                </PanelCard>
+
+                <PanelCard icon={UserCheck} iconBg="bg-warning/15 text-warning" title="Human Intervention">
+                  {report.humanIntervention?.required ? (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 rounded-lg border border-warning/40 bg-warning/5 px-3 py-2.5">
+                        <div className="flex size-8 items-center justify-center rounded-full bg-warning/20 shrink-0">
+                          <User className="size-4 text-warning" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold">{report.humanIntervention.interventionBy}</p>
+                          <p className="text-[10px] text-muted-foreground">{report.humanIntervention.role}</p>
+                        </div>
+                        <Badge variant="outline" className="font-mono text-[10px] shrink-0">{report.humanIntervention.timestampLabel}</Badge>
+                      </div>
+                      <div>
+                        <SecLabel>Action Taken</SecLabel>
+                        <p className="text-xs leading-relaxed">{report.humanIntervention.action}</p>
+                      </div>
+                      <div>
+                        <SecLabel>Reason for Override</SecLabel>
+                        <p className="text-xs leading-relaxed text-muted-foreground">{report.humanIntervention.reason}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2.5 rounded-lg border bg-secondary/10 px-3 py-3">
+                      <CheckCircle2 className="size-4 text-secondary shrink-0" />
+                      <p className="text-xs font-medium text-secondary">Fully AI-handled — no human intervention required.</p>
+                    </div>
+                  )}
+                </PanelCard>
 
               </div>
             </TabsContent>
@@ -893,28 +898,28 @@ export default function IncidentDetailPage() {
             <TabsContent value="sop" className="mt-4">
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 
-              <PanelCard icon={Brain} iconBg="bg-primary/15 text-primary" title="AI Triage Reasoning">
-                <div className="space-y-3">
-                  <p className="text-xs leading-relaxed">{report.reasoningReport.content}</p>
-                  {report.reasoningReport.sopUsed.map((s, i) => (
-                    <div key={i} className="flex items-center gap-2 rounded-md border bg-primary/5 px-2.5 py-1.5">
-                      <FileText className="size-3 shrink-0 text-primary" />
-                      <span className="font-mono text-[10px] text-primary">{s}</span>
-                    </div>
-                  ))}
-                </div>
-              </PanelCard>
+                <PanelCard icon={Brain} iconBg="bg-primary/15 text-primary" title="AI Triage Reasoning">
+                  <div className="space-y-3">
+                    <p className="text-xs leading-relaxed">{report.reasoningReport.content}</p>
+                    {report.reasoningReport.sopUsed.map((s, i) => (
+                      <div key={i} className="flex items-center gap-2 rounded-md border bg-primary/5 px-2.5 py-1.5">
+                        <FileText className="size-3 shrink-0 text-primary" />
+                        <span className="font-mono text-[10px] text-primary">{s}</span>
+                      </div>
+                    ))}
+                  </div>
+                </PanelCard>
 
-              <PanelCard icon={Shield} iconBg="bg-secondary/15 text-secondary" title="SOP Actions Executed">
-                <ol className="space-y-3">
-                  {report.sopActions.map((a, i) => (
-                    <li key={i} className="flex items-start gap-2.5">
-                      <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary mt-0.5">{i + 1}</span>
-                      <span className="text-xs leading-relaxed">{a}</span>
-                    </li>
-                  ))}
-                </ol>
-              </PanelCard>
+                <PanelCard icon={Shield} iconBg="bg-secondary/15 text-secondary" title="SOP Actions Executed">
+                  <ol className="space-y-3">
+                    {report.sopActions.map((a, i) => (
+                      <li key={i} className="flex items-start gap-2.5">
+                        <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[9px] font-bold text-primary mt-0.5">{i + 1}</span>
+                        <span className="text-xs leading-relaxed">{a}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </PanelCard>
 
               </div>
             </TabsContent>
@@ -937,11 +942,11 @@ export default function IncidentDetailPage() {
                 </div>
                 <div className="mt-4 flex flex-wrap gap-3 border-t border-border/40 pt-3">
                   {[
-                    { type: "system",   label: "System",       d: "bg-border" },
-                    { type: "ai",       label: "AI Action",    d: "bg-primary" },
-                    { type: "human",    label: "Human Action", d: "bg-warning" },
-                    { type: "dispatch", label: "Dispatch",     d: "bg-secondary" },
-                    { type: "close",    label: "Case Closed",  d: "bg-muted-foreground" },
+                    { type: "system", label: "System", d: "bg-border" },
+                    { type: "ai", label: "AI Action", d: "bg-primary" },
+                    { type: "human", label: "Human Action", d: "bg-warning" },
+                    { type: "dispatch", label: "Dispatch", d: "bg-secondary" },
+                    { type: "close", label: "Case Closed", d: "bg-muted-foreground" },
                   ].map(({ type, label, d }) => (
                     <div key={type} className="flex items-center gap-1.5">
                       <div className={cn("size-2 rounded-full", d)} />

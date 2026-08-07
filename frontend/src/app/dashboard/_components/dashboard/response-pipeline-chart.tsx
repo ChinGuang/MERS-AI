@@ -6,7 +6,6 @@ import {
 } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { ChartInfoDialog } from "./chart-info-dialog"
-import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
 import { ArchivedReport } from "@/models/report"
 
 const STAGE_COLORS = {
@@ -21,9 +20,7 @@ function formatDuration(totalSeconds: number) {
   return `${m}m ${s}s`
 }
 
-export function ResponsePipelineChart() {
-  const { reports } = useHistoricalReports()
-
+export function ResponsePipelineChart({ reports }: { reports: ArchivedReport[] }) {
   const { chartData, sampleSize, totalAvg } = useMemo(() => {
     const complete = reports.filter(
       (r) => r.dispatchedAt && r.arrivedAt && r.resolvedAt
@@ -54,7 +51,7 @@ export function ResponsePipelineChart() {
       sampleSize: complete.length,
       totalAvg: dispatchSecs + travelSecs + onSceneSecs,
     }
-  }, [])
+  }, [reports])
 
   return (
     <Card className="transition-all duration-200 hover:border-secondary hover:shadow-secondary hover:shadow-md">

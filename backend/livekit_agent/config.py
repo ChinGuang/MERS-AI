@@ -18,19 +18,32 @@ LIVEKIT_URL = os.getenv("LIVEKIT_URL")
 LIVEKIT_API_KEY = os.getenv("LIVEKIT_API_KEY")
 LIVEKIT_API_SECRET = os.getenv("LIVEKIT_API_SECRET")
 
-# Voice model: reuse the same Gemini key the rest of the project already uses (read-only
-# env access, no import from backend/environment.py needed since it's a single os.getenv call).
-# Realtime/Live models have different names than regular text Gemini models (e.g. the
-# gemini-2.5-flash used elsewhere in this project is NOT a realtime-audio model) - verify
-# this default against Gemini's current realtime/Live model list if worker.py errors on it.
+# LLM: reuse the same Gemini key the rest of the project already uses for its regular
+# text models (read-only env access, no import from backend/environment.py needed).
+# Back to a plain fast text model - the native-audio/realtime model this briefly used
+# was confirmed slow and inaccurate in real testing (every variant available is a
+# preview/experimental tag, none GA). "gemini-2.5-flash" is the same model already
+# proven out elsewhere in this project (location_agent_module.py, incident extraction).
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-# Confirmed against your actual account via list_gemini_live_models.py - "gemini-2.0-flash-exp"
-# (the first guess) doesn't support the Live API at all for direct Gemini API keys.
-LIVEKIT_LLM_MODEL = os.getenv("LIVEKIT_LLM_MODEL", "gemini-2.5-flash-native-audio-latest")
+LIVEKIT_LLM_MODEL = os.getenv("LIVEKIT_LLM_MODEL", "gemini-2.5-flash")
 
-# No longer used now that worker.py uses Gemini's realtime model for STT+TTS too - left
-# here in case you switch back to a Deepgram/Cartesia pipeline for more control/latency
-# tuning later.
+# STT: Groq-hosted Whisper (`whisper-large-v3-turbo`) via `openai.STT` in worker.py,
+# pointed at Groq's OpenAI-compatible endpoint instead of OpenAI's. Same multilingual
+# Whisper model that covers Tamil (unlike Deepgram), but needs only a free Groq API
+# key - no billing (unlike OpenAI directly) and no GCP service account/IAM console
+# work (unlike Google Cloud STT, which hit a persistent IAM permission error even
+# after supposedly granting the right role - see worker.py's docstring).
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_STT_BASE_URL = "https://api.groq.com/openai/v1"
+
+# TTS: ElevenLabs Flash v2.5 - single multilingual voice, auto-detects the input text's
+# language per call, built for low latency. Plain API key, not GCP-style service
+# account credentials.
+ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+
+# No longer used - left in case you revert to a Deepgram/Google/OpenAI-direct STT or
+# Cartesia TTS pipeline later.
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 CARTESIA_API_KEY = os.getenv("CARTESIA_API_KEY")
 

@@ -23,15 +23,21 @@ interface CallerAddress {
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 const GOOGLE_MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
-function buildGoogleMapsUrl(lat: number, lng: number) {
-  return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
+// Prefer the descriptive location text over raw coordinates when available - a bare
+// "lat,lng" query resolves to an unlabeled pin, so Google Maps never actually displays
+// the place name (e.g. "Menara Gamuda, PJ Trade Centre"), even though it's centered on
+// the right spot. A text query lets Google's own place search resolve and label it.
+function buildGoogleMapsUrl(lat: number, lng: number, label?: string) {
+  const query = label ? encodeURIComponent(label) : `${lat},${lng}`
+  return `https://www.google.com/maps/search/?api=1&query=${query}`
 }
 
-function buildGoogleEmbedUrl(lat: number, lng: number) {
+function buildGoogleEmbedUrl(lat: number, lng: number, label?: string) {
+  const query = label ? encodeURIComponent(label) : `${lat},${lng}`
   if (GOOGLE_MAPS_KEY) {
-    return `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_KEY}&q=${lat},${lng}&zoom=17`
+    return `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_KEY}&q=${query}&zoom=17`
   }
-  return `https://maps.google.com/maps?q=${lat},${lng}&hl=en&z=17&output=embed`
+  return `https://maps.google.com/maps?q=${query}&hl=en&z=17&output=embed`
 }
 
 function buildSpotImageUrl(lat: number, lng: number, customUrl?: string) {
@@ -148,7 +154,7 @@ export function DispatchLocationPanel({ incident }: DispatchLocationPanelProps) 
             <div className="overflow-hidden rounded-lg border">
               <iframe
                 title={`Google Maps — ${incident.case_number}`}
-                src={buildGoogleEmbedUrl(lat, lng)}
+                src={buildGoogleEmbedUrl(lat, lng, incident.location)}
                 className="h-44 w-full border-0"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -158,7 +164,7 @@ export function DispatchLocationPanel({ incident }: DispatchLocationPanelProps) 
 
             <Button variant="outline" size="sm" className="w-full" asChild>
               <a
-                href={buildGoogleMapsUrl(lat, lng)}
+                href={buildGoogleMapsUrl(lat, lng, incident.location)}
                 target="_blank"
                 rel="noopener noreferrer"
               >

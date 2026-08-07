@@ -17,7 +17,11 @@ from async_context_managers import base
 async def transcript_livekit_process_consumer():
     while base.keep_running:
         try:
-            result = redis_client.brpop(PENDING_CALL_TRANSCRIPT_MAP_LIVE_AGENT_KEY, 3)
+            # brpop is a blocking network call - direct (non-threaded) use inside an
+            # `async def` freezes the whole single-threaded event loop for up to the
+            # timeout, starving every other consumer sharing it whenever this queue is
+            # empty (which is most of the time between calls).
+            result = await asyncio.to_thread(redis_client.brpop, PENDING_CALL_TRANSCRIPT_MAP_LIVE_AGENT_KEY, 3)
             if not result:
                 await asyncio.sleep(0.1)
                 continue
@@ -54,4 +58,10 @@ async def transcript_livekit_process_consumer():
                 print(f"Call {json_result["process_call_id"]} not found")
         except Exception as e:
             print(f"transcript_livekit_process_consumer error: {e}")
+            # base.db is shared across every background consumer - roll back so one
+            # failure here doesn't poison it (PendingRollbackError) for the others.
+            try:
+                base.db.rollback()
+            except Exception as rollback_err:
+                print(f"transcript_livekit_process_consumer: failed to roll back: {rollback_err}")
             await asyncio.sleep(0.5)
