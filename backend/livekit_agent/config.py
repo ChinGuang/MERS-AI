@@ -39,13 +39,6 @@ GROQ_STT_BASE_URL = "https://api.groq.com/openai/v1"
 # TTS: ElevenLabs Flash v2.5 - single multilingual voice, auto-detects the input text's
 # language per call, built for low latency. Plain API key, not GCP-style service
 # account credentials.
-ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
-
-# No longer used - left in case you revert to a Deepgram/Google/OpenAI-direct STT or
-# Cartesia TTS pipeline later.
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
-CARTESIA_API_KEY = os.getenv("CARTESIA_API_KEY")
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent  # backend/
 DATA_DIR = PROJECT_DIR / "data"
