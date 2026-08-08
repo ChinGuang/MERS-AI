@@ -8,13 +8,14 @@ from langchain_core.output_parsers import JsonOutputParser
 from models.dto.voice_agent import DispatchInputPayload
 from models.schema import DispatchRequest
 from database import db_dependency
-from environment import GEMINI_API_KEY, GOOGLE_MAPS_API_KEY
+from environment import GEMINI_API_KEY, GOOGLE_MAPS_API_KEY, LLM_MODEL_USED
+
 
 def get_dispatch(db: db_dependency, input_payload: DispatchInputPayload):
     # Initialize Google Maps Client
     gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
 
-    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", api_key=GEMINI_API_KEY)
+    llm = ChatGoogleGenerativeAI(model=LLM_MODEL_USED, api_key=GEMINI_API_KEY)
 
     prompt = ChatPromptTemplate.from_messages(
         [

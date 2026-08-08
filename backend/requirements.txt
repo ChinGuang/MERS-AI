@@ -33,6 +33,6 @@ googlemaps
 livekit-agents
 livekit-api
 livekit-plugins-deepgram
-livekit-plugins-cartesia
 livekit-plugins-silero
 livekit-plugins-google
+livekit-agents[cartesia]~=1.5

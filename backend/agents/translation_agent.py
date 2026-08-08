@@ -13,9 +13,9 @@ from pydantic import BaseModel, Field
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from environment import GEMINI_API_KEY
+from environment import GEMINI_API_KEY, LLM_MODEL_USED
 
-MODEL = "gemini-2.5-flash"
+MODEL = LLM_MODEL_USED
 
 
 class TranslatedUtterance(BaseModel):

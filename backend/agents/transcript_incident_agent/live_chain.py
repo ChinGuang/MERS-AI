@@ -4,7 +4,7 @@ from langchain_core.runnables import RunnableLambda
 from langchain_google_genai import ChatGoogleGenerativeAI
 from pydantic import BaseModel
 
-from environment import GEMINI_API_KEY
+from environment import GEMINI_API_KEY, LLM_MODEL_USED
 
 
 class LiveExtractedIncident(BaseModel):
@@ -29,7 +29,7 @@ prompt = ChatPromptTemplate.from_messages([
 ]).partial(format_instructions=parser.get_format_instructions())
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
+    model=LLM_MODEL_USED,
     api_key=GEMINI_API_KEY,
     temperature=0.1,
 )

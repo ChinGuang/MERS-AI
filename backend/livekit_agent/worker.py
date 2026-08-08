@@ -92,8 +92,9 @@ from types import SimpleNamespace
 
 from livekit import agents
 from livekit.agents import Agent, AgentSession, JobContext, WorkerOptions, cli
-from livekit.plugins import elevenlabs, google, openai, silero
+from livekit.plugins import elevenlabs, google, openai, silero, cartesia
 
+from environment import CARTESIA_API_KEY
 from livekit_agent.agent_prompts import ARIA_INSTRUCTIONS
 from livekit_agent.config import (
     ELEVENLABS_API_KEY,
@@ -160,11 +161,11 @@ async def entrypoint(ctx: JobContext) -> None:
         # curl testing against the REST endpoint (bypassing LiveKit entirely) - but a
         # voice you personally created (Voice Design or a clone) is exempt from that
         # restriction.
-        tts=elevenlabs.TTS(
-            model="eleven_multilingual_v2",
-            voice_id="4hzBSlEmXWO1vLNX9l3Y",
-            api_key=ELEVENLABS_API_KEY,
-        ),
+        tts=cartesia.TTS(
+            model="sonic-3",
+            voice="db6b0ed5-d5d3-463d-ae85-518a07d3c2b4",
+            api_key=CARTESIA_API_KEY
+        )
     )
 
     # Accumulated so far this call, in location_agent_module.flatten_utterances()'s
@@ -242,7 +243,7 @@ async def entrypoint(ctx: JobContext) -> None:
     # speak first. ARIA_INSTRUCTIONS already has the exact opening line memorized
     # ("MERS Emergency Response backup line, this is ARIA...") - this just triggers
     # her to say it now instead of waiting for the caller's first utterance.
-    session.generate_reply(
+    await session.generate_reply(
         instructions="Greet the caller now with your scripted opening line, before they say anything."
     )
 

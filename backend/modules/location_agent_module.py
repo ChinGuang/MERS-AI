@@ -23,11 +23,11 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from rapidfuzz import fuzz
 
-from environment import GEMINI_API_KEY, MAPBOX_TOKEN
+from environment import GEMINI_API_KEY, MAPBOX_TOKEN, LLM_MODEL_USED
 from models.schema import Incident, Call, EmergencyDispatchServiceLocation
 from models.dto.retell import RetellRoleType
 
-MODEL = "gemini-2.5-flash"
+MODEL = LLM_MODEL_USED
 MIN_CONFIDENCE = 0.70          # Gemini's own confidence that a location was mentioned at all
 CONFIDENT_MATCH_SCORE = 0.90   # above this: treat the geocode match as solid, no flag needed
 MIN_SAVE_SCORE = 0.30          # absolute floor — below this, don't save anything, too unreliable
