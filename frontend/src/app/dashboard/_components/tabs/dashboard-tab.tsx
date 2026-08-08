@@ -7,7 +7,10 @@ import { SectionHeader, StatCardsGrid } from "../dashboard/stat-cards"
 import { DispatchOutcomeChart } from "../dashboard/dispatch-outcome-chart"
 import { ResponsePipelineChart } from "../dashboard/response-pipeline-chart"
 import { EscalationChart } from "../dashboard/escalation-chart"
+import { IncidentTrendChart } from "../dashboard/incident-trend-chart"
 import { useHistoricalReports } from "@/context/historical-reports/useHistoricalReports"
+import { HISTORICAL_REPORTS } from "@/data/historicalReports"
+import { getTodaySeedReports } from "@/data/todaySeedReports"
 
 type StatsRange = "today" | "all-time"
 
@@ -16,11 +19,18 @@ function isToday(date: Date) {
 }
 
 export function DashboardTab() {
-  const [statsRange, setStatsRange] = useState<StatsRange>("today")
+  const [statsRange, setStatsRange] = useState<StatsRange>("all-time")
   const { reports } = useHistoricalReports()
 
+  // All Time always shows the curated demo archive so the dashboard looks
+  // demo-ready regardless of what's currently seeded in the live database.
+  // Today blends in whatever real cases came in today with a small seed set,
+  // so it never renders as a bare empty state on a quiet day.
   const scopedReports = useMemo(
-    () => (statsRange === "today" ? reports.filter((r) => isToday(r.createAt)) : reports),
+    () =>
+      statsRange === "today"
+        ? [...reports.filter((r) => isToday(r.createAt)), ...getTodaySeedReports()]
+        : HISTORICAL_REPORTS,
     [reports, statsRange]
   )
 
@@ -58,12 +68,14 @@ export function DashboardTab() {
           <StatCardsGrid reports={scopedReports} />
         </div>
 
+        <IncidentTrendChart reports={scopedReports} />
+
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <DispatchOutcomeChart />
-          <ResponsePipelineChart />
+          <DispatchOutcomeChart reports={scopedReports} />
+          <ResponsePipelineChart reports={scopedReports} />
         </div>
 
-        <EscalationChart />
+        <EscalationChart reports={scopedReports} />
       </div>
     </div>
   )

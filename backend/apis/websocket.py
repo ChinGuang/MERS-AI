@@ -35,13 +35,13 @@ async def media_stream(websocket: WebSocket, db: db_dependency):
 
             match msg["event"]:
                 case "connected":
-                    print("📞 Twilio Stream connected")
+                    print("Twilio Stream connected")
                 case "start":
                     stream_sid = msg["start"]["streamSid"]
                     websocket.session.update({"sid": stream_sid})
                     call_id = call_module.get_call_id_by_sid(stream_sid, db=db)
                     websocket.session.update({"call_id": call_id})
-                    print(f"🎙️ Call started - StreamSid: {stream_sid}")
+                    print(f"Call started - StreamSid: {stream_sid}")
                 case "media":
                     # raw audio encoded in base64
                     call_id = websocket.session.get("call_id")
@@ -64,7 +64,7 @@ async def media_stream(websocket: WebSocket, db: db_dependency):
                     # })
 
                 case "stop":
-                    print("⏹️ Call ended ")
+                    print("Call ended")
                     call_id = websocket.session.get("call_id")
                     # app.pika_emotion_analyse_publisher.publish({
                     #     "call_id": str(call_id),

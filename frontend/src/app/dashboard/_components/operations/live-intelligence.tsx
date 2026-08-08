@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import {
+  BookText,
   ChevronDown,
   ChevronUp,
   Languages,
@@ -9,6 +10,7 @@ import {
   MicOff,
   PhoneCall,
   Settings2,
+  ShieldCheck,
 } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useIncident } from "@/context/incident/useIncident"
@@ -145,13 +147,6 @@ function AgentSettingsPanel() {
 function LiveTranscript({ incident }: { incident: ReturnType<typeof useIncident>["activeIncident"] }) {
   const bottomRef = useRef<HTMLDivElement>(null)
   const lines = incident?.transcript ?? []
-  const { setSSEEnabled } = useIncident()
-  useEffect(() => {
-    setSSEEnabled(true)
-    return () => {
-      setSSEEnabled(false)
-    }
-  }, [])
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [lines])
@@ -209,7 +204,7 @@ function LiveTranscript({ incident }: { incident: ReturnType<typeof useIncident>
                   </span>
                   <div
                     className={cn(
-                      "relative max-w-[88%] rounded-2xl px-3 py-2 text-xs leading-relaxed mb-2",
+                      "relative max-w-[88%] rounded-2xl px-3 py-2 text-[14px] leading-relaxed mb-2",
                       isCaller
                         ? "rounded-tl-sm bg-muted/70 text-foreground"
                         : "rounded-tr-sm bg-secondary text-secondary-foreground shadow-[0_2px_12px_rgba(34,182,123,0.25)]",
@@ -222,7 +217,7 @@ function LiveTranscript({ incident }: { incident: ReturnType<typeof useIncident>
                     {line.translatedText && line.language && line.language !== "en" && (
                       <div
                         className={cn(
-                          "mt-1.5 flex items-start gap-1 border-t pt-1.5 text-[11px] italic opacity-80",
+                          "mt-1.5 flex items-start gap-1 border-t pt-1.5 text-[13px] italic opacity-80",
                           isCaller ? "border-foreground/15" : "border-secondary-foreground/25"
                         )}
                       >
@@ -255,12 +250,93 @@ function LiveTranscript({ incident }: { incident: ReturnType<typeof useIncident>
   )
 }
 
+// ── Retrieved SOP — sibling tab to Live Transcript ─────────────────────────
+function SopPanel({ incident }: { incident: ReturnType<typeof useIncident>["activeIncident"] }) {
+  const citation = incident?.sopCitation
+  const steps = incident?.sopProcedure ?? []
+
+  return (
+    <>
+      <div className="mb-3 flex shrink-0 items-center justify-between">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="size-3 text-secondary" />
+          <h3 className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Retrieved SOP
+          </h3>
+        </div>
+        {steps.length > 0 && (
+          <span className="text-[10px] tabular-nums text-muted-foreground/50">
+            {steps.length} steps
+          </span>
+        )}
+      </div>
+
+      <ScrollArea className="min-h-0 flex-1 pr-2">
+        {!citation && steps.length === 0 ? (
+          <div className="flex flex-col items-center gap-3 py-10 text-center">
+            <div className="flex size-10 items-center justify-center rounded-full border border-dashed border-muted-foreground/25 bg-muted/20">
+              <BookText className="size-4 text-muted-foreground/35" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-muted-foreground">No SOP retrieved yet</p>
+              <p className="text-[10px] text-muted-foreground/50">
+                Matched procedures appear here once the emergency type is identified.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-3 pb-2">
+            {citation && (
+              <div className="rounded-lg border border-secondary/30 bg-secondary/10 px-3 py-2">
+                <p className="text-[9px] font-semibold uppercase tracking-widest text-secondary/80">
+                  Citation
+                </p>
+                <p className="text-[13px] font-medium text-foreground">{citation}</p>
+              </div>
+            )}
+            {steps.length > 0 && (
+              <ol className="space-y-2">
+                {steps.map((step, i) => (
+                  <li
+                    key={i}
+                    className="flex gap-2.5 rounded-xl bg-muted/50 px-3 py-2 text-[13px] leading-relaxed text-foreground"
+                  >
+                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-secondary/20 text-[11px] font-semibold text-secondary">
+                      {i + 1}
+                    </span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </div>
+        )}
+      </ScrollArea>
+    </>
+  )
+}
+
 // ── Root component ──────────────────────────────────────────────────────────
 export function LiveIntelligence() {
-  const { activeIncident } = useIncident()
+  const { activeIncident, setSSEEnabled } = useIncident()
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState<"transcript" | "sop">("transcript")
   const hasLiveCall = (activeIncident?.transcript?.length ?? 0) > 0
   const callDuration = useCallDuration(activeIncident?.callStartedAt)
+
+  // Lives here, not inside the Live Transcript sub-tab - the incident-creation SSE
+  // stream shares this same enabled flag (see IncidentProvider.tsx), and it must stay
+  // on for as long as this whole panel is mounted regardless of which sub-tab
+  // (transcript vs SOP) is selected. Tying it to the transcript sub-tab's mount/unmount
+  // meant switching to "Retrieved SOP" silently disabled new-incident notifications too
+  // - SSE doesn't replay missed events, so a case created while on that tab never
+  // appeared even after switching back.
+  useEffect(() => {
+    setSSEEnabled(true)
+    return () => {
+      setSSEEnabled(false)
+    }
+  }, [])
 
   return (
     <aside className="hidden min-h-0 flex-col border-l bg-card lg:flex">
@@ -321,9 +397,41 @@ export function LiveIntelligence() {
         </div>
       )}
 
-      {/* ⑤ TRANSCRIPT — flex-1, takes ALL remaining space */}
+      {/* Tab switcher — Live Transcript / Retrieved SOP */}
+      <div className="flex shrink-0 border-b">
+        <button
+          onClick={() => setActiveTab("transcript")}
+          className={cn(
+            "flex flex-1 items-center justify-center gap-1.5 border-b-2 py-2 text-[10px] font-semibold uppercase tracking-widest transition-colors",
+            activeTab === "transcript"
+              ? "border-secondary text-foreground"
+              : "border-transparent text-muted-foreground/60 hover:text-muted-foreground"
+          )}
+        >
+          <Mic className="size-3" />
+          Live Transcript
+        </button>
+        <button
+          onClick={() => setActiveTab("sop")}
+          className={cn(
+            "flex flex-1 items-center justify-center gap-1.5 border-b-2 py-2 text-[10px] font-semibold uppercase tracking-widest transition-colors",
+            activeTab === "sop"
+              ? "border-secondary text-foreground"
+              : "border-transparent text-muted-foreground/60 hover:text-muted-foreground"
+          )}
+        >
+          <ShieldCheck className="size-3" />
+          Retrieved SOP
+        </button>
+      </div>
+
+      {/* ⑤ MAIN CONTENT — flex-1, takes ALL remaining space */}
       <div className="flex min-h-0 flex-1 flex-col p-4">
-        <LiveTranscript incident={activeIncident} />
+        {activeTab === "transcript" ? (
+          <LiveTranscript incident={activeIncident} />
+        ) : (
+          <SopPanel incident={activeIncident} />
+        )}
       </div>
 
     </aside>

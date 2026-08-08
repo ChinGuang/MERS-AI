@@ -99,7 +99,10 @@ export const IncidentDtoSchema = z.object({
   coordinates: CoordinatesSchema,
   dispatchCenter: DispatchCenterSchema.nullish(),
   status: StatusSchema,
-  case_number: z.string()
+  case_number: z.preprocess(
+    (val) => (val === null ? undefined : val),
+    z.string().default(""),
+  ),
 });
 
 // Infer TypeScript interface directly from Zod Schema
