@@ -49,27 +49,10 @@ async def media_stream(websocket: WebSocket, db: db_dependency):
                         print("Call id is not initialized")
                         return
                     raw_voice = msg["media"]["payload"]
-                    # audio_bytes = base64.b64decode(raw_voice)
-                    # file_name = to_voice_file_name(str(call_id))
-
-                    # download_response = storage_module.download_file(file_name)
-                    # bytes_buffer = io.BytesIO()
-                    # if download_response is not None:
-                    #     bytes_buffer.write(download_response)
-                    # bytes_buffer.write(audio_bytes)
-                    # storage_module.upload_file(file_name, bytes_buffer.getvalue())
-                    # app.pika_emotion_analyse_publisher.publish({
-                    #     "call_id": str(call_id),
-                    #     "is_done": False,
-                    # })
 
                 case "stop":
                     print("Call ended")
                     call_id = websocket.session.get("call_id")
-                    # app.pika_emotion_analyse_publisher.publish({
-                    #     "call_id": str(call_id),
-                    #     "is_done": True,
-                    # })
                 case _:
                     print(f"Unknown event: {msg['event']}")
     except WebSocketDisconnect:

@@ -1,18 +1,6 @@
 version: '3.8'
 
 services:
-  # 1. RabbitMQ Service
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"    # AMQP protocol port
-      - "15672:15672"  # Management UI port
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-    networks:
-      - app-network
-
   redis:
     image: redis:alpine
     container_name: redis_server
@@ -28,12 +16,6 @@ services:
       timeout: 5s
       retries: 3
 
-
-# Persistent volume so RabbitMQ doesn't lose data/queues when restarted
-volumes:
-  rabbitmq_data:
-  redis_data:
-    driver: local
 
 # Shared network so containers can talk to each other
 networks:
